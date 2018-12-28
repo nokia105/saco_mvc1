@@ -68,7 +68,9 @@
                   <td>{{ number_format(($loan_schedule->monthprinciple)+($loan_schedule->monthinterest),2)}} </td>
                    <td>{{ number_format($loan_schedule->monthprinciple,2)}} </td>
                   <td>{{number_format($loan_schedule->monthinterest,2) }} </td>
-                  <td>{{number_format($loan_schedule->monthrepayment->sum('amountpayed'),2)}}</td>
+
+                  <td>{{$loan_schedule->monthrepayment->sum('amountpayed')}}</td>
+
                     @if(!$loan_schedule->status=='')
                         @if($loan_schedule->status=='incomplete')
                          <td>{{number_format((($loan_schedule->monthprinciple)+($loan_schedule->monthinterest))-$loan_schedule->monthrepayment->sum('amountpayed'),2)}}</td>

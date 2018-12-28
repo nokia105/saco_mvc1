@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\LoanCategory;
 use Auth;
 use App\Member;
 use App\Collateral;
 use App\Loan;
-use App\Loancategory;
 use App\Loaninsuarance;
 use Illuminate\Support\Facades\DB;
 use App\Feescategory;
@@ -74,7 +74,7 @@ class MembersProfileController extends Controller
 
       public function interest(Request $request){
 
-         	 $pcategory_id=$request->pcategory;
+           $pcategory_id=$request->pcategory;
 
               $interest=LoanCategory::select('id','default_duration','interest_rate')->find($pcategory_id);
                  echo json_encode([
@@ -151,9 +151,7 @@ class MembersProfileController extends Controller
          }
 
       public function createloan(Request $request){
-              
-                   // return back()->with('status','Successfully Submitted');
-                  //dd($request->all());
+
 
             $member_id=$request->memberloan;
             $pcategory_id=$request->pcategory;
@@ -184,7 +182,7 @@ class MembersProfileController extends Controller
                  'period'=>'required|numeric',
                  'startpayment'=>'required|date',
                  'narration'=>'required',
-                // 'file'=>'required|max:10000'
+                 'file'=>'required|max:10000'
                 ]);
 
 
@@ -228,7 +226,7 @@ class MembersProfileController extends Controller
                             
                              $loan=Loan::create([
                             'loanInssue_date'=>date('Y-m-d'),
-                            'inssued_by'=>($request->submit=='draft') ? ' ' : Auth::guard('member')->user()->member_id,
+                            'inssued_by'=>Auth::guard('member')->user()->member_id,
                             'loan_status'=>($request->submit=='draft') ? 'draft' :'submitted',
                             'loancategory_id'=>$pcategory_id,
                             'member_id'=>$member_id,
@@ -242,6 +240,7 @@ class MembersProfileController extends Controller
                             'mounthlyrepayment_principle'=>$principle/$loanperiod, 
                            'mounthlyrepayment_interest'=>(($interest/100)*$principle)/$loanperiod,
                            'narration'=>$request->narration,
+                          
                            'insurance_id'=>Insurance::first()->id
                ]);
 
@@ -330,27 +329,14 @@ class MembersProfileController extends Controller
       
         $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
-      $loanlists=Member::find($id)->loans; 
+       $loanlists=Member::find($id)->loanlist->where('loan_status','=','paid'); //approved
+            
+           
+        
 
+        //dd($loanlist->interrepayment->sum('amountpayed'));
       return view('loans.loanlist' , compact('loanlists','id','code')); 
     }
-
-
-     public function finished_loans($id){
-            $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
-
-      $loanlists=Member::find($id)->loans->where('loan_status','=','finished'); 
-
-        return view('loans.loanlist.finished_loans' , compact('loanlists','id','code')); 
-     }
-
-       public function ongoing_loans($id){
-            $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
-
-      $loanlists=Member::find($id)->loans->where('loan_status','=','paid'); 
-
-        return view('loans.loanlist.ongoing_loans' , compact('loanlists','id','code')); 
-     }
 
   
 public function updateloan(Request $request)
@@ -1876,6 +1862,14 @@ public function updateloan(Request $request)
                                             
                                       ]);
 
+                                      /* Payableaccount::create([
+                                       'membersaving_id'=>$saving->id,
+                                       'cr'=>$request->payment,
+                                       'date'=>date('Y-m-d')
+                                       ]);*/
+                                      
+
+                                       //jornal dr main saving account
                                Journalentry::create( [
                                              'cr'=>$request->payment, 
                                              'mainaccount_id'=>$request->mainaccount_id,
@@ -2001,6 +1995,13 @@ public function updateloan(Request $request)
 
       public function savings_shares_excel(){
 
+       /*   $sheet=(base_path('\Payment-Excel\payment-excel.xlsx'));
+
+         $sheet->setColumnFormat(array(
+    'share_date' => 'yyyy-mm-dd',
+    'saving_date'=>'yyyy-mm-dd'
+         ));*/
+
         return response()->download(base_path('\Payment-Excel\payment-excel.xlsx'));
       }
 
@@ -2041,7 +2042,7 @@ public function updateloan(Request $request)
 
                      $data = Excel::load($path, function($reader) {
                 })->get();
-                              
+
                    
 
                      if(!empty($data) && $data->count()){
@@ -2050,93 +2051,58 @@ public function updateloan(Request $request)
                                 
                             foreach($data as $key=>$value){
 
+                                  /*$sharedate=explode('/', $value->share_date);    
+                                  $newsharedate= $sharedate[2].'-'.$sharedate[1].'-'.$sharedate[0];
 
+                                  $savingdate=explode('/',$value->saving_date);
+                                  $newsavingdate=$savingdate[2].'-'.$savingdate[1].'-'.$savingdate[0]; */
+                                       
                                     
                                    $share_amount=explode(',', $value->share_amount);
                                    $saving_amount=explode(',', $value->saving_amount);
 
-
-                                   $date0=$value->date;
-                                   $date0=str_replace('/', '-', $date0);
-                                    $dateex=explode('-', $date0);
-                                    var_dump($dateex);
-
-                                   $yr=$dateex[0];
-                                   $m=$dateex[1];
-                                   $d=$dateex[2];
-
-                                    // dd($m);*/
-
-                                 //  $date = date('Y-m-d', strtotime(str_replace('/', '-', $date0)));
-
-                                     /* $month=date('m', strtotime($date));
-                                      $day1=date('d', strtotime($date));
-                                      $year=date('Y', strtotime($date));*/
-                                       
-
-                                       if(checkdate( (int)$m, (int)$d, (int)$yr)===False){
+                                            
+                                            
+                                           // dd($share_amount);
+                                   $date=$value->date;
                                           
-                                           $d=$d-1;
+                                            
+                                     /*$date1=explode('-', $date0);
+                                      $date=$date1[0].'-'.$date1[2].'-'.$date1[1];
 
-                                           $date=$yr.'-'.$m.'-'.$d;
-
-                                           }
-                                           else $date=$date0;
-                                           $date = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+                                        dd($date);*/
+                                        /*$no_share= $value->share_amount/1000;
+                                           dd($no_share);*/
 
 
-                                            if(( $value->saving_amount>1) && (!empty($value->saving_amount))){
-                                 $saving=Membersaving::create([   
+                                    if(( $value->saving_amount>1) && (!empty($value->saving_amount))){
+                                 $saving=Membersaving::create([
+                               
                                'member_id'=>$member->member_id,
                                'saving_code'=>$member_savingaccount->account_no.Member::numeric(2),
                                'amount'=>$value->saving_amount,
                                'user_id'=>Auth::guard('member')->user()->member_id,
-                               'saving_date'=>$date,
-                               'state'=>'in'
+                               'saving_date'=>$date
                            ]);
-                                 
-                                 $payment=Payment::create([
-                                 'membersaving_id'=>$saving->id,
-                                 'amount'=>$value->saving_amount,
-                                 'narration'=>'savings',
-                                 'paid_by'=>Auth::guard('member')->user()->member_id, 
-                                 'payment_type'=>'salary',
-                                 'state'=>'in',
-                                 'date'=>$date
-                           
-                         ]);
 
                                    Bankaccount::create([
                                        'dr'=>$value->saving_amount,
                                         'mainaccount_id'=>$main_savingaccount->id,
                                         'memberaccount_id'=>$member_savingaccount->id,
                                         'description'=>'saving',
-                                         'date'=>$date,
-                                         'payment_id'=>$payment->id    
+                                         'date'=>$date     
                                       ]); 
 
                                       }
 
                                       if(($value->share_amount>1) && (!empty($value->share_amount))){
-                                     
                                $share=Member_share::create([
                                'member_id'=>$member->member_id,
                                'amount'=>$value->share_amount,
                                'share_date'=>$date,
                                'user_id'=>Auth::guard('member')->user()->member_id,
-                               'No_shares'=>$value->share_amount/1000,
-                               'state'=>'in'
+                               'No_shares'=>$value->share_amount/1000
 
-                         ]);
-                                          $payment=Payment::create([
-                                 'member_share_id'=>$share->id,
-                                 'amount'=>$value->share_amount,
-                                 'narration'=>'shares',
-                                 'paid_by'=>Auth::guard('member')->user()->member_id, 
-                                 'payment_type'=>'salary',
-                                 'state'=>'in',
-                                 'date'=>$date
-                           
                          ]);
 
                                    Bankaccount::create([
@@ -2144,12 +2110,13 @@ public function updateloan(Request $request)
                                         'mainaccount_id'=>$main_shareaccount->id,
                                         'memberaccount_id'=>$member_shareaccount->id,
                                         'description'=>'share',
-                                         'date'=>$date,
-                                          'payment_id'=>$payment->id  
+                                         'date'=>$date
                                             
                                       ]); 
                              }
-     
+                                    
+
+                                
                             }
                           }
 
@@ -2160,22 +2127,23 @@ public function updateloan(Request $request)
 
 
 
-      public function previous_loan($principle,$interest,$duration,$pcategory,$issued_date,$startpayment,$paidmonths,$id){
+      public function previous_loan($principle,$interest,$duration,$pcategory,$startpayment,$paidmonths,$id){
 
                    
                     
-                 // dd($interest);    
+                      
 
                  
-      return view('modal.previous_loan',compact('principle','interest','pcategory','duration','issued_date','startpayment','paidmonths','id'));      
+                 return view('modal.previous_loan',compact('principle','interest','pcategory','duration','startpayment','paidmonths','id'));      
       }
 
 
       public function post_previous_loan(Request $request,$id){
 
-                      // dd($request->all());
 
-           
+                  
+
+               //create loan
              $member=Member::findorfail($id);
 
                $member_loanaccount=$member->memberaccount->where('name','Loan Account')->first();
@@ -2186,12 +2154,12 @@ public function updateloan(Request $request)
                $main_interestaccount=Mainaccount::where('name','=','Interest Account')->first();
                $bankaccount=Mainaccount::where('name','=','Bank Account')->first();
 
-                                
+           
 
          $loan=Loan::create([
-              'loanInssue_date'=>$request->issued_date,
+              'loanInssue_date'=>$request->inssued_date,
                             'inssued_by'=>Auth::guard('member')->user()->member_id,
-                            'loan_status'=>($request->paidmonths==$request->duration) ? 'finished' :'paid',
+                            'loan_status'=>'finished',
                             'loancategory_id'=>$request->pcategory,
                             'member_id'=>$member->member_id,
                             'duration'=>$request->duration,
@@ -2201,7 +2169,7 @@ public function updateloan(Request $request)
                             'repayment_date'=>$request->startpayment[0],
                             'no_of_installments'=>$request->duration,
                             'mounthlyrepayment_amount'=>$request->monthamount,
-                            'mounthlyrepayment_principle'=>round($request->principle/$request->duration,2), 
+                            'mounthlyrepayment_principle'=>$request->principle/$request->duration, 
                            'mounthlyrepayment_interest'=>$request->monthinterest,
                             'narration'=>'loan',
                         
@@ -2210,57 +2178,9 @@ public function updateloan(Request $request)
          ]);
                 //create schedule
 
-                              //payment table
-                           $payment=Payment::create([
-                                 'loan_id'=>$loan->id,
-                                 'amount'=>$request->principle,
-                                 'narration'=>'loan',
-                                 'paid_by'=>Auth::guard('member')->user()->member_id, 
-                                 'payment_type'=>'cash',
-                                 'state'=>'out',
-                                 'date'=>$request->issued_date
-                             
-                         ]);
+                             for($i=0; $i<$request->duration; $i++){
 
-                           Bankaccount::create([
-
-                                  'memberaccount_id'=>$member_loanaccount->id,
-                                  'mainaccount_id'=>$main_loanaccount->id,
-                                  'cr'=>$request->principle,
-                                  'description'=>'loan',
-                                  'date'=>$request->issued_date,
-                                  'payment_id'=>$payment->id
-                                      ]);
-
-                                      //receivable
-
-
-                                  Receivableaccount::create([
-                                     'dr'=>$request->principle,
-                                     'memberaccount_id'=>$member_loanaccount->id,
-                                      'description'=>'loan',
-                                       'date'=>$request->issued_date,
-                                       'payment_id'=>$payment->id
-                                   ]);
-
-
-                                     //loan account 
-
-                                    Loanaccount::create([
-                                       'memberaccount_id'=>$member_loanaccount->id,
-                                       'mainaccount_id'=>$bankaccount->id,
-                                       'dr'=>$request->principle,
-                                       'description'=>'loan',
-                                       'date'=>$request->issued_date,
-                                       'payment_id'=>$payment->id
-                                    ]);
-  
-
-                             for($i=0; $i<count($request->startpayment); $i++){
-
-                                           
-                               $date=$request->startpayment[$i];
-
+                                      $date=date('Y-m-d', strtotime($i.' month', strtotime($request->startpayment[0])));
                                 $loanschedule=Loanschedule::create([                      
                                 'loan_id'=>$loan->id,                   
                                  'monthprinciple'=>$request->principle/$request->duration, //loan schedule
@@ -2270,69 +2190,55 @@ public function updateloan(Request $request)
                                  'status'=>'unpaid'
                                  
                            ]);
-
-                                
                                }
-
 
                              if ($request->paidmonths>0) {
 
                       for($i=0; $i<$request->paidmonths; $i++){
 
-                                  
-                                   $date=$request->startpayment[$i];     
 
-                            foreach($loan->loanschedule as $updateloanschedule){
-                           
-                                           if($updateloanschedule->duedate==$date){
-                                              $updateloanschedule->status='paid';
-                                              $updateloanschedule->save();
-
-
-                                               $payment=Payment::create([
-                                 'loan_id'=>$loan->id,
-                                 'amount'=>$request->amount[$i],
-                                 'narration'=>'loan',
-                                 'paid_by'=>Auth::guard('member')->user()->member_id, 
-                                 'payment_type'=>'salary',
-                                 'state'=>'in',
-                                 'date'=>$request->startpayment[$i]
-                             
-                         ]);
-
-
-                                    Loanaccount::create([
-                                       'memberaccount_id'=>$member_loanaccount->id,
-                                       'mainaccount_id'=>$bankaccount->id,
-                                       'cr'=>$request->principle,
-                                       'description'=>'loan',
-                                       'date'=>$request->startpayment[$i],
-                                       'payment_id'=>$payment->id
-                                    ]);
-
-                                                   $repayment=Repayment::create([
-                                    'loanschedule_id'=>$updateloanschedule->id,
-                                     'principlepayed'=>((float)$request->amount[$i]-(float)$request->interest[$i]),
+                            $date=date('Y-m-d', strtotime($i.' month', strtotime($request->startpayment[0])));
+                                $loanschedule=Loanschedule::create([                      
+                                'loan_id'=>$loan->id,                   
+                                 'monthprinciple'=>$request->principle/$request->duration, //loan schedule
+                                 'monthinterest'=>$request->monthinterest,
+                                 'duedate'=>$date,
+                                 'month'=>date('m',strtotime($date)),
+                                 'status'=>($request->amount[$i]>0 & $request->amount[$i]<$request->monthamount) ?
+                                'incomplete' : ($request->amount[$i]>=$request->monthamount ?  'paid'  : 'unpaid')
+                                 
+                           ]);   
+                                          //repayent table
+                                  $repayment=Repayment::create([
+                                    'loanschedule_id'=>$loanschedule->id,
+                                     'principlepayed'=>$request->amount[$i]-$request->interest[$i],
                                      'interestpayed'=>$request->interest[$i],
                                       'amountpayed'=>$request->amount[$i],
                                      'paymentdate'=>$request->startpayment[$i],
-                                     'user_id'=>Auth::guard('member')->user()->member_id,
-                                      'payment_id'=>$payment->id
+                                     'user_id'=>Auth::guard('member')->user()->member_id
                                       ]); 
 
 
+                                                     //send data to bank loan
 
-                                                     // dr bankaccount
-                                                   Bankaccount::create([
+                                Bankaccount::create([
 
                                   'memberaccount_id'=>$member_loanaccount->id,
                                   'mainaccount_id'=>$main_loanaccount->id,
-                                  'dr'=>((float)$request->amount[$i]-(float)$request->interest[$i]),
+                                  'dr'=>$request->amount[$i]-$request->interest[$i],
                                   'description'=>'loan',
-                                  'date'=>$request->startpayment[$i],
-                                  'payment_id'=>$payment->id
+                                  'date'=>$request->startpayment[$i]
                                       ]); 
 
+                                     // dr bankaccount
+
+                                       Loanaccount::create([
+                                       'memberaccount_id'=>$member_loanaccount->id,
+                                       'mainaccount_id'=>$bankaccount->id,
+                                       'dr'=>$request->amount[$i]-$request->interest[$i],
+                                       'description'=>'loan',
+                                       'date'=>$request->startpayment[$i]
+                                    ]);
 
                                           //interest account
 
@@ -2342,23 +2248,17 @@ public function updateloan(Request $request)
                                   'memberaccount_id'=>$member_interestaccount->id,
                                   'dr'=>$request->interest[$i],
                                   'description'=>'interest',
-                                  'date'=>$request->startpayment[$i],
-                                     'payment_id'=>$payment->id
-                                      ]);    
-
-
-
-
+                                  'date'=>$request->startpayment[$i]
+                                      ]);
 
                                        //loan  account receivable 
 
                                       Receivableaccount::create([
-                                     'cr'=>((float)$request->amount[$i]-(float)$request->interest[$i]),
+                                     'cr'=>$request->amount[$i]-$request->interest[$i],
                                      'mainaccount_id'=>$bankaccount->id,
                                      'memberaccount_id'=>$member_loanaccount->id,
                                       'description'=>'loan',
-                                       'date'=>$request->startpayment[$i],
-                                        'payment_id'=>$payment->id
+                                       'date'=>$request->startpayment[$i]
                                    ]);
                                                //interest in receivable
                                        Receivableaccount::create([
@@ -2366,12 +2266,8 @@ public function updateloan(Request $request)
                                      'memberaccount_id'=>$member_interestaccount->id,
                                       'mainaccount_id'=>$bankaccount->id,
                                       'description'=>'interest',
-                                       'date'=>$request->startpayment[$i],
-                                       'payment_id'=>$payment->id
-                                   ]);     
-
-                                                    }
-                                            }
+                                       'date'=>$request->startpayment[$i]
+                                   ]);
                            }  
 
                          }
@@ -2381,145 +2277,10 @@ public function updateloan(Request $request)
 
          
 
-         public function refund(){
+         public function previous_loan_incomplete(){
 
-                   
-            return view('payment.refund');
+
          }
-
-         public function post_refund(Request $request ,$id){
-
-
-
-               $member=Member::find($id);
-                            $amountinput=$request->payment;
-                             $getpaymenttype=$request->payment_type;
-
-                          
-
-                      $this->validate(request(),[
-                            'payment_type'=>'required',
-                            'payment'=>'required|numeric',
-                            'payment_method'=>'required',
-                            'narration'=>'required'
-                      ]);
-                  
-
-              
-
-                   $bankaccount=Mainaccount::where('name','=','Bank Account')
-                                            ->first();
-
-                                     //dd($request->all());
-                      if($request->payment_type=='share'){
-
-                              $share=Share::sum('share_value');
-                             $max_shares=Share::select('max_shares')->first()->max_shares;
-                                    
-                                   $share_amount=Member::find($request->member)->no_shares->where('state','in')->sum('amount');
-        
-                                       
-                             if($request->payment<=$share_amount){      
-
-                                   
-                         $share=Member_share::create([
-                              
-                               'member_id'=>$request->member,
-                               'amount'=>$request->payment,
-                               'share_date'=>$request->refund_date,
-                               'user_id'=>Auth::guard('member')->user()->member_id,
-                               'No_shares'=>$request->payment/$share,
-                                'state'=>'out'
-
-                         ]);
-
-                                 $payment=Payment::create([
-                                 'member_share_id'=>$share->id,
-                                 'amount'=>$request->payment,
-                                 'narration'=>$request->narration,
-                                 'paid_by'=>Auth::guard('member')->user()->member_id, 
-                                 'payment_type'=>$request->payment_method,
-                                 'state'=>'out',
-                                 'date'=>$request->refund_date
-                             
-                         ]);
-                               
-
-
-                                   //jornal cr main saccoss
-
-                                      Bankaccount::create([
-                                       'cr'=>$request->payment,
-                                        'mainaccount_id'=>$request->mainaccount_id,
-                                        'memberaccount_id'=>$request->memberaccount_id,
-                                        'description'=>'share',
-                                         'date'=>$request->refund_date,
-                                         'payment_id'=>$payment->id
-                                            
-                                      ]);
-
-                              
-                         return back()->with('status','Successfully Refunded');
-                           }else{
-
-                              return back()->with('error','You cannot refund more than your total shares amount ' . number_format($share_amount,2))->withInput();
-                          }
-              
-                  
-
-                     }else{
-
-                        $savingaccount=$member->memberaccount->where('name','=','Saving Account')->first();
-
-                              $saving_amount=Member::find($request->member)->savingamount->where('state','in')->sum('amount'); 
-     
-                                   if($request->payment<=$saving_amount){
-
-                                    $saving=Membersaving::create([
-                               
-                               'member_id'=>$request->member,
-                               'saving_code'=>$savingaccount->account_no,
-                               'amount'=>$request->payment,
-                               'user_id'=>Auth::guard('member')->user()->member_id,
-                               'saving_date'=>$request->refund_date,
-                               'state'=>'out'
-                           ]);
-
-
-                                  $payment=Payment::create([
-                                 'membersaving_id'=>$saving->id,
-                                 'amount'=>$request->payment,
-                                 'narration'=>$request->narration,
-                                 'paid_by'=>Auth::guard('member')->user()->member_id, 
-                                 'payment_type'=>$request->payment_method,
-                                 'state'=>'out',
-                                 'date'=>$request->refund_date
-                             
-                         ]);
-
-
-                                     Bankaccount::create([
-                                       'cr'=>$request->payment,
-                                        'mainaccount_id'=>$request->mainaccount_id,
-                                        'memberaccount_id'=>$request->memberaccount_id,
-                                        'description'=>'saving',
-                                         'date'=>$request->refund_date,
-                                         'payment_id'=>$payment->id
-                                            
-                                      ]);
-
-
-
-                            return back()->with('status','Successfully Refunded');
-                                   }else{
-
-                                    return back()->with('error','You cannot refund more than your total savings amount ' . number_format($saving_amount,2))->withInput(); 
-                                   }
-                                                
-         }
-
-
-       }
 }
 
 

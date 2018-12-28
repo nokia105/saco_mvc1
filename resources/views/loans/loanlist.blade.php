@@ -17,7 +17,7 @@
                   <th>Loan Code</th>
                   <th>Category</th>
                   <th>Principle(Tsh)</th>
-                  <th>Amount Paid(Tsh)</th>
+                  <th>Amount payed(Tsh)</th>
                   <th>Month Payment</th>
         
                   <th>Period</th>
@@ -44,7 +44,7 @@
                   <td>{{ number_format($loanlist->mounthlyrepayment_amount,2)}}</td>
                   <td>{{  $loanlist->duration }} Months</td>
                   <td >{{ \Carbon\carbon::parse($loanlist->repayment_date)->format('d/m/Y') }}</td>
-                  <td>{{ \Carbon\carbon::parse($loanlist->loanschedule->last()->duedate)->format('d/m/Y') }}
+                  <td>{{$loanlist->loanschedule->duedate->last()->duedate}}
                   </td>
                    @if($loanlist->loan_status=='paid')
                          <td><span class="label label-sm label-warning">{{strtoupper($loanlist->loan_status)}}</span></td>

@@ -13,15 +13,13 @@
               <table id="memberSaving" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Savings Amount</th>
-
+                  <th>Balance Savings</th>
                   <th>Last Date</th>
                 </tr>
                 </thead>
                 <tbody>
-                
                 <tr>
-                  <td><a href="{{route('member_allsavings',$member->member_id)}}">{{number_format($member->savingamount->sum('amount'),2)}}</a></td>
+                  <td><a href="{{route('member_allsavings',$member->member_id)}}">{{number_format(($member->savingamount->where('state','in')->sum('amount')-$member->savingamount->where('state','out')->sum('amount')),2)}}</a></td>
                     @if(count($member->savingamount))
                   <td>{{\Carbon\carbon::parse($member->savingamount->last()->saving_date)->format('d/m/Y')}}</td>
                   @else
@@ -39,22 +37,5 @@
           <!-- /.box -->
         </div>
 
-    <script type="text/javascript">
-
-/*      $(document).ready(function() {
-  @role('Loan Officer','member')
-  $('.buttons-create,.buttons-edit,.buttons-remove').show();
-
-  @else
-     $('.buttons-create,.buttons-edit,.buttons-remove').hide();
-    @endrole
-
-});*/
-
-  
- 
-
-
-          </script>
        
     @endsection

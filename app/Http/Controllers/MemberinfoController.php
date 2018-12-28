@@ -10,7 +10,9 @@ use App\Loaninsuarance;
 use App\Loan;
 use App\Memberaccount;
 use App\payment;
-
+use App\LoanCategory;  
+use App\Feescategory;
+use App\Interestmethod;
 class MemberinfoController extends Controller
 {
     //
@@ -90,6 +92,18 @@ class MemberinfoController extends Controller
 
           return view('member.info.payments',compact('loanstrasactions','code','sharecode','sharetrasactions','savingcode','savingtrasactions','regfeetransactions','member'));
       }
+
+       public function apply_loan(){
+
+
+            
+          $loancategories=LoanCategory::select('id','category_name')->get();
+                      $fees=Feescategory::all()->where('fee_name','!=','Registration fee');
+                     $interestmethods=Interestmethod::all();
+         return view('member.info.apply_loan',compact('loancategories','fees','interestmethods'));
+       }
+
+         
 
     public function loans($id){
       

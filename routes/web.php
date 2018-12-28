@@ -18,14 +18,6 @@
    return view('member.member');
 
 });*/
-
-
-  Route::get('/clear-cache', function() {
-    $exitCode = Artisan::call('cache:clear');
-   
-      echo 'cleared';
-});
-
   Route::get('/savings', function () {
 
 
@@ -216,8 +208,16 @@ Route::get('/ajaxreceivepayment/{id}','MembersProfileController@ajaxreceivepayme
 Route::post('/payment','MembersProfileController@storepayments');
 Route::get('profile/{id}/refund','MembersProfileController@refund')->name('refund');
 Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->name('post_refund');
+       
 
 
+  //reports
+  Route::get('/reports/loans','ReportsController@loanreportselection')->name('loanreportselection');
+  Route::match(['get', 'post'],'reports/loans/find_report','ReportsController@find_loanreport')->name('find_loanreport');
+  Route::get('/reports/shares','ReportsController@sharesreportselection')->name('sharesreportselection');
+  Route::match(['get', 'post'],'reports/shares/find_report','ReportsController@find_sharesreport')->name('find_sharesreport');
+  Route::get('/reports/savings','ReportsController@savingsreportselection')->name('savingsreportselection');
+  Route::match(['get', 'post'],'reports/savings/find_report','ReportsController@find_savingsreport')->name('find_savingsreport');
   
         //loans
    Route::get('/drafted_loans','LoansController@drafted_loans')->name('drafted_loans');
@@ -243,16 +243,6 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
   Route::post('/agree_submitted','LoansController@agree_submitted');
   Route::post('approve_voucher_submitted','LoansController@approve_voucher_submitted')->name('approve_voucher_submitted');
   Route::post('/paid_submitted','LoansController@paid_submitted')->name('paid_submitted');
-  
-  
-  
-     //reports
-  Route::get('/reports/loans','ReportsController@loanreportselection')->name('loanreportselection');
-  Route::match(['get', 'post'],'reports/loans/find_report','ReportsController@find_loanreport')->name('find_loanreport');
-  Route::get('/reports/shares','ReportsController@sharesreportselection')->name('sharesreportselection');
-  Route::match(['get', 'post'],'reports/shares/find_report','ReportsController@find_sharesreport')->name('find_sharesreport');
-  Route::get('/reports/savings','ReportsController@savingsreportselection')->name('savingsreportselection');
-  Route::match(['get', 'post'],'reports/savings/find_report','ReportsController@find_savingsreport')->name('find_savingsreport');
 
  Route::get('/reject/{id}','LoansController@reject')->name('reject');
  Route::get('provision/{id}','LoansController@provision')->name('provision');
@@ -284,20 +274,20 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
  Route::get('/accounts','GlaccountController@index')->name('accounts');
  Route::get('/mainaccounts','MainaccountController@index')->name('mainaccounts');
 
+
+                           //reports
  Route::get('reports/loans_month','ReportsController@loans_month')->name('loans_month');
  Route::post('reports/loans_month','ReportsController@retrive_loans_month')->name('dataloans_month');
  Route::get('reports/loans_time_range','ReportsController@loans_time_range')->name('loans_time_range');
  Route::post('reports/loans_time_range','ReportsController@retrive_loans_time_range');
-
  Route::get('reports/expected_profit','ReportsController@expected_profit')->name('expected_profit');
  Route::post('reports/retrive_expected_profit','ReportsController@retrive_expected_profit');
- 
  Route::get('saving_reports','ReportsController@savings_reports')->name('savings_reports');
  Route::post('savings_reports_time','ReportsController@savings_reports_time')->name('savings_reports_time');
-
-
-Route::get('shares_reports','ReportsController@shares_reports')->name('shares_reports');
+ Route::get('shares_reports','ReportsController@shares_reports')->name('shares_reports');
  Route::post('shares_reports_time','ReportsController@shares_reports_time')->name('shares_reports_time');
+
+
   
   Route::get('member/login','Auth\MemberloginController@showLoginForm')->name('member.login');
 
@@ -328,6 +318,7 @@ Route::get('shares_reports','ReportsController@shares_reports')->name('shares_re
   Route::get('/member/{id}/payments','MemberinfoController@payments');
   Route::get('/member/{id}/loans','MemberinfoController@loans');
   Route::get('/member/{id}/loan_info/{lid}','MemberinfoController@loan_info');
+  Route::get('/member/{id}/apply_loan','MemberinfoController@apply_loan')->name('apply_loan');
 
   Route::get('/member/{id}/profile','MemberinfoController@profile')->name('profile');
   Route::get('/member/{id}','MembersController@member_profile')->name('member_profile');
