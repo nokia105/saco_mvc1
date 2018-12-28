@@ -37,8 +37,7 @@
                 <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Loan Code</th>
-                  <th>Voucher No</th>
+                  <th>Code</th>
                    <th>Principle(Tsh)</th>
                    <th>Interest(Tsh)</th>
                    <th>Charges</th>
@@ -50,23 +49,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($paid_vouchers as $voucher)
+                    @foreach($paid_loans as $loan)
                  <tr>
-                 <td>{{$voucher->loan->member->first_name}}  {{$voucher->loan->member->last_name}}</td> 
-                 <td><a href="{{route('loan_info',$loan->id)}}">#{{$code+$voucher->loan_id+$voucher->loan->member_id}}</a></td>
-                 <td>{{$voucher->voucher_no}}</td>     
-                <td>{{number_format($voucher->loan->principle,2)}}</td>
-                <td>{{number_format(($voucher->loan->mounthlyrepayment_interest)*$voucher->loan->duration,2)}}</td>
-                <td>{{number_format($voucher->loan->loan_fees->sum('fee_value'),2)}}</td>
-                <td>{{number_format(((($voucher->loan->insurances->percentage_insurance)/100)*$voucher->loan->principle),2)}}</td>
-                <td>{{number_format(($voucher->loan->principle)-($voucher->loan->loan_fees->sum('fee_value')+(($voucher->loan->insurances->percentage_insurance)/100)*$voucher->loan->principle),2)}}</td>
+                 <td>{{$loan->member->first_name}}  {{$loan->member->last_name}}</td> 
+                 <td><a href="{{route('loan_info',$loan->id)}}">#{{$code+$loan->id+$loan->member_id}}</a></td>     
+                <td>{{number_format($loan->principle,2)}}</td>
+                <td>{{number_format(($loan->mounthlyrepayment_interest)*$loan->duration,2)}}</td>
+                <td>{{number_format($loan->loan_fees->sum('fee_value'),2)}}</td>
+                <td>{{number_format(((($loan->insurances->percentage_insurance)/100)*$loan->principle),2)}}</td>
+                
+                <td>{{number_format(($loan->principle)-($loan->loan_fees->sum('fee_value')+(($loan->insurances->percentage_insurance)/100)*$loan->principle),2)}}</td>
                 <td>{{$loan->duration}}</td>
-                <td>{{\Carbon\carbon::parse($voucher->loan->loanInssue_date)->format('d/m/Y')}}</td>
-                 @if($loan->voucher()->exists())
-                <td>{{\Carbon\carbon::parse($voucher->paid_date)->format('d/m/Y')}}</td>
-                @else
-                <td></td>
-                @endif
+                <td>{{\Carbon\carbon::parse($loan->loanInssue_date)->format('d/m/y')}}</td>
+                <td>{{$loan->voucher->paid_date}}</td>
 
                 </tr>
                 @endforeach

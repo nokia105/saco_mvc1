@@ -59,7 +59,7 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini no-collapse">
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -131,22 +131,22 @@
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-<!--   <aside class="main-sidebar">
-  sidebar: style can be found in sidebar.less
-  <section class="sidebar">
-   
-    search form
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search...">
-        <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-      </div>
-    </form>
-  
- </aside> -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+     
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+    
+ </aside>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -166,7 +166,8 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; {{ date('Y') }}  SACCOS</a>.</strong> 
+    <strong>Copyright &copy; {{ date('Y') }}  SACCOS</a>.</strong> All rights
+    reserved.
   </footer>
 
 

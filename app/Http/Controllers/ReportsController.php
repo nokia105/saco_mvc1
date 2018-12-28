@@ -132,7 +132,7 @@ class ReportsController extends Controller
                                  ->get();*/
 
                  
-            $loans=\DB::select(\DB::raw("SELECT `month` as monthnumber, SUM(monthprinciple) as principlesum, SUM(monthinterest) as interestsum, COUNT(`loans`.id) as no_loans FROM `loanschedules` INNER JOIN `loans` ON `loans`.`id`=`loanschedules`.`loan_id` WHERE `loan_status`='paid' and duedate >='$startDate' and duedate <='$endDate' GROUP BY `month`"));
+            $loans=\DB::select(\DB::raw("SELECT `month` as monthnumber, SUM(monthprinciple) as principlesum, SUM(monthinterest) as interestsum, COUNT(`loans`.id) as no_loans FROM `loanschedules` INNER JOIN `loans` ON `loans`.`id`=`loanschedules`.`loan_id` WHERE `loan_status`='approved' and duedate >='$startDate' and duedate <='$endDate' GROUP BY `month`"));
 
                     // dd($loans);
 
@@ -152,6 +152,8 @@ class ReportsController extends Controller
                       $period=explode('-', $request->period);
                       $startmonth=$period[0];
                       $endmonth=$period[1];
+
+                 
 
 
                    $otherincomes=DB::table('mainaccounts')
@@ -526,8 +528,10 @@ class ReportsController extends Controller
 
                return view('reports.finacial.find_capital_change',compact('year','preyear','profitaftertax','preprofitaftertax'));
            }
-
-           public function loanreportselection(){
+           
+           
+           
+            public function loanreportselection(){
 
 
               return view('reports.loans.loanreportselection');
@@ -991,8 +995,6 @@ class ReportsController extends Controller
                          return back();
                       } 
            }
-
-
 }
 
 

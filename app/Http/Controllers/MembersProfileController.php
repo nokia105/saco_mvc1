@@ -1,15 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Auth;
 use App\Member;
 use App\Collateral;
 use App\Loan;
-use App\Loancategory;
 use App\Loaninsuarance;
 use Illuminate\Support\Facades\DB;
+use App\Loancategory;
 use App\Feescategory;
 use App\Member_share;
 use App\Share;
@@ -63,7 +61,7 @@ class MembersProfileController extends Controller
          
             $collaterals=Member::find($id)->collateral;      
               
-            $loancategories=LoanCategory::select('id','category_name')->get();
+            $loancategories=Loancategory::select('id','category_name')->get();
 
             $guarantors=Member::all()->where('member_id','!=',$id);
             $fees=Feescategory::all()->where('fee_name','!=','Registration fee');
@@ -76,7 +74,7 @@ class MembersProfileController extends Controller
 
          	 $pcategory_id=$request->pcategory;
 
-              $interest=LoanCategory::select('id','default_duration','interest_rate')->find($pcategory_id);
+              $interest=Loancategory::select('id','default_duration','interest_rate')->find($pcategory_id);
                  echo json_encode([
                    'id'=>$interest->id,
                    'interest'=>$interest->interest_rate,
@@ -151,9 +149,7 @@ class MembersProfileController extends Controller
          }
 
       public function createloan(Request $request){
-              
-                   // return back()->with('status','Successfully Submitted');
-                  //dd($request->all());
+
 
             $member_id=$request->memberloan;
             $pcategory_id=$request->pcategory;
@@ -184,7 +180,7 @@ class MembersProfileController extends Controller
                  'period'=>'required|numeric',
                  'startpayment'=>'required|date',
                  'narration'=>'required',
-                // 'file'=>'required|max:10000'
+                 'file'=>'required|max:10000'
                 ]);
 
 
@@ -228,7 +224,7 @@ class MembersProfileController extends Controller
                             
                              $loan=Loan::create([
                             'loanInssue_date'=>date('Y-m-d'),
-                            'inssued_by'=>($request->submit=='draft') ? ' ' : Auth::guard('member')->user()->member_id,
+                            'inssued_by'=>Auth::guard('member')->user()->member_id,
                             'loan_status'=>($request->submit=='draft') ? 'draft' :'submitted',
                             'loancategory_id'=>$pcategory_id,
                             'member_id'=>$member_id,
@@ -242,6 +238,7 @@ class MembersProfileController extends Controller
                             'mounthlyrepayment_principle'=>$principle/$loanperiod, 
                            'mounthlyrepayment_interest'=>(($interest/100)*$principle)/$loanperiod,
                            'narration'=>$request->narration,
+                          
                            'insurance_id'=>Insurance::first()->id
                ]);
 
@@ -330,12 +327,15 @@ class MembersProfileController extends Controller
       
         $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
-      $loanlists=Member::find($id)->loans; 
+        $loanlists=Member::find($id)->loanlist; 
+            
+           
+        
 
+        //dd($loanlist->interrepayment->sum('amountpayed'));
       return view('loans.loanlist' , compact('loanlists','id','code')); 
     }
-
-
+    
      public function finished_loans($id){
             $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
@@ -1876,6 +1876,14 @@ public function updateloan(Request $request)
                                             
                                       ]);
 
+                                      /* Payableaccount::create([
+                                       'membersaving_id'=>$saving->id,
+                                       'cr'=>$request->payment,
+                                       'date'=>date('Y-m-d')
+                                       ]);*/
+                                      
+
+                                       //jornal dr main saving account
                                Journalentry::create( [
                                              'cr'=>$request->payment, 
                                              'mainaccount_id'=>$request->mainaccount_id,
@@ -1990,7 +1998,7 @@ public function updateloan(Request $request)
       public function previous_payment($id){
 
 
-         $loancategories=LoanCategory::all();
+         $loancategories=Loancategory::all();
   
 
            return view('payment.previous_payment',compact('loancategories'));
@@ -2001,7 +2009,14 @@ public function updateloan(Request $request)
 
       public function savings_shares_excel(){
 
-        return response()->download(base_path('\Payment-Excel\payment-excel.xlsx'));
+       /*   $sheet=(base_path('Payment-Excel/payment-excel.xlsx'));
+
+         $sheet->setColumnFormat(array(
+    'share_date' => 'yyyy-mm-dd',
+    'saving_date'=>'yyyy-mm-dd'
+         ));*/
+
+        return response()->download(base_path('Payment-Excel/payment-excel.xlsx'));
       }
 
 
@@ -2029,7 +2044,7 @@ public function updateloan(Request $request)
 
            if($request->hasFile('excel')){
 
-                     $path = $request->excel->getRealPath();
+                    $path = $request->excel->getRealPath();
                       $extension = $request->excel->getClientOriginalExtension();
                       $filename=$member->first_name.'-'.$member->last_name.'.'.$extension;
                        
@@ -2037,12 +2052,8 @@ public function updateloan(Request $request)
                          'UploadedLedger',$filename
                             );
   
-
-
                      $data = Excel::load($path, function($reader) {
                 })->get();
-                              
-                   
 
                      if(!empty($data) && $data->count()){
 
@@ -2050,39 +2061,29 @@ public function updateloan(Request $request)
                                 
                             foreach($data as $key=>$value){
 
+                                  /*$sharedate=explode('/', $value->share_date);    
+                                  $newsharedate= $sharedate[2].'-'.$sharedate[1].'-'.$sharedate[0];
 
+                                  $savingdate=explode('/',$value->saving_date);
+                                  $newsavingdate=$savingdate[2].'-'.$savingdate[1].'-'.$savingdate[0]; */
+                                       
                                     
                                    $share_amount=explode(',', $value->share_amount);
                                    $saving_amount=explode(',', $value->saving_amount);
 
+                                            
+                                            
+                                           // dd($share_amount);
+                                    $date=$value->date;
 
-                                   $date0=$value->date;
-                                   $date0=str_replace('/', '-', $date0);
-                                    $dateex=explode('-', $date0);
-                                    var_dump($dateex);
-
-                                   $yr=$dateex[0];
-                                   $m=$dateex[1];
-                                   $d=$dateex[2];
-
-                                    // dd($m);*/
-
-                                 //  $date = date('Y-m-d', strtotime(str_replace('/', '-', $date0)));
-
-                                     /* $month=date('m', strtotime($date));
-                                      $day1=date('d', strtotime($date));
-                                      $year=date('Y', strtotime($date));*/
-                                       
-
-                                       if(checkdate( (int)$m, (int)$d, (int)$yr)===False){
                                           
-                                           $d=$d-1;
+                                            
+                                     /*$date1=explode('-', $date0);
+                                      $date=$date1[0].'-'.$date1[2].'-'.$date1[1];
 
-                                           $date=$yr.'-'.$m.'-'.$d;
-
-                                           }
-                                           else $date=$date0;
-                                           $date = date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+                                        dd($date);*/
+                                        /*$no_share= $value->share_amount/1000;
+                                           dd($no_share);*/
 
 
                                             if(( $value->saving_amount>1) && (!empty($value->saving_amount))){
@@ -2149,7 +2150,9 @@ public function updateloan(Request $request)
                                             
                                       ]); 
                              }
-     
+                                    
+
+                                
                             }
                           }
 
@@ -2160,20 +2163,17 @@ public function updateloan(Request $request)
 
 
 
-      public function previous_loan($principle,$interest,$duration,$pcategory,$issued_date,$startpayment,$paidmonths,$id){
-
-                   
-                    
-                 // dd($interest);    
+       public function previous_loan($principle,$interest,$duration,$pcategory,$issued_date,$startpayment,$paidmonths,$id){
 
                  
       return view('modal.previous_loan',compact('principle','interest','pcategory','duration','issued_date','startpayment','paidmonths','id'));      
       }
 
 
-      public function post_previous_loan(Request $request,$id){
 
-                      // dd($request->all());
+       public function post_previous_loan(Request $request,$id){
+
+                       //dd($request->all());
 
            
              $member=Member::findorfail($id);
@@ -2379,8 +2379,8 @@ public function updateloan(Request $request)
             return back()->with('status','Successfully Posted');
       }
 
-         
-
+      
+      
          public function refund(){
 
                    
@@ -2520,6 +2520,8 @@ public function updateloan(Request $request)
 
 
        }
+
+      
 }
 
 

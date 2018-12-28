@@ -172,7 +172,7 @@
            
 
             <div class="row">
-                      <div class="col-sm-6">
+                     <div class="col-sm-6">
                 <div class="form-group">
                
                
@@ -259,7 +259,7 @@
 
                    var dataString='principle='+principle+'&interest='+interest+'&duration='+duration+'&pcategory='+pcategory+'&issued_date='+issued_date+'&startpayment='+startpayment+'&paidmonths='+paidmonths;
 
-                      alert(dataString);
+                      //alert(dataString);
 
 
 
@@ -278,6 +278,7 @@
            </script>
 
 
+Success!
    
           @endsection
 

@@ -493,8 +493,6 @@ class LoansController extends Controller
                          ]);
 
 
-
-
                                Loanpayment::create([
                               'loan_id'=>$loan->id,
                               'amount_paid'=>$request->amount_paid,
@@ -513,8 +511,7 @@ class LoansController extends Controller
                                   'mainaccount_id'=>$request->mainaccount,
                                   'cr'=>$request->amount_paid,
                                   'description'=>'loan',
-                                  'date'=>date('Y-m-d'),
-                                  'payment_id'=>$payment->id
+                                  'date'=>date('Y-m-d')
                                 ]);
 
 
@@ -524,35 +521,17 @@ class LoansController extends Controller
                                        'mainaccount_id'=>$request->mainaccount,
                                        'cr'=>$request->amount_paid,
                                        'description'=>'loan',
-                                       'date'=>date('Y-m-d'),
-                                       'payment_id'=>$payment->id
+                                       'date'=>date('Y-m-d')
                                     ]);
 
-
- 
-                                           //loanfeeepayment
-                                        $feepayment=Payment::create([
-                           'loan_id'=>$request->loan_id,
-                            'amount'=>$loan->loan_fees()->sum('fee_value'),
-                            'narration'=>'loan charges',
-                            'paid_by'=>Auth::guard('member')->user()->member_id,  //loan payment verificat
-                            'payment_type'=>strtolower($request->mode_payment),
-                            'state'=>'in',
-                            'date'=>date('Y-m-d')        
-                         ]);
-
-
-                                        
                                        //bank charges
+
                                 Bankaccount::create([
                                   'memberaccount_id'=>$member_chargesaccount->id,
                                   'mainaccount_id'=>$main_chargesaccount->id,
                                   'dr'=>$loan->loan_fees()->sum('fee_value'),
                                   'description'=>'charges',
-                                  'date'=>date('Y-m-d'),
-                                  'payment_id'=>$feepayment->id
-
-
+                                  'date'=>date('Y-m-d')
                                 ]);
                                     //dr Recivable account principle
 
@@ -560,8 +539,7 @@ class LoansController extends Controller
                                      'dr'=>$request->amount_paid,
                                      'memberaccount_id'=>$request->memberaccount,
                                       'description'=>'loan',
-                                       'date'=>date('Y-m-d'),
-                                       'payment_id'=>$payment->id
+                                       'date'=>date('Y-m-d')
                                    ]);
 
                                        //dr Recivable account charges
@@ -663,7 +641,7 @@ class LoansController extends Controller
                          $voucher->save();
                               
                                //update loan status
-                         $loan->loan_status='inssued'; 
+                         $loan->loan_status='paid'; 
                          $loan->save();
 
                        
@@ -684,15 +662,10 @@ class LoansController extends Controller
         public function paid_loans(){
 
         $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
-        /*$paid_loans=Loan::orderBy('loanInssue_date')
-        ->where('loan_status','=','paid')->get();*/
-         
-         $paid_vouchers=Voucher::orderBy('paid_date');
-
-          
-
+        $paid_loans=Loan::orderBy('loanInssue_date')
+        ->where('loan_status','=','paid')->get();
        
-           return view('loans.paid_loans',compact('paid_vouchers','code'));
+           return view('loans.paid_loans',compact('paid_loans','code'));
         }
 
 
@@ -935,6 +908,9 @@ class LoansController extends Controller
                      'file'=>'required|max:10000|mimes:pdf'
               
                  ]);
+
+
+
 
               $loanperiod=$request->period;
            $principle=$request->principle;

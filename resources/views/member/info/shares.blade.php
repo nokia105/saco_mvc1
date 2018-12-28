@@ -18,22 +18,21 @@
              
                   <th>Amount (Tsh)</th>
                   <th>No: Share</th>
-                  <th>Last Date</th>
+                  <th>Date</th>
                   
                 </tr>
                 </thead>
                 <tbody>
+                @foreach($member->no_shares as $share)
                 <tr>
               
-                  <td><a href="{{route('allshares',$member->member_id)}}">{{number_format(($member->no_shares->where('state','in')->sum('amount')-$member->no_shares->where('state','out')->sum('amount')),2)}}</a></td>
-                 <td>{{($member->no_shares->where('state','in')->sum('No_shares')-$member->no_shares->where('state','out')->sum('No_shares'))}}</td>
-                     @if(count($member->no_shares))
-                 <td>{{Carbon\carbon::parse($member->no_shares->last()->share_date)->format('d/m/y')}}</td>
-                      @else  
-                      <td>0000-00-00</td>
-                      @endif
+                  <td><a href="{{route('allshares',$member->member_id)}}">{{number_format($share->amount,2)}}</a></td>
+                  <td>{{$share->No_shares}}</td>
+                   <td>{{\Carbon\carbon::parse($share->share_date)->format('d/m/y')}}</td>
+            
+                </tr>
+                @endforeach
                 </tbody>
-               
                
               </table>
             </div>

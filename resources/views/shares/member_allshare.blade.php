@@ -15,7 +15,7 @@
 
              
 
-             <table class="table">
+             <table class="table" id="example5">
               <thead>
 
               	<tr>
@@ -41,6 +41,11 @@
              	
              </table>
             <!-- /.box-header -->
+            
+                                  <div class="col-md-6 col-md-offset-3">
+          <a ><button class="btn btn-default col-xs-3 print" style="margin-right: 5px;"><i style="color:red" class="fa fa-print" aria-hidden="true"></i> Print</button></a>
+           <a  href="{{ url()->previous() }}"><button class="btn btn-info col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
+    </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -62,7 +67,7 @@
                  <tr> 
                 <td>{{number_format($share->amount,2)}}</td>
                 <td>{{$share->No_shares}}</td>
-                <td>{{ \Carbon\Carbon::parse($share->share_date)->format('d/m/y')}}</td>
+                <td>{{ \Carbon\Carbon::parse($share->share_date)->format('d/m/Y')}}</td>
                 </tr>
                 @endforeach
 
@@ -82,3 +87,26 @@
 
 
       @endsection
+      
+       @section('js')
+          
+
+        
+      <script type="text/javascript">
+        
+
+             $('#example5').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      "order": [[ 2, "asc" ]],
+      'info'        : true,
+      'autoWidth'   : false
+    });      
+            });
+
+
+      </script>
+
+
+     @endsection

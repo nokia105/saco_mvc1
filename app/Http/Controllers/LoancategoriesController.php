@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-include(app_path()."\datatable\Editor\php\DataTables.php" );
-include(app_path()."\datatable\Editor\php\config.php" );
-include(app_path()."\datatable\Editor\php\Bootstrap.php" );
+include(app_path()."/datatable/Editor/php/DataTables.php" );
+include(app_path()."/datatable/Editor/php/config.php" );
+include(app_path()."/datatable/Editor/php/Bootstrap.php" );
+use App\Loancategory;
 use
     DataTables\Editor,
     DataTables\Editor\Field,
@@ -24,9 +25,9 @@ class LoancategoriesController extends Controller
 
        return $this->middleware('auth:member');
      }
-  function db()
+   function db()
       {
-        include(app_path()."\connection.php" );
+        include(app_path()."/connection.php" );
         return $db = new \DataTables\Database( $sql_details );
 
       }
@@ -34,7 +35,7 @@ class LoancategoriesController extends Controller
 
  public function index(){
 
-$mm=Editor::inst($this->db(),'Loancategories','id')
+$mm=Editor::inst($this->db(),'loancategories','id')
     ->fields(
         Field::inst( 'category_name' )->validator( 'Validate::notEmpty' ),
         Field::inst( 'interest_rate' )->validator( 'Validate::notEmpty' ),

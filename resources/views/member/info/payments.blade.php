@@ -1,7 +1,7 @@
 @extends('member.member_template')
 @section('memberinfo')
 
- @section('title', '|Payments')
+ @section('title', '|All Shares')
 
  
         <style type="text/css">
@@ -35,15 +35,14 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example10" class="table table-bordered table-striped">
+              <table id="example4" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>loan #</th>
                    <th>Total Amount(Tsh)</th>
                    <th>Details</th>
-              
+                  <th>State</th>
                   <th>Date</th>
-                     <th>State</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,8 +52,8 @@
                   <th>{{$code+$loanstrasaction->loan_id}}</th>
                   <td>{{number_format($loanstrasaction->amount,2) }} </td>
                   <td>{{ucfirst($loanstrasaction->narration)}}</td>
-                  
-                    <td>{{\Carbon\carbon::parse($loanstrasaction->date)->format('d/m/Y')}}</td>   <td>{{strtoupper($loanstrasaction->state)}}</td>  
+                   <td>{{strtoupper($loanstrasaction->state)}}</td>
+                    <td>{{\Carbon\carbon::parse($loanstrasaction->date)->format('d/m/y')}}</td>   
                 </tr>
                 @endforeach
 
@@ -81,35 +80,25 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example20" class="table table-bordered table-striped">
+              <table id="example2" class="table table-bordered table-striped">
                 <thead>
                 <tr>
 
                    <th>Share #</th>
                    <th>Amount Tsh</th>
-                
+                   <th>State</th>
                    <th>Date</th>
-                      <th style="text-align:center;">State</th>
+              
                 </tr>
                 </thead>
                 <tbody>
                           @if(count($member->share_payment))
                   @foreach($sharetrasactions as $sharetrasaction)
-                    @if($sharetrasaction->state=='in')
                  <tr> 
                   <td>{{$sharecode+$sharetrasaction->id}}</td>
                   <td> {{number_format($sharetrasaction->amount,2)}}</td>
-                 
-                  <td>{{\Carbon\carbon::parse($sharetrasaction->date)->format('d/m/Y')}}</td>
-                 <td style="text-align:center;"><span class="label label-sm label-success">RECEIVED</span></td>
-                   @else
-                     <tr style="background-color:#f4d941; color:black; font-weight:bold;"> 
-                  <td>{{$sharecode+$sharetrasaction->id}}</td>
-                  <td> {{number_format($sharetrasaction->amount,2)}}</td>
-                 
-                  <td>{{\Carbon\carbon::parse($sharetrasaction->date)->format('d/m/Y')}}</td>
-                <td style="text-align:center;"><span class="label label-sm label-warning">REFUNDED</span></td>      
-                   @endif
+                  <th>{{strtoupper($sharetrasaction->state)}}</th>
+                  <td>{{\Carbon\carbon::parse($sharetrasaction->date)->format('d/m/y')}}</td>
                 </tr>
               @endforeach 
                     @else
@@ -134,41 +123,29 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example30" class="table table-bordered table-striped">
+              <table id="insuarance" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                 
              
                     <th>Saving #</th>
                    <th>Amount Tsh</th>
-                   
+                   <th>State</th>
                    <th>Date</th>                    
-                   <th style="text-align:center;">State</th>
+              
                 </tr>
                 </thead>
                 <tbody>
                            @if(count($member->saving_payment))
                    @foreach($savingtrasactions as $savingtrasaction)
-                    @if($savingtrasaction->state=='in')
                  <tr> 
                  
                   <td>{{$savingcode+$savingtrasaction->member_saving_id}}</td>
                    <td>{{number_format($savingtrasaction->amount,2)}}</td>
-                  
-                  <td>{{\Carbon\carbon::parse($savingtrasaction->date)->format('d/m/Y')}}</td>
-                       <td style="text-align:center;"><span class="label label-sm label-success">RECEIVED</span></td>
-
+                   <th>{{strtoupper($savingtrasaction->state)}}</th>
+                  <td>{{\Carbon\carbon::parse($savingtrasaction->date)->format('d/m/y')}}</td>
+                              
                 </tr>
-                @else
-                   <tr style="background-color:#f4d941; color:black; font-weight:bold;"> 
-                 
-                  <td>{{$savingcode+$savingtrasaction->member_saving_id}}</td>
-                   <td>{{number_format($savingtrasaction->amount,2)}}</td>
-                  
-                  <td>{{\Carbon\carbon::parse($savingtrasaction->date)->format('d/m/Y')}}</td>
-                      <td style="text-align:center;"><span class="label label-sm label-info">REFUNDED</span></td>          
-                </tr>
-                @endif
                  @endforeach
                   @else
                        <td>-</td>
@@ -196,14 +173,14 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example40" class="table table-bordered table-striped">
+              <table id="example2" class="table table-bordered table-striped">
                 <thead>
                 <tr>
    
                    <th>Fee Amount</th>
-                  
+                   <th>State</th>
                    <th>Date</th>
-                     <th>State</th>
+                   
               
                 </tr>
                 </thead>
@@ -212,9 +189,9 @@
                                @if(count($member->regfee_payment))
                       @foreach($regfeetransactions as $regfeetransaction )
                   <td>{{number_format($regfeetransaction->amount,2)}}</td>
-                 
-                 <td>{{\Carbon\carbon::parse($regfeetransaction->date)->format('d/m/Y')}}</td>              
-                   <td> {{strtoupper($regfeetransaction->state)}}</td>
+                  <td> {{strtoupper($regfeetransaction->state)}}</td>
+                 <td>{{\Carbon\carbon::parse($regfeetransaction->date)->format('d/m/y')}}</td>              
+              
                        @endforeach
                        @else
 
@@ -253,8 +230,11 @@
 
             $(document).ready(function(){
 
-    $('#example10,#example20,#example30,#example40').DataTable({
+   $(function () {
 
+    $('#example4').DataTable({
+
+        ]
 
       'paging'      : true,
       'lengthChange': false,
@@ -262,9 +242,8 @@
       'ordering'    : false,
       'info'        : true,
       'autoWidth'   : false
-
-    });
-
+    })
+  });
     
             });
 

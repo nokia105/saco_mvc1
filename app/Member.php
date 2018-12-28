@@ -51,16 +51,16 @@ class Member extends Authenticatable
        }
 
 
-      /*    public function loans(){
+     /*     public function loans(){
 
      	return $this->belongsToMany(Loan::class,'loan_guarantor','loan_id','guarator_id');
      }*/
 
-           public function loans(){
 
-      return $this->hasMany(Loan::class,'member_id');
+        public function loans(){
+
+     	return $this->hasMany(Loan::class,'member_id');
      }
-
 
      public function loanlist(){
 
@@ -117,13 +117,13 @@ class Member extends Authenticatable
 
        public function share_payment(){
 
-          return $this->hasManyThrough(Payment::class,Member_share::class,'member_id');
+          return $this->hasManyThrough(Payment::class,Membersaving::class,'member_id');
       } 
 
 
        public function saving_payment(){
 
-          return $this->hasManyThrough(Payment::class,Membersaving::class,'member_id');
+          return $this->hasManyThrough(Payment::class,Member_share::class,'member_id');
       } 
 
 

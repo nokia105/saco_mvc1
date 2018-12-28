@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/select.dataTables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('Editor/css/editor.dataTables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('Editor/examples/resources/syntax/shCore.css')}}">
+     <link rel="stylesheet" type="text/css" href="{{asset('css/datepicker.css')}}">
     <!-- <link rel="stylesheet" type="text/css" href="Editor/examples/resources/demo.css"> -->
     <style type="text/css" class="init">
   </style>
@@ -30,8 +31,6 @@
   
   <link rel="stylesheet" href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 
- 
-  <link rel="stylesheet" type="text/css" href="{{asset('css/datepicker.css')}}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="{{ asset('adminlte/bower_components/Ionicons/css/ionicons.min.css') }}">
   <!-- Theme style -->
@@ -46,7 +45,7 @@
   <!-- Date Picker -->
 
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="{{ asset('adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
+  
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/custom_saccoss.css ') }}">
@@ -297,7 +296,8 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     
-    <strong>Copyright &copy; {{ date('Y') }}  <a href="http://www.mifumotz.com">MIFUMOTZ TECHNOLOGIES</a>.</strong>
+    <strong>Copyright &copy; {{ date('Y') }}  <a href="http://www.mifumotz.com">MIFUMOTZ TECHNOLOGIES</a>.</strong> All rights
+    reserved.
   </footer>
 
   <!-- Control Sidebar -->
@@ -524,8 +524,8 @@
 <!-- daterangepicker -->
 <script src="{{ asset('adminlte/bower_components/moment/min/moment.min.js') }}"></script>
 <script src="{{ asset('adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-<!-- datepicker 
-<script src="{{ asset('adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>-->
+<!-- datepicker -->
+<script src="{{ asset('adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
 <!-- Slimscroll -->
@@ -536,7 +536,8 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <script type="text/javascript" src="{{asset('js/bootstrap-datepicker.js')}}"></script>
+  <!--<script type="text/javascript" src="{{asset('js/foundation-datepicker.js')}}"></script>-->
+    <script type="text/javascript" src="{{asset('js/bootstrap-datepicker.js')}}"></script>
 
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('adminlte/dist/js/demo.js') }}"></script>
@@ -568,15 +569,9 @@
     
     <script type="text/javascript">
       $(document).ready(function() {
-
-                  $('.date').datepicker({
-                         ormat: 'mm/dd/yyyy'
-    
-                      });
-
     $('#example1').DataTable();
 } );
-      
+     // $('.datepicker').datepicker();
       $('nav a').parents('li,ul').removeClass('active');
       $('a[href="' + this.location.pathname + '"]').parents('li,ul').addClass('active');
 
@@ -591,7 +586,8 @@
         });*/
 
     </script>
-      <script>
+    
+     <script>
     $(function(){
       window.prettyPrint && prettyPrint();
       $('#dp1').datepicker({

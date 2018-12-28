@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-include(app_path()."\datatable\Editor\php\DataTables.php" );
-include(app_path()."\datatable\Editor\php\config.php" );
-include(app_path()."\datatable\Editor\php\Bootstrap.php" );
+include(app_path()."/datatable/Editor/php/DataTables.php" );
+include(app_path()."/datatable/Editor/php/config.php" );
+include(app_path()."/datatable/Editor/php/Bootstrap.php" );
+
 //require( 'ssp.class.php' );
 /*
 include(app_path()."\datatable\Editor\php\Editor\Editor.php" );
@@ -45,9 +46,10 @@ class SavingsController extends Controller
 
        return $this->middleware('auth:member');
      }
- function db()
+
+   function db()
       {
-        include(app_path()."\connection.php" );
+        include(app_path()."/connection.php" );
         return $db = new \DataTables\Database( $sql_details );
 
       }
@@ -99,10 +101,8 @@ Editor::inst($this->db(),'savings','saving_id')
 
       public function member_allsavings($id){
 
-           $allmembersavings=Member::findorfail($id)->savingamount;
+            $allmembersavings=Member::findorfail($id)->savingamount->where('state','in');
 
           return view('savings.member_allsavings',compact('allmembersavings'));
-
-            //
       }
 }

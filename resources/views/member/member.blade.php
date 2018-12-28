@@ -86,8 +86,9 @@
          @include('modal.popup_lib')
 
       @endsection
-
-          @section('js')
+      
+      
+       @section('js')
           
 
         
@@ -97,10 +98,11 @@
             $(document).ready(function(){
 
     $('#example5').DataTable({
+      stateSave: true,
       'paging'      : true,
-      'lengthChange': false,
+      'lengthChange': true,
       'searching'   : true,
-      'ordering'    : false,
+      "order": [[ 0, "asc" ]],
       'info'        : true,
       'autoWidth'   : false
     });      

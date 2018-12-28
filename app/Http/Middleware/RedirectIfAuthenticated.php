@@ -36,7 +36,7 @@ class RedirectIfAuthenticated
             return redirect()->intended('/'); 
          }else{
              $id=Auth::guard('member')->user()->member_id;
-             return redirect()->intended('/member/'.$id.'/profile');
+             return redirect()->intended('/member/'.$id);
          }
 
           }
