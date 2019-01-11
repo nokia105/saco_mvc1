@@ -29,7 +29,8 @@
      <div class="col-md-12">
           <div class="box col-md-12 box-info">
             <div class="box-header">
-              <h3 class="box-title">New Loan</h3>
+             
+              <h3 class="box-title">New Loan</h3><a  onclick="showAjaxModalX2('{{route('calculator_popup')}}')"><span class="btn btn-success pull-right">Loan Calculator</span></a>
             </div>
             <!-- /.box-header -->
          <div class="box box-body box-info">
@@ -114,22 +115,22 @@
                     <small class="text-danger">{{ $errors->first('Imethod') }}</small>
               </div>
 
-              <div class="btn btn-info" id="calculate" data-toggle="modal" data-target="#modal-default" data-backdrop="false">calculate</div>
+              <div class="btn btn-success" id="calculate">calculate</div>
          
             </div>
             <!-- /.col -->
             <div class="col-md-6">
             <div class="form-group">
-                  <label for="" class="col-md-12">Loan Period</label>
+                  <label for="" class="col-md-12">Period</label>
                 
                     <div class="col-sm-8{{ $errors->has('period') ? ' has-error' : '' }}">
-                        <input type="text" class="form-control"  name="period" value="{{old('period')}}" id="period">
+                        <input type="number" min=0 class="form-control"  name="period" value="{{old('period')}}" id="period">
                         <small class="text-danger">{{ $errors->first('period') }}</small>
                     </div>
                     <div class="col-sm-4">
                         <select class="col-md-4 form-control"  name="loanwm" style="width: 100%;">
                           <option value="month">Month</option>
-                          <option value="week">Week</option>
+                          <!-- <option value="week">Week</option> -->
                         </select>
                     </div>
               </div>
@@ -137,8 +138,8 @@
               <div class="form-group">
                 <div class="col-sm-12{{ $errors->has('startpayment') ? ' has-error' : '' }}">
                    <br/>
-                  <label for="">First Payment on</label>
-                  <input type="text"  id="startpayment" class="form-control dp1 span2"  name="startpayment"  value="{{old('startpayment')}}" placeholder="yyyy-mm-dd" autocomplete="off">
+                  <label for="">First payment date</label>
+                  <input type="text"  id="startpayment" class="form-control  datepicker span2"  name="startpayment"  value="{{old('startpayment')}}" placeholder="yyyy-mm-dd" autocomplete="off">
                     <small class="text-danger">{{ $errors->first('startpayment') }}</small>
                 </div>
 
@@ -452,9 +453,9 @@
             border-bottom:1px solid red;
           }
 
-          .modal-content {
+          /*.modal-content {
             border:5px solid #00BFFF;
-          }
+          }*/
 
           .modal-content h4{
             font-family: 'Rokkitt', serif;
@@ -610,13 +611,17 @@ var pcategoryid = $(this).find(":selected").val();
       var Imethod=$('#Imethod').val();
       var loanrequestor=$('#loanrequestor').val();
       var loanOfficer=$('#loanOfficer').val();
+      url="{{ url('/') }}/calculator_popup/?principle="+principle+"&interest="+interest+"&period="+period+"&startpayment="+startpayment;
+      //alert(startpayment);
+      showAjaxModalX2(url);
 
-       var dataString='principle='+principle+'&period='+period+'&interest='+interest+'&startpayment='+startpayment+'&Imethod='+Imethod+'&loanrequestor='+loanrequestor+'&loanOfficer='+loanOfficer;
+       /*var dataString='principle='+principle+'&period='+period+'&interest='+interest+'&startpayment='+startpayment+'&Imethod='+Imethod+'&loanrequestor='+loanrequestor+'&loanOfficer='+loanOfficer;*/
+
 
 
          
          
-$.ajax
+/*$.ajax
 ({
          
 url:'{{route('interestmethod')}}',
@@ -641,7 +646,7 @@ $("#lduration").html(data.loanperiod);
 
 }
 
-});
+});*/
 })
 
 });
@@ -908,5 +913,5 @@ end of charge row */
 });                         
 
       </script>
-
+@include('modal.popup_lib')
        @endsection

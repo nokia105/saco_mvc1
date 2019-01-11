@@ -49,7 +49,7 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/custom_saccoss.css ') }}">
-     
+  
             @yield('css')
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -508,6 +508,9 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('adminlte/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<!--added for date restriction-->
+
+  <!--/-->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
@@ -564,7 +567,11 @@
     </script>
 
    <script src="{{ asset('js/confirm/bootstrap.confirm.js') }}"></script>
- 
+<script type="text/javascript">
+ $( function() {
+    $( "#test_rr" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
+  } );
+  </script>
    
     
     <script type="text/javascript">
@@ -590,12 +597,15 @@
      <script>
     $(function(){
       window.prettyPrint && prettyPrint();
-      $('#dp1').datepicker({
-        format: 'yyyy-mm-dd'
-      });
+ 
       $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+         minDate: '+1D'
       });
+     
+      
+    $( ".datepicker_curr_next" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
+ 
       $('#dp2').datepicker();
       $('#dp3').datepicker();
       

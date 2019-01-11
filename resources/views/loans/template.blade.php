@@ -2,12 +2,14 @@
       @section('cover')
 
          @section('title', '| Profile')
+
            <style type="text/css">
           .no-hover li  b{
            color:#ffff;
 
           }
         </style>
+
         <input type="hidden" value="{{$id=Request::segment(2)}}" name=""> 
 
         @php
@@ -54,110 +56,64 @@
           <!-- /.box about-->
         </div>
         <!-- /.col -->
-        <div class="col-md-10">
-          <div class="center col-md-12 btn btn-info member_navbar" >
+<div class="col-md-10">
 
-                        <span class="btn  btn-sm  no-hover">
-                           <li class="{{ Request::is('member/'.$id) ? 'active' : '' }} btn btn-info btn-block">
-                             <a href="{{route('member_profile',$id)}}"><b>Profile</b></a>
-                           </li>
-                        </span>
-                        <span class="btn  btn-sm  no-hover">
-                           <li class="{{ Request::is('profile/'.$id.'/membersavings') ? 'active' : '' }} btn btn-info btn-block">
-                             <a href="{{route('membersavings',$id)}}"><b>Savings</b></a>
-                           </li>
-                          
-                        </span>
-                        <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 55 </span>
 
-                          <br /> -->
-                          <li class="{{Request::is('profile/'.$id.'/membershares') ? 'active' : '' }} btn btn-info btn-block">
-                            
-                             <a href="{{route('memberShares',$id)}}"><b>Shares </b></a>
-                          </li>
-                         
-                        </span>
-                        
-                                     
-                          @role('Cashier|Secretary','member')
+<nav class="navbar navbar-dark bg-primary" style="padding-top: 0px;">
 
-                            @if($member->status=='active')
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only white">Toggle navigation</span>
+        <span class="icon-bar white"></span>
+        <span class="icon-bar white"></span>
+        <span class="icon-bar white"></span>
+      </button>
+      <!-- <a class="navbar-brand white active" href="#">Brand</a> -->
+    </div>
+   
 
-                        <span class="btn  btn-sm btn-light no-hover">
-                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        
+        <li class="white"><a href="{{route('member_profile',$id)}}" class="active"><b>Profile</b></a></li>
+         <li  class="white"><a href="{{route('memberShares',$id)}}"><b>Shares </b></a></li>
+         <li  class="white"><a href="{{route('membersavings',$id)}}"><b>Savings</b></a></li>
+         @role('Cashier|Secretary','member')
+            @if($member->status=='active')
+          <li  class="white"><a href="{{url ('profile/'.$id.'/newloan')}}"><b>New Loan</b></a></li>
+                  
+           @endif
+          @endrole
+         
+                  
+          <li  class="white"><a href="{{url ('profile/'.$id.'/loanlist')}}"><b>Loans</b></a></li>
+         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
+         <li  class="white"><a href="{{route('memberShares',$id)}}"><b>Shares </b></a></li> 
+         @role('Cashier','member')
+         <!--  <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
+          <li  class="white"> <a href="{{url('profile/'.$id.'/refund')}}"><b>Refund</b></a></li>
+           <li  class="white"><a href="{{url('profile/'.$id.'/previous_payment')}}"><b>Previous Payments</b></a></li> -->
+          @endrole
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle white" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More  <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            @role('Cashier','member')
+          <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
+          <li  class="white"> <a href="{{url('profile/'.$id.'/refund')}}"><b>Refund</b></a></li>
+           <li  class="white"><a href="{{url('profile/'.$id.'/previous_payment')}}"><b>Previous Payments</b></a></li>
+          @endrole
+          <li><a href="{{url ('profile/'.$id.'/collateral')}}" ><b>Collaterals</b></a></li>
+          </ul>
+        </li>
+      </ul>
 
-                          <br /> -->
- 
-                         <li class="{{Request::is('profile/'.$id.'/newloan') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url ('profile/'.$id.'/newloan')}}"><b>New Loan</b></a>
-                            
-                         </li>
-                        </span>
-                        @endif
-                          @endrole
-                      
-  
-                        
-                        <span class="btn  btn-sm btn-light no-hover">
-                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
+    </div><!-- /.navbar-collapse -->
 
-                          <br /> -->
-                            <li class="{{Request::is('profile/'.$id.'/loanlist') ? 'active' : '' }} btn btn-info btn-block">
-                               <a href="{{url ('profile/'.$id.'/loanlist')}}"><b>Loans</b></a>
-                            </li>  
-                         
-                        </span>
+</nav>
 
-                       <!--  <span class="btn  btn-sm  no-hover">
-                         
-                        <a href="#" class="btn btn-info btn-block"><b>Deposts</b></a>
-                       </span> -->
-                          @role('Cashier','member')
-                        <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 4 </span>
-
-                          <br /> -->
-                          <li class="{{Request::is('profile/'.$id.'/payment') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a>
-                          </li>
-                          
-                        </span>
-
-                          <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 4 </span>
-
-                          <br /> -->
-                          <li class="{{Request::is('profile/'.$id.'/refund') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url('profile/'.$id.'/refund')}}"><b>Refund</b></a>
-                          </li>
-                          
-                        </span>
-
-                         <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 4 </span>
-
-                          <br /> -->
-                          <li class="{{Request::is('profile/'.$id.'/previous_payment') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url('profile/'.$id.'/previous_payment')}}"><b>Previous Payments</b></a>
-                          </li>
-                          
-                        </span>
-
-                          @endrole
-
-                        <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 23 </span>
-                          <br /> -->
-                         <li class="{{Request::is('profile/'.$id.'/collateral') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url ('profile/'.$id.'/collateral')}}" ><b>Collaterals</b></a>
-                         </li>
-                        </span>
-
-                       
-
-                        
-                  </div>
+          
                  @yield('memberworkspace')
 
           </div>
@@ -174,8 +130,48 @@
       <style type="text/css">
          .member_navbar span {
              padding:2px;
+
          }
+        .nav-menu-profile{
+          margin-top: 0px;
+        }
+        .white a, .white{
+          color:#fff;
+        }
+        a:hover {
+          color:#fff;
+        }
+        .active {
+    background-color: #00c0ef;
+    color: white;
+  }
+    .navbar-dark .navbar-header .navbar-toggle .icon-bar{
+        color:black;
+        background-color: #fff;
+
+      }
+      .navbar-dark .navbar-header .navbar-toggle{
+        float:left;
+      }
+      .navbar-dark .dropdown .dropdown-menu {
+        background-color: #337ab7;
+
+      }
+       .navbar-dark  .dropdown-menu li>a {
+        color:#fff;
+       
+      }
       </style>
+      <script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
 
     
 

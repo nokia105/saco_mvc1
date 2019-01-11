@@ -28,6 +28,7 @@ use App\Bankaccount;
 use App\Loanaccount;
 use App\Receivableaccount;
 use App\Memberaccount;
+use App\Rules\CurrentAndNextDate;
 use Excel;
 use File;
 class MembersProfileController extends Controller
@@ -84,7 +85,8 @@ class MembersProfileController extends Controller
 
 
 
-      public function interestmethod(Request $request){
+     /* public function interestmethod(Request $request)
+        {
             // $principle=$request->principle;
              $period=$request->period;
              $startpayment=$request->startpayment;
@@ -105,8 +107,82 @@ class MembersProfileController extends Controller
                ]);
                   
 
-      }
-      public function membercollateral(Request $request){
+          }*/
+          
+
+
+            public function calculator_popup(Request $request){
+              $principle=request()->principle;
+                $interest=request()->interest;
+
+                $period=request()->period; 
+                $firstpayment=request()->startpayment;
+
+              return view('modal.calculator', compact('principle','interest','period','firstpayment') );
+            }
+            public function calculator(Request $request){
+
+              /*return view('modal.calculator');*/
+              $principle=$request->principle;
+              $rate=$request->rate;
+              $startpayment=$request->start_date;
+              $period=$request->period;
+              $Principle_plus_interest=$principle*(1+(($rate/100)*$period));
+              $interest=$Principle_plus_interest-$principle;
+               $balance= $principle;
+                $date0=Carbon::parse(date('Y-m-d', strtotime((0).' month', strtotime($startpayment))))->format('Y-m-d');
+               $html='
+               <a class="btn btn-info pull-right" href='.url("/").'/pdf_download/'.$principle.'/'.$rate.'/'.$period.'/'. $date0.'>PDF <i class="fa fa-file-pdf-o"></i></a>
+               <table class="table display  table-bordered table-striped" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>Date</th>
+                        <th align="right">Amount</th>
+                        <th align="right">Principle</th>
+                        <th align="right">Interest</th>
+                        <th align="right">Remaining Balance</th>
+                    </tr>
+                </thead>
+                <body>';
+              for ($i=1; $i<=$period;$i++ ){
+                $d=$i+1;
+                         $y1=date('Y',strtotime($startpayment));
+                         $m1=date('m',strtotime($startpayment));
+                         $d1=date('d',strtotime($startpayment));
+                         if ($d1 >28) {
+                          $date_rest=$y1.'-'.$m1.'-28';
+                            $date0=Carbon::parse(date('Y-m-d', strtotime(($i).' month', strtotime($date_rest))))->format('Y-m-d'); 
+                            $day=date('d',strtotime($date0));
+                             $m=date('m',strtotime($date0));
+                             $y=date('Y',strtotime($date0));
+                             if (($y1==$y) &&($m1==$m)) $date=$startpayment;
+                             else $date=date("Y-m-t", strtotime($date0));
+                             }
+                             else {
+                             $date0=Carbon::parse(date('Y-m-d', strtotime(($i).' month', strtotime($startpayment))))->format('Y-m-d');
+                             $day=date('d',strtotime($date0));
+                             $m=date('m',strtotime($date0));
+                             $y=date('Y',strtotime($date0));
+                             if (($y1==$y) &&($m1==$m)) $date=$startpayment;
+                             else $date=date("Y-m-t", strtotime($date0));
+                           }
+                           $balance=round(($balance-($principle/$period)),2);
+               
+              $html .='
+              <tr>
+                        <td>'.$i.'</td>
+                       <td>'.$date.'</td>
+                        <td align="right">'.number_format(round($Principle_plus_interest/$period,2),2).'</td>
+                        <td align="right">'.number_format(round($principle/$period,2),2).'</td>
+                        <td align="right">'.number_format(round($interest/$period,2),2).'</td>
+                        <td align="right">'.number_format(($balance),2).'</td>
+                    </tr>';
+                  }
+              return $html.' </body>
+            </table>';
+            }
+          public function membercollateral(Request $request){
                    $collateral_id=$request->collateral;             
           //$collaterals=Member::find($id)->collateral->where('id','=',1); 
               $collateral=Collateral::find($collateral_id);    
@@ -178,7 +254,11 @@ class MembersProfileController extends Controller
                  'interest'=>'required|numeric',
                  'Imethod'=>'required',
                  'period'=>'required|numeric',
-                 'startpayment'=>'required|date',
+                 'startpayment'=> [
+                    'required', 
+                    'date',
+                    new CurrentAndNextDate()
+                ],
                  'narration'=>'required',
                  'file'=>'required|max:10000'
                 ]);
@@ -383,7 +463,7 @@ public function updateloan(Request $request)
                 $montlyinterest=(($interest/100)*$principle)/$period;
 
                 $pdf = PDF::loadView('loans.loanrepaymentpdf',compact('principle','interest','period','firstpayment','monthlyrepayment','montlyinterest'));
-            return $pdf->download('pdfview.pdf');
+            return $pdf->download('Loan_schedule.pdf');
     }
 
 

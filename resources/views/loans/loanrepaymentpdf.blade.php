@@ -5,26 +5,33 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>SACCOS | Dashboard</title>
-  
+ 
+
 </head>
 
-
+<hr style="width:100%; color:green;font-weight: 300px; margin-top: -4px;" />
 <div class="container">
 
 
    <div class="loaninfo">
-     <div class="company">
-  <label>MIFUMOTZ</label>
-  </div>
+    <div class="col-md-12 text-center" style="text-align: center;">
+      <h2>TASAF SACCOS</h2><br>
+      <img src="{{asset('images/logo/saccos.jpg')}}" alt="logo" /><br/>
+     
+      <u><h4>LOAN BREAKDOWN FOR PRINCIPLE OF TZS {{number_format(round($principle,2),2)}}</h4></u>
+
+      
+    </div>
+
 
       <div class="col-md-6">
          
-           <label>Principle is <strong>{{round($principle,2)}} Tsh</strong> </label>
+           <label>Principle: <strong>{{number_format(round($principle,2))}}</strong> </label>
            
                     <br>
                     <br>
          
-          <label>Interest is <strong>{{$interest}} %</strong></label>
+          <label>Rate: <strong>{{$interest}} %</strong></label>
         
                 
              
@@ -34,7 +41,7 @@
        <div class="col-md-6">
 
          
-                <label>Date Created: <strong>{{\Carbon\Carbon::now()}}</strong></label>
+                <label>Start Date: <strong>@php echo $date0=Carbon\carbon::parse(date('d/m/Y', strtotime((0).' month', strtotime($firstpayment))))->format('d/m/Y');  @endphp</strong></label>
              
                           <br>
                           <br>
@@ -51,37 +58,73 @@
 	<table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th scope="col"> Month</th>	
-      <th scope="col">Date</th>
-      <th scope="col">Monthly Payment(Tsh)</th>
-      <th scope="col">Monthly Interest(Tsh)</th>
+      <th scope="col"> SN</th>
+       <th scope="col">Date</th>
+      <!-- <th scope="col" align="right"> Beginning Balance</th>  -->
+      <th scope="col" align="right">Monthly Payment</th>
+      <th scope="col" align="right">Monthly Principle</th>
+       <th scope="col" align="right">Monthly Interest</th>
+       <th  align="right">Loan Balance</th>
       
     </tr>
   </thead>
   <tbody>
+    @php  $balance=$principle; @endphp
   	 @for($i=0; $i<$period; $i++)
     <tr>
+      @php
+        $startpayment=$firstpayment;
+                         $d=$i+1;
+                         $y1=date('Y',strtotime($startpayment));
+                         $m1=date('m',strtotime($startpayment));
+                         $d1=date('d',strtotime($startpayment));
+                         if ($d1 >28) 
+                         {
+                            $date_rest=$y1.'-'.$m1.'-28';
+                            $date0=Carbon\carbon::parse(date('Y-m-d', strtotime(($i).' month', strtotime($date_rest))))->format('Y-m-d'); 
+                             $day=date('d',strtotime($date0));
+                             $m=date('m',strtotime($date0));
+                             $y=date('Y',strtotime($date0));
+                             if (($y1==$y) &&($m1==$m)) $date=$startpayment;
+                             else $date=date("Y-m-t", strtotime($date0));
+                             }
+                             else {
+                             $date0=Carbon\carbon::parse(date('Y-m-d', strtotime(($i).' month', strtotime($startpayment))))->format('Y-m-d');
+                             $day=date('d',strtotime($date0));
+                             $m=date('m',strtotime($date0));
+                             $y=date('Y',strtotime($date0));
+                             if (($y1==$y) &&($m1==$m)) $date=$startpayment;
+                             else $date=date("Y-m-t", strtotime($date0));
+                          }
+
+                          //ending balance
+                        $balance=$balance-round(($principle/$period),2);
+                        
+
+                          @endphp
+
     	
-      <td scope="row"> @php $month=date('m',strtotime($firstpayment))+$i;
-               echo DateTime::createFromFormat('!m',$month)->format('F');
-         @endphp</td>
-      <td> @php 
-                    echo  date('Y-m-d', strtotime($i.' month', strtotime($firstpayment)));
-                @endphp</td>
-      <td> {{round($monthlyrepayment,2)}}</td>
-      <td> {{round($montlyinterest,2)}}</td>
-      
-     
-      
+      <td>{{$i+1}}</td>
+      <td>{{$date}}</td>
+      <!-- <td align="right">@php echo round($balance,2); @endphp</td> -->
+      <td align="right">@php echo number_format(round(($monthlyrepayment),2),2); @endphp</td>
+      <td align="right">@php echo number_format(round(($principle/$period),2),2); @endphp</td>
+       <td align="right">@php echo number_format(round(($montlyinterest),2),2); @endphp</td>
+       <td align="right">@php echo number_format(round(($balance),2),2); @endphp</td>
+ 
     </tr>
      @endfor
     
   </tbody>
 </table>
 </div>
+<h4 style="width:100%;">Officer : <lable>@php echo strtoupper(Auth()->user()->first_name.'   '.Auth()->user()->last_name) @endphp</lable><br/>
+      Printed Date : <lable>@php echo date('d/m/Y H:i:s'); @endphp</lable>
+
+    </h4>
 </div>
 
-    <h4>Loan issued by <lable>{{Auth()->user()->name}}</lable></h4>
+    
 
   <style type="text/css">
 
@@ -185,18 +228,13 @@ th {
       padding-top:15px;
       padding-bottom:15px;
     }
-    .loaninfo{
-
-      padding-bottom:30px;
-    }
+ 
 
   #table{
     padding-top:60px;
   }
 
-    .container{
-    	padding-top:10%;
-    }
+ 
 
     
 

@@ -66,16 +66,19 @@
     <!-- Logo -->
     <a href="{{route('profile',Auth::guard('member')->user()->member_id)}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>T</b>SAC</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>TASAF </b>SACCOS</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
+      <button type="button" class="navbar-toggle collapsed white" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only white">Toggle navigation</span>
+        <span class="icon-bar white"></span>
+        <span class="icon-bar white"></span>
+        <span class="icon-bar white"></span>
+      </button>
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
@@ -250,6 +253,7 @@
 } );
       $('.datepicker').datepicker();
     </script>
+
    
     
     @yield('js')

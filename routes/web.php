@@ -146,7 +146,9 @@
 
    return view('shares.membershares');
 });*/
-
+   Route::get('calculator','MembersProfileController@calculator')->name('calculator');
+   //Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
+   Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
    Route::get('interestmethod','MembersProfileController@interestmethod')->name('interestmethod');
    Route::get('getprofit_distribution','ProfitdistributionController@index')->name('getprofit_distribution');
 

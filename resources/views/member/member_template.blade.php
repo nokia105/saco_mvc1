@@ -16,6 +16,7 @@
             margin:1%;
            }
         </style>
+
         <input type="hidden" value="{{$id=Request::segment(2)}}" name=""> 
 
      <div class="row">
@@ -55,6 +56,7 @@
         </div>
         <!-- /.col -->
           <div class="col-md-9">
+                
           <div class="center col-md-12 btn btn-info" >
 
                           <span class="btn  btn-sm  no-hover">
@@ -120,6 +122,7 @@
 
                         
                   </div>
+                 
               
                            @yield('memberinfo')
           </div>
