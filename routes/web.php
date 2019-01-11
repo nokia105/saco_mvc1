@@ -361,7 +361,8 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
     Route::get('/printallmember_topay','PaymentsController@printallmember_topay')->name('printallmember_topay');
     
     Route::get('pay_allmembers','PaymentsController@pay_allmembers')->name('pay_allmembers');
-    Route::get('payment_list','PaymentsController@payment_list')->name('payments_list');
+   Route::get('duration_payment','PaymentsController@duration_payment')->name('duration_payment');
+    Route::post('payment_list','PaymentsController@payment_list')->name('payments_list');
 
 
       //dashboards

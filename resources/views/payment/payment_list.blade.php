@@ -53,7 +53,7 @@
                 <td>{{number_format($payment->amount,2)}}</td>
                 <td>{{ucfirst($payment->narration)}}</td>
                 <td>{{strtoupper($payment->state)}}</td>
-                <td>{{\Carbon\carbon::parse($payment->date)->format('d/m/y')}}</td>
+                <td>{{\Carbon\carbon::parse($payment->date)->format('d/m/Y')}}</td>
 
                 </tr>
                 @endforeach

@@ -305,10 +305,7 @@ class PaymentsController extends Controller
                                    ]);
 
                                             //store in jornal table 
-
-
-                            
-                                             
+                                                           
                                                     }              
 
                        
@@ -320,16 +317,26 @@ class PaymentsController extends Controller
           
    
     }
+       
+
+          public function duration_payment(){
+
+               
+
+             return view('payment.duration_payment');
+          }
 
 
+      public function payment_list(Request $request){
 
-      public function payment_list(){
+
+             $startDate=$request->startDate;
+              $endDate=$request->endDate;
+
+              $loans=Payment::whereBetween('date',[$startDate,$endDate])->get();
 
 
           $payments=Payment::orderBy('date','desc')->get();
-
-
-
 
          return view('payment.payment_list',compact('payments'));
       }
