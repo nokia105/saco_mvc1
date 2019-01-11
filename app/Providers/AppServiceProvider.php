@@ -51,13 +51,11 @@ class AppServiceProvider extends ServiceProvider
      view()->composer(['dashboard.template'],function($view){
 
          $view->with('members',Member::where('status','=','active')->count());
-         $view->with('shares',Member_share::where('state','in')->sum('amount'));
-         $view->with('savings',Membersaving::where('state','in')->sum('amount'));
+         $view->with('shares',Member_share::sum('amount'));
+         $view->with('savings',Membersaving::sum('amount'));
          $view->with('loans',Loanaccount::sum('cr'));
      
         });
-
-
 
         Schema::defaultStringLength(191);
 

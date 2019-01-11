@@ -9,6 +9,7 @@ ini_set('display_errors', '1');
  * Database user / pass
  */
 $sql_details = array(
+
     "type" => "Mysql",  // Database type: "Mysql", "Postgres", "Sqlite" or "Sqlserver"
     "user" => "root",       // Database user name
     "pass" => "",       // Database password
@@ -16,6 +17,7 @@ $sql_details = array(
     "port" => "",       // Database connection port (can be left empty for default)
     "db"   => "tasaf_saco1"     // Database name
     //"dsn"  => "charset=utf8"        // PHP DSN extra information. Set as `charset=utf8` if you are using MySQL
+
 );
 
 

@@ -26,7 +26,7 @@ class Loan extends Model
 
      public function guarantor(){
 
-     	return $this->belongsToMany(Member::class,'loan_guarantor','loan_id','guarator_id')->withTimestamps();
+     	return $this->belongsToMany(Member::class,'loan_guarantor','loan_id','guarator_id')->withPivot('status','reason')->withTimestamps();
      }
 
 

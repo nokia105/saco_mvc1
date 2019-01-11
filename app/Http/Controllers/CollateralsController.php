@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-include(app_path()."/datatable/Editor/php/DataTables.php" );
-include(app_path()."/datatable/Editor/php/config.php" );
-include(app_path()."/datatable/Editor/php/Bootstrap.php" );
-
+include(app_path()."\datatable\Editor\php\DataTables.php" );
+include(app_path()."\datatable\Editor\php\config.php" );
+include(app_path()."\datatable\Editor\php\Bootstrap.php" );
 use
     DataTables\Editor,
     DataTables\Editor\Field,
@@ -28,7 +27,7 @@ class CollateralsController extends Controller
 
   function db()
       {
-        include(app_path()."/connection.php" );
+        include(app_path()."\connection.php" );
         return $db = new \DataTables\Database( $sql_details );
 
       }

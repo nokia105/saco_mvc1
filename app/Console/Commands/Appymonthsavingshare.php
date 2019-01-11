@@ -47,12 +47,14 @@ class Appymonthsavingshare extends Command
              $query->whereYear('saving_date', $year)->whereMonth('saving_date',$month);
                })->get();
 
-                foreach($members as $key=>$v){ 
+                foreach($members as $key=>$member){ 
+
+                         $noshares=$member->no_shares->where('state','in')->sum('No_shares')-$member->no_shares->where('state','out')->sum('No_shares');
 
                         Monthsavingshare::create([ 
-                             'member_id'=>$v->member_id,
+                             'member_id'=>$member->member_id,
                              'saving_status'=>'unpaid',
-                             'share_status'=>'unpaid',
+                             'share_status'=>($noshares>=1000) ? 'paid' :'unpaid',
                              'date'=>date('Y-m-d')
                          ]);
                          }

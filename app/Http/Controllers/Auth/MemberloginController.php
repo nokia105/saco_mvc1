@@ -62,7 +62,7 @@ class MemberloginController extends Controller
             return redirect()->intended('/'); 
          }else{
              $id=Auth::guard('member')->user()->member_id;
-             return redirect()->intended('/member/'.$id );
+             return redirect()->intended('/member/'.$id.'/profile' );
          }
         	 }else{
 

@@ -272,9 +272,6 @@ class MembersController extends Controller
      
         public function update(Member $member, $id, Request $request){
 
-                  
-
-                 
                    if($request->has('img')){
 
                   $file_upload=$request->file('img');
@@ -287,35 +284,33 @@ class MembersController extends Controller
                       $filename='default.jpg';
                      }
             
-
-            
     $validator=$this->validate(request(),[
               'firstname'=>'required',
               'middlename'=>'required',
               'lastname'=>'required',
               'reg_no'=>'required',
-            /*   'phone'=>'required',*/
+               'phone'=>'required',
                'email' =>'required|email',
-              /* 'bank'=>'required',*/
-             //  'account'=>'required',
-              // 'kin_name'=>'required',
-            /*   'kin_relashioship'=>'required',*/
+               'bank'=>'required',
+               'account'=>'required',
+               'kin_name'=>'required',
+               'kin_relashioship'=>'required',
                'gender'=>'required',
-               //'box'=>'required',
-              /* 'street'=>'required',
-               'house'=>'required',*/
-              /* 'b_date'=>'required',*/
-            /*   'status'=>'required',*/
-              // 'saving'=>'required',
-              // 'share'=>'required',
-            /*   'employment_number'=>'required',*/
-              // 'employment_date'=>'required',
-              // 'employment_region'=>'required',
-          /*     'employment_area'=>'required',*/
-              // 'employment_type'=>'required',
-           /*    'employment_depertment'=>'required',*/
-             /*  'employment_position'=>'required',*/
-              // 'salary_amount'=>'required'      
+               'box'=>'required',
+               'street'=>'required',
+               'house'=>'required',
+               'b_date'=>'required',
+               'status'=>'required',
+             /*  'saving'=>'required',
+               'share'=>'required',*/
+             /*  'employment_number'=>'required',*/
+               'employment_date'=>'required',
+               'employment_region'=>'required',
+             /*  'employment_area'=>'required',*/
+               'employment_type'=>'required',
+               'employment_depertment'=>'required',
+               'employment_position'=>'required',
+               /*'salary_amount'=>'required'  */    
            ]);
 
               
@@ -391,7 +386,7 @@ class MembersController extends Controller
 
             public function reg_excel_download(){
 
-                return response()->download(base_path('RegisterExcel/Register-Excel.xlsx'));
+                return response()->download(base_path('\RegisterExcel\Register-Excel.xlsx'));
             }
 
 
@@ -407,7 +402,7 @@ class MembersController extends Controller
 
            public function store_reg_excel(Request $request){
 
-             
+
 
             $liability=Categoryaccount::where('name','=','Liability')->first();
             $asset=Categoryaccount::where('name','=','Asset')->first();
@@ -431,10 +426,9 @@ class MembersController extends Controller
                ]);
             
                 if($request->hasFile('excel')){
-                  
+
                      $path = $request->excel->getRealPath();
-                     
-                    
+
                      $data = Excel::load($path, function($reader) {
                 })->get();
                                     //dd($data);

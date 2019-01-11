@@ -19,14 +19,17 @@
 
         <input type="hidden" value="{{$id=Request::segment(2)}}" name=""> 
 
+           @php
+           $user=\App\Member::find($id);
+
+        @endphp
+
      <div class="row">
-        <div class="col-md-3">
+         <div class="col-md-2">
             
                        <!-- Profile Image -->
           <div class="box box-info">
             <div class="box-body box-profile">
-
-
           
               <img class="profile-user-img img-responsive img-circle" src="{{asset('uploads/profileimages/'.$member->member_image.'') }}" alt="User profile picture">
 
@@ -36,23 +39,26 @@
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Number Loans</b> <a class="pull-right">{{$no_loans}}</a>
+                  <button type="button" class="btn btn-success">Number Loans <a href="{{url ('member/'.$id.'/loans')}}"><span class="badge"> {{$no_loans}}</span></a></button>
                 </li>
                  <li class="list-group-item">
-                  <b>Submitted Loans</b> <a class="pull-right">{{$submitted_loans}}</a>
+                  <button type="button" class="btn btn-info">Submit Loans <span class="badge">{{$submitted_loans}}</span></button>
                 </li>
-               
+                <li class="list-group-item">
+
+                  <button type="button" class="btn btn-danger">Rejected Loan <span class="badge">{{$rejected_loans}}</span></button>
+                </li>
+                <li class="list-group-item">
+                  <button type="button" class="btn btn-warning">Pending Loan <span class="badge">{{$pending_loans}}</span></button>
+                </li>
+
               </ul>
 
              <!--  <a href="#" class="btn btn-info btn-block"><b>Follow</b></a> -->
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /.box -->
 
-          <!-- About Me Box -->
-
-          <!-- /.box about-->
         </div>
         <!-- /.col -->
           <div class="col-md-9">
@@ -97,8 +103,26 @@
                           <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
 
                           <br /> -->
-                            <li class="{{Request::is('profile/'.$id.'/loanlist') ? 'active' : '' }} btn btn-info btn-block">
-                               <a href="{{url ('member/'.$id.'/loans')}}"><b>Loans</b></a>
+                            <li class="{{Request::is('member/'.$id.'/loans') ? 'active' : '' }} btn btn-info btn-block">
+                               <a href="{{url ('member/'.$id.'/loans')}}"><b>Loans List</b></a>
+                            </li>  
+                         
+                        </span>
+                         <span class="btn  btn-sm btn-light no-hover">
+                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
+                          <br /> -->
+                            <li class="{{Request::is('member/'.$id.'/apply_loan') ? 'active' : '' }} btn btn-info btn-block">
+                               <a href="{{url ('member/'.$id.'/apply_loan')}}"><b>Apply Loan</b></a>
+                            </li>  
+                         
+                        </span>
+
+                     
+                        <span class="btn  btn-sm btn-light no-hover">
+                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
+                          <br /> -->
+                            <li class="{{Request::is('member/'.$id.'/guarantor') ? 'active' : '' }} btn btn-info btn-block">
+                               <a href="{{url ('member/'.$id.'/guarantor')}}"><b>Guarantor</b></a>
                             </li>  
                          
                         </span>
