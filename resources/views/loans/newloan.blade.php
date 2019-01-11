@@ -290,10 +290,11 @@
                                 <tr>
 
                                   <th width="24%">Full Names</th>
-                                  <th width="">Reg #</th>
+                                  <th width="4%">Reg #</th>
                                   <th width="24%">Shares</th>
                                   <th align="right" width="24%">Savings</th>
                                   <th align="right" width="4%">Salary (Tsh)</th>
+                                  <th>Cancel</th>
                                 </tr> 
                               </thead>
 
@@ -307,9 +308,11 @@
                                   <td width="24%">{{ucfirst($gura->first_name)}} {{ucfirst($gura->middle_name)}} {{ucfirst($gura->last_name)}}
                                      <input type="hidden" value="{{$gura->member_id}}" name="guarantor[]" class="guarantor_check">
                                   </td>
-                                  <td width="24%">{{$gura->middle_name}}</td>
+                                  <td width="24%">{{$gura->registration_no}}</td>
+                                  <td>{{number_format($gura->no_shares->where('state','in')->sum('amount')-$gura->no_shares->where('state','out')->sum('amount'),2)}}</td>
 
-                                  <td align="right" width="24%">{{$gura->last_name}}</td>
+                                  <td align="right" width="24%">{{number_format($gura->savingamount->where('state','in')->sum('amount')-($gura->savingamount->where('state','out')->sum('amount')),2)}}</td>
+                                  <td align="right" width="24%">{{number_format($gura->salary_amount,2)}}</td>
                                   <td align="right" width="4%"><input type="button" class="remove" style="color:red;" value="X" /></td>
                                 </tr>
                                  @endforeach 
@@ -871,8 +874,8 @@ cache: true,
 success: function(data)
 {
     //alert(data);
-      var row = $(".table45").find('tr:last');
-        $('<tr><td>'+data.fullname+'</td><td>'+data.member_no+'</td><td><td>'+data.totalshare+'</td><td>'+data.totalsaving+'</td>'+data.salary+'<input type="hidden" value="'+data.id+'" name="guarantor[]" class="guarantor_check"></td><td width="20%"><input type="button" class="remove" style="color:red;" value="X" /></td></tr>').insertAfter(row);
+       var row = $(".table45").find('tr:last');
+        $('<tr><td>'+data.fullname+'</td><td>'+data.member_no+'</td><td>'+data.totalshare+'</td><td>'+data.totalsaving+'</td><td>'+data.salary+'</td><input type="hidden" value="'+data.id+'" name="guarantor[]" class="guarantor_check"></td><td width="20%"><input type="button" class="remove" style="color:red;" value="X" /></td></tr>').insertAfter(row);
         $("#guarantor").val('');
 }
 

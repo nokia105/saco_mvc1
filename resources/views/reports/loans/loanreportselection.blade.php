@@ -20,7 +20,7 @@
             <div class="col-md-3">
              <div class="custom-control custom-radio">
   <input type="radio"  name="duration" class="custom-control-input" value="cummulative" {{(old('duration') == "cummulative") ? 'checked': ''}}>
-  <label class="custom-control-label" for="customRadio1">Cummulatively</label>
+  <label class="custom-control-label" for="customRadio1">Commulatively</label>
 </div>
 </div>
  <div class="col-md-3">
@@ -32,7 +32,7 @@
  <div class="col-md-3">
 <div class="custom-control custom-radio">
   <input type="radio"  name="duration" class="custom-control-input" value="quatery">
-  <label class="custom-control-label" for="customRadio2">Quaterly</label>
+  <label class="custom-control-label" for="customRadio2">Quatery</label>
 </div>
 </div>
  <div class="col-md-3">
@@ -48,7 +48,7 @@
               <label>Select Loan Report </label>
               <select class="form-group form-control" name="loan">
                 <option>Select report type</option> 
-                <option value="inssued">Issued Loans</option> 
+                <option value="inssued">Inssued Loans</option> 
                 <option value="finished">Finished Loans</option> 
               </select>
             </div>

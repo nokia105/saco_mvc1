@@ -63,8 +63,6 @@
                   <td><span class="label label-sm label-danger"><a style="color:#ffff; cursor:pointer;"  onclick="confirm_modal('{{route('member.delete',$member->member_id)}}')">Delete</a></span></td>   
                 </tr>
                  @endforeach
-                 
-          
                 </tbody>
                
               </table>

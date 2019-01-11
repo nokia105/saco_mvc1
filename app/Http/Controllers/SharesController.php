@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Share;
-include(app_path()."/datatable/Editor/php/DataTables.php" );
-include(app_path()."/datatable/Editor/php/config.php" );
-include(app_path()."/datatable/Editor/php/Bootstrap.php" );
+include(app_path()."\datatable\Editor\php\DataTables.php" );
+include(app_path()."\datatable\Editor\php\config.php" );
+include(app_path()."\datatable\Editor\php\Bootstrap.php" );
 
 /*
 include(app_path()."\datatable\Editor\php\Editor\Editor.php" );
@@ -30,7 +30,6 @@ use
     use App\Member;
     //DataTables\Database\Database;
 
-
 class SharesController extends Controller
 {
     //
@@ -43,7 +42,7 @@ class SharesController extends Controller
      }
        function db()
       {
-        include(app_path()."/connection.php" );
+        include(app_path()."\connection.php" );
         return $db = new \DataTables\Database( $sql_details );
 
       }
@@ -77,7 +76,7 @@ $nn=Editor::inst($this->db(),'shares','share_id')
           $member=Member::findorfail($id);
         
     
-        return view('shares.membershares',compact('member'));
+        return view('shares.memberShares',compact('member'));
 
        
 
@@ -86,7 +85,7 @@ $nn=Editor::inst($this->db(),'shares','share_id')
 
       public function member_allshare($id){
 
-         $allmembershares=Member::findorfail($id)->no_shares->where('state','in');
+         $allmembershares=Member::findorfail($id)->no_shares->state('state','in');
 
             return view('shares.member_allshare',compact('allmembershares'));
       }

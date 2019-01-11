@@ -15,23 +15,22 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Saving Code</th>
-                  <th>Amount (Tsh)</th>
-                  <th>Date</th>
+                 <th>Balance Savings</th>
+
+                  <th>Last Date</th>
                   
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($member->savingamount as $saving)
+              
                 <tr>
               
-                  <td >{{$saving->saving_code}}</td>
-                  <td><a href="{{route('allsavings',$member->member_id)}}">{{number_format($saving->amount,2) }}</a></td>
+                  <td><a href="{{route('allsavings',$member->member_id)}}">{{number_format(($member->savingamount->where('state','in')->sum('amount')-$member->savingamount->where('state','out')->sum('amount')),2)}}</a></td>
 
-                   <td>{{\Carbon\carbon::parse($saving->saving_date)->format('d/m/y')}}</td>
+                   <td>{{\Carbon\carbon::parse($member->savingamount->last()->saving_date)->format('d/m/Y')}}</td>
             
                 </tr>
-                @endforeach
+              
                 </tbody>
                
               </table>

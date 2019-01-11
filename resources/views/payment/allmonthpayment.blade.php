@@ -44,7 +44,7 @@
                 <button id="printcheck"><i class="fa fa-print"></i> print</button>
              </div>
              <div class=""  >
-                <button id="pay" onclick='confirm("You are about to post data! The posted data can not be changed ")'> Pay</button>
+                <button id="pay" onclick='confirm("You are about to post data! The posted data can not be changed ")'>Pay</button>
              </div>
            </div>
              
@@ -64,31 +64,40 @@
                 </thead>
                 <tbody>
                   @foreach($members as $member)
+
                  <tr>
                   <td><input type="checkbox"  id="checklist" class="checkbox" name="check[]" value="{{$member->member_id}}"></td>
                  <td>{{$member->registration_no}}</td> 
-                 <td>{{ucfirst($member->first_name)}} {{ucfirst($member->last_name)}} {{ucfirst($member->middle_name)}}<a href=""></a></td>     
+                 <td>{{ucfirst($member->first_name)}} {{ucfirst($member->last_name)}} {{ucfirst($member->middle_name)}}<a href=""></a></td>
+
+                    @php
+                    $noshares=$member->no_shares->where('state','in')->sum('No_shares')-$member->no_shares->where('state','out')->sum('No_shares');
+                    @endphp 
+                       @if($noshares >=1000)
+                <td>{{number_format($share=0.00,2)}}</td>
+                @else
                 <td>{{number_format($share=$member->monthshare,2)}}</td>
+                @endif
                 <td>{{number_format($saving=$member->monthsaving,2)}}</td>
 
-                 @if(count($member->loans))
+                 @if(!empty($loans)) 
                   @php 
                       $month=date('m',strtotime(date('Y-m-d'))); 
                       $year=date('Y',strtotime(date('Y-m-d')));
                   @endphp
-                <td>{{$interest=$member->loan->loanschedule->whereMonth('duedate','<=',$month)->whereYear('duedate','<=',$year)->where('status','=','!paid')->sum('monthinterest')}}</td>
-                <td>{{$principle=$member->loan->loanschedule->where('status','=','unpaid')->whereMonth('duedate',$month)->whereYear('duedate',$year)->sum('monthprinciple')}}</td>
+                      
+                      
+                <td>{{number_format($interest=$member->loanschedule->whereIn(\DB::raw('MONTH(duedate)'), [$month])->whereIn(\DB::raw('YEAR(duedate)'), [$year])->where('status','=','!paid')->sum('monthinterest'),2)}}</td>
+                <td>{{number_format($principle=$member->loanschedule->where('status','=','unpaid')->whereIn(\DB::raw('MONTH(duedate)'), $month)->whereIn(\DB::raw('YEAR(duedate)'), $year)->sum('monthprinciple'),2)}}</td>
                 <td>{{number_format($share+$saving+$interest+$principle,2)}}</td>
-                  @endif
+                  @else
                   <td>{{number_format($interest=0.00,2)}}</td>
                   <td>{{number_format($principle=0.00,2)}}</td>
                  <td>{{number_format($share+$saving+$interest+$principle,2)}}</td>
+                 @endif
                 </tr>
 
                  @endforeach
-               
-
-               
                 </tbody>
                
               </table>
@@ -280,7 +289,7 @@
 
                            $.ajax({
 
-                           method: "post",
+                           method: "GET",
                            url:'{{route('pay_allmembers')}}',
                            dataType:'json',
                            data:{ array:allVals, _token:'{{csrf_token()}}'},                                                           
