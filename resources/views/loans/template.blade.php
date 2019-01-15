@@ -114,6 +114,16 @@
                           <!-- <span class="line-height-1 bigger-170"> 4 </span>
 
                           <br /> -->
+                          <li class="{{Request::is('profile/'.$id.'/pay') ? 'active' : '' }} btn btn-info btn-block">
+                            <a href="{{url('profile/'.$id.'/pay')}}"><b>Pay</b></a>
+                          </li>
+                          
+                        </span>
+
+                         <span class="btn  btn-sm  no-hover">
+                          <!-- <span class="line-height-1 bigger-170"> 4 </span>
+
+                          <br /> -->
                           <li class="{{Request::is('profile/'.$id.'/payment') ? 'active' : '' }} btn btn-info btn-block">
                             <a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a>
                           </li>

@@ -346,7 +346,7 @@ class MemberinfoController extends Controller
           $member=Member::findorfail($id);
            $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
-           $loanguarantors=$member->loanguarantor->where('loan_status','=','waiting guarantor');
+           $loanguarantors=$member->loanguarantor->where('loan_status','=','waiting guarator');
 
        return view('member.info.guarantor',compact('loanguarantors','code'));
       }

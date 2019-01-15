@@ -575,67 +575,6 @@ class LoansController extends Controller
                                    ]);
  
 
-                               // be discussed
-
-
-                            //create  principle journal entry member 
-
-                             Journalentry::create(
-                              [       
-                               'dr'=>$request->amount_paid, 
-                                 'memberaccount_id'=>$request->memberaccount,
-                                  'payment_id'=>$payment->id,
-                                    'date'=>date('Y-m-d'),
-                                'service_type'=>'loan']
-                                   
-                             ); 
-
-                                //loan principle journal main 
-
-                             Journalentry::create([
-                                  'cr'=>$request->amount_paid, 
-                                 'mainaccount_id'=>$bankaccount->id,
-                                  'payment_id'=>$payment->id,
-                                  'date'=>date('Y-m-d'),
-                                 'service_type'=>'loan']); 
-
-                              
-
-                                    //charges dr
-                                     Journalentry::create([
-                                  'dr'=>$loan->loan_fees()->sum('fee_value'), 
-                                 'mainaccount_id'=>$bankaccount->id,//$main_chargesaccount->id,
-                                  'payment_id'=>$payment->id,
-                                  'date'=>date('Y-m-d'),
-                                 'service_type'=>'charges']); 
-
-
-                                    //charges ,cr   
-                                       Journalentry::create([
-                                  'cr'=>$loan->loan_fees()->sum('fee_value'), 
-                                 'memberaccount_id'=>$member_chargesaccount->id,
-                                  'payment_id'=>$payment->id,
-                                  'date'=>date('Y-m-d'),
-                                 'service_type'=>'charges']); 
-     
-
-                                    //insurance dr member
-                                      Journalentry::create([
-                                  'dr'=>$loan->insurances->percentage_insurance, 
-                                 'memberaccount_id'=>$member_insuranceaccount->id,
-                                  'payment_id'=>$payment->id,
-                                  'date'=>date('Y-m-d'),
-                                 'service_type'=>'insurance']); 
-
-                                    //insurance cr member       
-
-                                       Journalentry::create([
-                                  'cr'=>$loan->insurances->percentage_insurance, 
-                                 'mainaccount_id'=>$bankaccount->id,
-                                  'payment_id'=>$payment->id,
-                                  'date'=>date('Y-m-d'),
-                                 'service_type'=>'insurance']); 
-
 
                           for($i=0; $i<$loan->duration; $i++){
 

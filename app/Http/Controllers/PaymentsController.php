@@ -313,9 +313,6 @@ class PaymentsController extends Controller
 
                        return response()->json(['success'=>'successfully Posted']); 
 
-
-          
-   
     }
        
 
@@ -329,14 +326,12 @@ class PaymentsController extends Controller
 
       public function payment_list(Request $request){
 
-
+               
              $startDate=$request->startDate;
               $endDate=$request->endDate;
 
-              $loans=Payment::whereBetween('date',[$startDate,$endDate])->get();
-
-
-          $payments=Payment::orderBy('date','desc')->get();
+              $payments=Payment::whereBetween('date',[$startDate,$endDate])->get();
+         // $payments=Payment::orderBy('date','desc')->get();
 
          return view('payment.payment_list',compact('payments'));
       }

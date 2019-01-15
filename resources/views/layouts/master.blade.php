@@ -569,34 +569,17 @@
     <script type="text/javascript">
       $(document).ready(function() {
 
-                  $('.date').datepicker({
-                         ormat: 'mm/dd/yyyy'
-    
-                      });
-
     $('#example1').DataTable();
 } );
       
       $('nav a').parents('li,ul').removeClass('active');
       $('a[href="' + this.location.pathname + '"]').parents('li,ul').addClass('active');
 
-         /*   $(document).ready(function() {
-
-          SetTimeout(function(){
-              
-
-             $('#flash').remove();
-          },5000);
-
-        });*/
-
     </script>
+
       <script>
     $(function(){
       window.prettyPrint && prettyPrint();
-      $('#dp1').datepicker({
-        format: 'yyyy-mm-dd'
-      });
       $('.datepicker').datepicker({
         format: 'yyyy-mm-dd'
       });

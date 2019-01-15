@@ -1,16 +1,14 @@
-@extends('member.member_template')
-@section('memberinfo')
+ @extends('loans.template')
 
- @section('title', '|Payments')
+    @section('title', '|All Payments ')
+      @section('memberworkspace')
 
  
         <style type="text/css">
          .push_left{
           padding-right:2%;
          }
-       </style>
-
-
+       </style>s
       <div class="row">
        <div class="push_left col-xs-12">
 
@@ -62,8 +60,9 @@
                         <td>-</td>
                        <td>0.00</td>
                        <td>NOTHING</td>
-                       <td>NONE</td>
-                       <td>00-00-0000</td> 
+                 
+                       <td>00-00-0000</td>
+                             <td>NONE</td> 
                        @endif
                 </tbody>
                
@@ -109,16 +108,15 @@
                  
                   <td>{{\Carbon\carbon::parse($sharetrasaction->date)->format('d/m/Y')}}</td>
                 <td style="text-align:center;"><span class="label label-sm label-warning">REFUNDED</span></td>      
-                 
+                   @endif
                 </tr>
-                  @endif
               @endforeach 
                     @else
                        <td>-</td>
                        <td>0.00</td>
-                      
-                       <td>00-00-0000</td>
-                        <td>NONE</td> 
+             
+                       <td>00-00-0000</td> 
+                         <td>NONE</td>
                        @endif
                
                 </tbody>
@@ -175,9 +173,9 @@
                   @else
                        <td>-</td>
                        <td>0.00</td>
-                  
+                 
                        <td>00-00-0000</td> 
-                            <td>NONE</td>
+                             <td>NONE</td>
                        @endif 
               
                
@@ -222,9 +220,9 @@
                        @else
 
                        <td>0.00</td>
-                     
+                    
                        <td>00-00-0000</td> 
-                         <td>NONE</td>
+                          <td>NONE</td>
                        @endif
 
                          </tr>

@@ -47,13 +47,13 @@
       <td >
         <div class="input-group ">
           <span class="input-group-addon" id="dp4" data-date-format="yyyy-mm-dd" data-date="2018-01-02"><i class="glyphicon glyphicon-calendar"></i></span>
-        <input  class="form-control" type="text"  value=""  id="startDate" name="startDate" autocomplete="off">
+        <input   type="text"   class="datepicker form-control"  id="startDate" name="startDate" autocomplete="off">
       </div>  
       </td>
      
       <td><div class="input-group ">
           <span class="input-group-addon" id="dp5" data-date-format="yyyy-mm-dd" data-date="2018-01-02"><i class="glyphicon glyphicon-calendar"></i></span>
-        <input  class="form-control" type="text"  value=""  id="endDate" name="endDate" autocomplete="off">
+        <input   type="text"  class="datepicker form-control "   id="endDate" name="endDate" autocomplete="off">
       </div>
     </tr>
   </tbody>
@@ -75,12 +75,12 @@
       </div>
         </div>
 
-
-
-
-
     </form>
 
+
+      @endsection
+
+      @section('js')
 
       @endsection
 

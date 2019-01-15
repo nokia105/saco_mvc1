@@ -13,7 +13,6 @@
        </style>
        @endsection
 
-
       <div class="row">
        <div class="push_left col-xs-12">
 

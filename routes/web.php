@@ -199,7 +199,10 @@ Route::get('/loan','LoanController@index')->name('loan')->middleware('auth');
          
            //pdf download
 Route::get('/pdf_download/{principle}/{interest}/{period}/{firstpayment}','MembersProfileController@pdfview')->name('pdfview');
-Route::get('/profile/{id}/payment','MembersProfileController@payment');
+Route::get('/profile/{id}/pay','MembersProfileController@pay')->name('pay');
+
+Route::get('/profile/{id}/payment','MembersProfileController@payments')->name('payment');
+
 Route::get('/profile/{id}/previous_payment','MembersProfileController@previous_payment')->name('previous_payment');
 Route::get('/profile/previous_loan/{principle}/{interest}/{duration}/{pcategory}/{issued_date}/{startpayment}/{paidmonths}/{id}','MembersProfileController@previous_loan')->name('previous_loan');
 Route::get('savings_shares_excel','MembersProfileController@savings_shares_excel')->name('savings_shares_excel');

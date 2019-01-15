@@ -50,10 +50,6 @@ class MembersProfileController extends Controller
     return view('loans.profile',compact('member'));
   }
 
-     
-     // }
-
-
       public function newloan($id){
 
     
@@ -414,11 +410,36 @@ public function updateloan(Request $request)
       }
 
 
+   public function payments($id){
+
+
+        $loanstrasactions=Member::find($id)->loan_payment;
+
+         $sharetrasactions=Member::find($id)->share_payment;
+         $savingtrasactions=Member::find($id)->saving_payment;
+         $regfeetransactions=Member::find($id)->regfee_payment;
+        // $loanfeestransactions=Member::find($id)->loanlist->where('loan');
+
+           //  dd($loanfeestransactions);
+
+           $member=Member::find($id);
+
+           $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
+
+           $sharecode=Memberaccount::where('name','=','Share Account')->first()->account_no;
+
+           $savingcode=Memberaccount::where('name','=','Saving Account')->first()->account_no;
+
+
+
+      return view('payment.showpayments',compact('loanstrasactions','code','sharecode','sharetrasactions','savingcode','savingtrasactions','regfeetransactions','member')); 
+      
+
+   }
+
               //repayment
-      public function payment(){
+      public function pay(){
 
-
-         
         return view('loans.payment');
       }
 
@@ -490,9 +511,6 @@ public function updateloan(Request $request)
 
                           
 
-                  
-                  
-
                   $newamount=0;
 
                    $bankaccount=Mainaccount::where('name','=','Bank Account')
@@ -502,23 +520,35 @@ public function updateloan(Request $request)
              $month=$curentdate[1];
                       
                 if($request->payment_type=='loan'){
-                    $member_loans=Member::find($request->member)->loanlist->where('loan_status','=','repayment');
-                      //orderby date
-                                  
-                           
+                    $member_loans=Member::find($request->member)->loanlist->where('loan_status','=','repayment');     
+                      $loanscheduleid=$member_loans->pluck('id');
+
+                              
                        foreach($member_loans as $loan){
-                            $loanschedules=$loan->loanschedule->whereRaw(\DB::raw('MONTH(duedate)'),'=',$month);
-                                   dd($loanschedules);
-                           
-                          foreach($loanschedules  as $loan_schedule){
-                                          
+                           /* $loanschedules=$loan->loanschedule->whereRaw(\DB::raw('MONTH(duedate)'),'=',$month);*/
+                                  /* dd($loanschedules);*/
+                         /*  $loanschedules=Loanschedule::whereIn('loan_id',$loanscheduleid)->whereMonth('duedate',$month)->whereYear('duedate',$year)->get();*/
+                           $previousmonth=date('Y-m-d', strtotime(date('Y-m-01')." -1 month"));
+                              //dd($previousmonth);
+                       
+                             $lastdateofcurrentmonth=date("Y-m-t", strtotime(date('Y-m-d'))); 
+                                
+
+                      $loanschedules=Loanschedule::whereIn('loan_id',$loanscheduleid)->where('status',null)->whereBetween('duedate',[$previousmonth,$lastdateofcurrentmonth])->orWhere('status','=','incomplite')->get();
                                       
                                 
-                                          
-                                           // dd($loan_schedule);
+                          foreach($loanschedules  as $loan_schedule){
+                                          // dd($loan_schedule);
                                  if($loan_schedule->status!='paid') {
                                                       //get first row in table
+      
+                      $member_interestaccount=$member->memberaccount->where('name','=','Interest Account')->first();
+                      $main_interestaccount=Mainaccount::where('name','=','Interest Account')->first();
+                       $main_loanaccount=Mainaccount::where('name','=','Loan Account')->first();
+                      $month_paid_interest=$loan_schedule->monthrepayment->sum('interestpayed');
+                      $month_paid_principle=$loan_schedule->monthrepayment->sum('principlepayed');
 
+                        
 
                                    $payment=Payment::create([
                                      'loan_id'=>$loan_schedule->loan->id,
@@ -530,12 +560,7 @@ public function updateloan(Request $request)
                                       'date'=>date('Y-m-d')
                                          ]);
 
-                  $member_interestaccount=$member->memberaccount->where('name','=','Interest Account')->first();
-                      $main_interestaccount=Mainaccount::where('name','=','Interest Account')->first();
-                       $main_loanaccount=Mainaccount::where('name','=','Loan Account')->first();
-                      $month_paid_interest=$loan_schedule->monthrepayment->sum('interestpayed');
-                      $month_paid_principle=$loan_schedule->monthrepayment->sum('principlepayed');
-
+                
 
                                         if(is_null($loan_schedule->monthpenaty)){
                                                   
@@ -554,12 +579,8 @@ public function updateloan(Request $request)
 
                                                          $total_to_pay=($principle_to_pay+$interest_to_pay);
                                                      
-                                              
-
 
                                                 //store in payment table
-
-                                                      
                                                            
                                                           if($amountinput==$totalmonthpay){         
                                                                
@@ -584,7 +605,6 @@ public function updateloan(Request $request)
 
                                                      $loan->loan_status='inactive';
                                                       $loan->save();*/
-
 
                                                 //cr loan account in bank
                                            
@@ -639,7 +659,7 @@ public function updateloan(Request $request)
                                    ]);
 
 
-                                            
+                     
                                                   
                                    
                                                 //store in jornal table 
@@ -808,7 +828,6 @@ public function updateloan(Request $request)
                                                                               
                                                               //return back()->with('status','Loan deposited'); 
                                                                                
-
                                                }
                                                else if($amountinput<$totalmonthpay){
 
@@ -1470,8 +1489,6 @@ public function updateloan(Request $request)
                                                                 $loan_schedule->status='incomplete';
                                                                 $loan_schedule->save();
 
-
-
                                                             Bankaccount::create([
 
                                   'mainaccount_id'=>$main_penatyaccount->id,
@@ -1512,11 +1529,6 @@ public function updateloan(Request $request)
                                       'description'=>'interest',
                                        'date'=>date('Y-m-d')
                                    ]); 
-
-
-
-
-
 
 
                                                 Journalentry::create(
@@ -2053,7 +2065,7 @@ public function updateloan(Request $request)
                                    $date0=$value->date;
                                    $date0=str_replace('/', '-', $date0);
                                     $dateex=explode('-', $date0);
-                                    var_dump($dateex);
+                                 //   var_dump($dateex);
 
                                    $yr=$dateex[0];
                                    $m=$dateex[1];
