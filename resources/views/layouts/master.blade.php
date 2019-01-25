@@ -50,7 +50,7 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/custom_saccoss.css ') }}">
-     
+  
             @yield('css')
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -64,9 +64,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style type="text/css">
     .sidebar-menu>li.header {color:#FFF !important;}
+    .ui-datepicker{ z-index:1151 !important; }
+    
   </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue  sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -508,6 +510,9 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('adminlte/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<!--added for date restriction-->
+
+  <!--/-->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
@@ -568,6 +573,8 @@
     </script>
 
    <script src="{{ asset('js/confirm/bootstrap.confirm.js') }}"></script>
+
+
    <style type="text/css">
             @page { size: auto;  margin-top:5mm;  margin-left:13mm; margin-right:13mm;}
        
@@ -578,9 +585,15 @@
       <script>
     $(function(){
       window.prettyPrint && prettyPrint();
+
       $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+         minDate: '+1D'
       });
+     
+      
+    $( ".datepicker_curr_next" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
+ 
       $('#dp2').datepicker();
       $('#dp3').datepicker();
 
@@ -611,6 +624,15 @@
           }
           $('#dp5').datepicker('hide');
         });
+        $('.datepicker_modal').datepicker({
+     dateFormat: 'dd-mm-yy',
+     minDate: '+5d',
+     changeMonth: true,
+     changeYear: true
+ 
+ });
+
+
 
         $('#example1').DataTable({
       dom: 'Bfrtip',
@@ -625,6 +647,7 @@ buttons: [
 
              
 ]
+
     });
 
       
@@ -642,8 +665,25 @@ buttons: [
                              document.body.innerHTML=restorepage;
         }
   </script>
-   
+  <script type="text/javascript">
+$(document).ready(function(){
+  $('.profile-list ul li a').click(function(){
+    $('li a').removeClass("active");
+    $(this).addClass("active");
+});
+});
+  $(document).ready(function(){
     
+     //alert(url);
+    $('.profile-list a').click(function(){
+         var url      = $(this).attr("href");
+       
+        $(this).addClass("active");
+        
+    });
+  });
+   
+</script>    
     @yield('js')
    
 

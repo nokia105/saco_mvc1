@@ -1,23 +1,5 @@
-<div class="error" style="padding-top:50px; text-align:center;">
 
-
-            @if (session('error'))
-
-          
-                    <div class="alert alert-danger">
-                        <strong>Warning! </strong>{{ session('error') }}
-                    </div>
-
-    
-                @endif
-            
-            @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-        </div>
-
+<div class="col-md-12"><h3>Deny</h3></div>
     <form action ="{{url('/reject_submitted')}}" method="post">
     	          {{csrf_field()}}
     	 <input type="hidden" name="loan_id" value="{{$loan->id}}">
@@ -64,10 +46,10 @@
                     
               </div>         
     	<div class="form-group{{ $errors->has('deny_reason') ? ' has-error' : '' }}">
-  <label for="reason">Denied Reason:</label>
+  <label for="reason">Reason:</label>
   <textarea class="form-control" rows="4"  name="deny_reason" id="reason" value="{{old('deny_reason')}}"  required="true"  autocomplete="off"></textarea>
    <small class="text-danger">{{ $errors->first('deny_reason') }}</small>
 </div>
 
 
-     <button>Deny <i class="fa fa-ban" style="color:red; font-size:15px;"></i></button>
+     <button class="btn btn-primary">Does Not Qualify,Deny <i class="fa fa-ban" style="color:; font-size:15px;"></i></button>

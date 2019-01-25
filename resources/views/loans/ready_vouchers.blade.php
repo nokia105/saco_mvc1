@@ -78,8 +78,8 @@
             Action <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-        <li><a  onclick="showAjaxModal('{{route('paid',$voucher->loan->id)}}')" >
-        <i class="fa fa-check-circle-o" style="color:green; font-size:15px;"></i>post</a> </li>
+        <li><a  onclick="showAjaxModal('{{route('post_loanpayment',$voucher->loan->id)}}')" >
+        <i class="fa fa-check-circle-o" style="color:green; font-size:15px;"></i>Post Payments</a> </li>
                                
          </ul>
          </div>

@@ -138,7 +138,9 @@
 
    return view('shares.membershares');
 });*/
-
+   Route::get('calculator','MembersProfileController@calculator')->name('calculator');
+   //Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
+   Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
    Route::get('interestmethod','MembersProfileController@interestmethod')->name('interestmethod');
    Route::get('getprofit_distribution','ProfitdistributionController@index')->name('getprofit_distribution');
 
@@ -225,6 +227,7 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
    Route::post('/drafted/update/{id}','LoansController@update')->name('drafted.update');
    Route::get('/drafted/delete/{id}','LoansController@delete')->name('drafted.delete');
   Route::get('newloans_received','LoansController@newloans_received');
+  Route::get('loan_status','LoansController@loan_status');
   Route::get('/loan_info/{id}','LoansController@loan_info')->name('loan_info');
   Route::get('/pending_loans','LoansController@appended_loans');
   Route::get('/rejected_loans','LoansController@rejected_loans');
@@ -238,11 +241,11 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
    Route::get('/submit/{id}','LoansController@submit')->name('submit');
   Route::get('/agree/{id}','LoansController@agree')->name('agree');
   Route::get('approve_voucher/{id}','LoansController@approve_voucher')->name('approve_voucher');
-  Route::get('/paid/{id}','LoansController@paid')->name('paid');
+  Route::get('/post_loanpayment/{id}','LoansController@post_loanpayment')->name('post_loanpayment');
   Route::get('/voucher{id}','LoansController@voucher')->name('voucher');
   Route::post('/agree_submitted','LoansController@agree_submitted');
   Route::post('approve_voucher_submitted','LoansController@approve_voucher_submitted')->name('approve_voucher_submitted');
-  Route::post('/paid_submitted','LoansController@paid_submitted')->name('paid_submitted');
+  Route::post('/post_loan_payment','LoansController@post_loan_payment')->name('post_loan_payment');
 
  Route::get('/reject/{id}','LoansController@reject')->name('reject');
  Route::get('provision/{id}','LoansController@provision')->name('provision');

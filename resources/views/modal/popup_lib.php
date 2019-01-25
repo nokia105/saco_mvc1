@@ -30,6 +30,28 @@
             }
         });
     }
+function showAjaxModalX2(url)
+    {
+        // SHOWING AJAX PRELOADER IMAGE
+        jQuery('#modal_ajaxX2 .modal-body2').html('<div style="text-align:center;margin-top:100px;"></div>');
+        
+        // LOADING THE AJAX MODAL
+        jQuery('#modal_ajaxX2').modal('show', {backdrop: 'false'});
+    
+        
+        // SHOW AJAX RESPONSE ON REQUEST SUCCESS
+        $.ajax({
+            url: url,
+            success: function(response)
+            {
+            
+                jQuery('#modal_ajaxX2 .modal-body2').html(response);
+                closeOnEscape: false;
+            
+            dialogClass: "noclose";
+            }
+        });
+    }
 </script>
 
     
@@ -88,7 +110,7 @@
     </div>
 
 
-              <div class="modal fade" id="modal_ajax" data-keyboard="false" data-backdrop="static">
+    <div class="modal fade" id="modal_ajax" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog" style="width:500px; text-align: ;">
             <div class="modal-content" ">
                 
@@ -98,6 +120,27 @@
                 </div>
                 
                 <div class="modal-body" style="margin:0px;"  >
+                
+                       
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_ajaxX2" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" style="width: 750px;">
+            <div class="modal-content" ">
+                
+                <div class="modal-header modal-header-info">
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                    <h1>Loan Calculator</h1>
+                </div>
+                
+                <div class="modal-body2 col-md-12" style="margin:0px;"  >
                 
                        
                 </div>

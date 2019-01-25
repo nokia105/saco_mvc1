@@ -83,9 +83,7 @@
           </a>
        
         </li>
-
-        @endrole
-             <li class="">
+      <li class="">
           <a href="{{url('/newloans_received')}}">
             <i class="fa fa-archive"></i> <span>Submitted</span>
             <span class="pull-right-container">
@@ -93,19 +91,8 @@
             </span>
           </a>
        
-        </li>
-
-          <li class="">
-          <a href="{{url('/processed_loans')}}">
-            <i class="fa fa-archive"></i> <span>On progress</span>
-            <span class="pull-right-container">
-              <i class="fa  pull-right"></i>
-            </span>
-          </a>
-       
-        </li>
-
-         <li class="">
+       </li>
+       <li class="">
           <a href="{{url('/approved_loans')}}">
             <i class="fa fa-briefcase"></i> <span>Approved</span>
             <span class="pull-right-container">
@@ -113,6 +100,58 @@
             </span>
           </a>     
         </li>
+        
+
+        @endrole
+
+        @role('Accountant','member')
+        <li class="">
+          <a href="{{url('/newloans_received')}}">
+            <i class="fa fa-archive"></i> <span>New Loans</span>
+            <span class="pull-right-container">
+              <i class="fa  pull-right"></i>
+            </span>
+          </a>
+       
+        </li>
+          <li class="">
+          <a href="{{url('/processed_loans')}}">
+            <i class="fa fa-archive"></i> <span>Reviewed Loans</span>
+            <span class="pull-right-container">
+              <i class="fa  pull-right"></i>
+            </span>
+          </a>
+       
+           </li>
+        <li class="">
+          <a href="{{url('/approved_loans')}}">
+            <i class="fa fa-briefcase"></i> <span>Approved</span>
+            <span class="pull-right-container">
+              <i class="fa  pull-right"></i>
+            </span>
+          </a>     
+        </li>
+           @endrole
+            @role('Chair','member')
+        <li class="">
+          <a href="{{url('/processed_loans')}}">
+            <i class="fa fa-archive"></i> <span>New Loans</span>
+            <span class="pull-right-container">
+              <i class="fa  pull-right"></i>
+            </span>
+          </a>
+       
+           </li>
+
+        <li class="">
+          <a href="{{url('/approved_loans')}}">
+            <i class="fa fa-briefcase"></i> <span>Approved</span>
+            <span class="pull-right-container">
+              <i class="fa  pull-right"></i>
+            </span>
+          </a>     
+        </li>
+        @endrole
 
          <li class="">
           <a href="{{url('/rejected_loans')}}">
@@ -153,6 +192,17 @@
           </a>
        
         </li>
+        <!---for all-->
+        <li class="">
+          <a href="{{url('/loan_status')}}">
+            <i class="fa fa-archive"></i> <span>Loan Status</span>
+            <span class="pull-right-container">
+              <i class="fa  pull-right"></i>
+            </span>
+          </a>
+       
+        </li>
+        <!---/for all-->
           </ul>
         </li>
   <li class="header">PAYMENTS</li>

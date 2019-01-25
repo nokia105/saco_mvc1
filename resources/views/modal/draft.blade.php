@@ -1,31 +1,10 @@
 
-    <div class="error" style="padding-top:50px; text-align:center;">
-
-
-            @if (session('error'))
-
-          
-                    <div class="alert alert-danger">
-                        <strong>Warning! </strong>{{ session('error') }}
-                    </div>
-
-    
-                @endif
-            
-            @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-        </div>
+   <div class="col-md-12"><h3>Loan Submission </h3></div>
 
     <form action ="{{url('/draft_submitted')}}" method="post">
        {{csrf_field()}}
         <input type="hidden" name="loan_id" value="{{$loan->id}}">
 
-          <div class="ceneter" style="text-align: center; padding-bottom:5px;">
-                                <h4>Submit Loan</h4>
-                           </div>
 
              <div class="form-row">
                     <div class="form-group  col-md-6">
@@ -73,7 +52,7 @@
               <br/>
               <div class="form-row col-md-12">
                 <div class="form-group col-md-12">
-                <button class="btn btn-primary col-md-offset-3 col-md-3" style="margin-top: 20px;">Submit <i class="fa fa-send-o" style="color:green; font-size:15px;"></i></button>
+                <button class="btn btn-primary col-md-offset-3 col-md-6" style="margin-top: 20px;">Submit <i class="fa fa-send-o" style="color:; font-size:15px;"></i></button>
               </div>
             </div>
           </div>

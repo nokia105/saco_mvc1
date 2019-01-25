@@ -1,25 +1,6 @@
 
 
-    <div class="error" style="padding-top:50px; text-align:center;">
-
-
-            @if (session('error'))
-
-          
-                    <div class="alert alert-danger">
-                        <strong>Warning! </strong>{{ session('error') }}
-                    </div>
-
-                @endif
-            
-            @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-        </div>
-
-    <form action ="{{url('/paid_submitted')}}" method="post">
+    <form action ="{{url('/post_loan_payment')}}" method="post">
        {{csrf_field()}}
         <input type="hidden" name="loan_id" value="{{$loan->id}}">
         <input type="hidden" name="voucher_id" value="{{$loan->voucher->id}}">
@@ -27,8 +8,8 @@
         <input type="hidden"  class="form-control" name="mainaccount" value="{{$saccossloan_account=\App\Mainaccount::where('name','=','Loan Account')->first()->id}}" >
         <input type="hidden"  class="form-control"  name="allamount" value="{{$loan->principle}}"  >
 
-               <div class="ceneter" style="text-align: center; padding-bottom:5px;">
-                                <h4>Voucher</h4>
+               <div class="ceneter" style=" padding-bottom:5px;">
+                                <h3>Post Loan Payments</h3>
                            </div>
              <div class="form-row">
                     <div class="form-group  col-md-6">
@@ -94,7 +75,7 @@
                    data-title="Warning!" 
                    data-message="The posted amount cannot be edited!. Do you want to payment this ? "
                    data-type="info">
-                   Paid
+                   Post Loan Payments
 
                    </button>
               </div>

@@ -18,7 +18,7 @@
       <h2>TASAF SACCOS</h2><br>
       <img src="{{asset('images/logo/saccos.jpg')}}" alt="logo" /><br/>
      
-      <u><h4>LOAN BREAKDOWN FOR PRINCIPLE OF TZS {{number_format(round($principle,2),2)}}</h4></u>
+      <u><h4>LOAN RECEIPT</h4></u>
 
       
     </div>

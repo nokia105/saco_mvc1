@@ -59,16 +59,21 @@ class LoansController extends Controller
        $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
        $receivedloans=Loan::orderBy('loanInssue_date')->where('loan_status','=','submitted')->get();
-    return view('loans.newloans_received',compact('receivedloans','code'));
-     }
-  public function loan_status()
-    {
-        //
-       $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
-       $receivedloans=Loan::orderBy('loanInssue_date','DESC')->where('loan_status','!=','draft')->get();
-    return view('loans.loan_status',compact('receivedloans','code'));
-     }
+           
+
+    return view('loans.newloans_received',compact('receivedloans','code'));
+
+    
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+
+
+     */
+}
 
      public function loan_info($id){
 
@@ -177,12 +182,11 @@ class LoansController extends Controller
 
                       
    
-                     $loan=$loan1=$loan2=Loan::find($request->loan_id);
+                     $loan=Loan::find($request->loan_id);
 
                      $user=Auth::guard('member')->user();
 
-                      /*if($user->hasRole('Accountant|Cashier')){*/
-                    if($user->hasRole('Accountant')){
+                      if($user->hasRole('Accountant|Cashier')){
                          //change boared status----->
                      $loan->board_status='reviewed';
                      $loan->loan_status='reviewed';
@@ -191,21 +195,11 @@ class LoansController extends Controller
                      $loan->board_person=$user->member_id;
                      $loan->save();
 
-                     //Accountant will also access the loan
-                     $loan1->firstprocessed_status='assessed';
-                     $loan1->loan_status='assessed';
-                     $loan1->firstprocessed_date=date('Y-m-d');
-                     $loan1->firstprocessed_reason=$request->reason;
-                     $loan1->firstprocessed_person=$user->member_id;
-                     $loan1->save();
+                        return back()->with('status','Successfully Reviewed');   
 
-                        return back()->with('status','Successfully reviewed and accessed');   
-
-                   }
-                   //gabage else for later use
-                   elseif($user->hasRole('Loan Officer')){
+                   }elseif($user->hasRole('Loan Officer')){
                                    //original review
-                     $loan->firstprocessed_status='assessed';
+                       $loan->firstprocessed_status='assessed';
                      $loan->loan_status='assessed';
                      $loan->firstprocessed_date=date('Y-m-d');
                      $loan->firstprocessed_reason=$request->reason;
@@ -429,12 +423,12 @@ class LoansController extends Controller
         }
 
           
-      public function post_loanpayment($id){
+      public function paid($id){
 
          $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
             $loan=Loan::find($id);
 
-           return view('modal.post_loanpayment',compact('loan','code'));
+           return view('modal.paid',compact('loan','code'));
                 
 
       }
@@ -463,7 +457,7 @@ class LoansController extends Controller
         }
 
 
-       public function post_loan_payment(Request $request){
+       public function paid_submitted(Request $request){
                       
                       $loan=Loan::find($request->loan_id);
                       
@@ -581,6 +575,67 @@ class LoansController extends Controller
                                    ]);
  
 
+                               // be discussed
+
+
+                            //create  principle journal entry member 
+
+                             Journalentry::create(
+                              [       
+                               'dr'=>$request->amount_paid, 
+                                 'memberaccount_id'=>$request->memberaccount,
+                                  'payment_id'=>$payment->id,
+                                    'date'=>date('Y-m-d'),
+                                'service_type'=>'loan']
+                                   
+                             ); 
+
+                                //loan principle journal main 
+
+                             Journalentry::create([
+                                  'cr'=>$request->amount_paid, 
+                                 'mainaccount_id'=>$bankaccount->id,
+                                  'payment_id'=>$payment->id,
+                                  'date'=>date('Y-m-d'),
+                                 'service_type'=>'loan']); 
+
+                              
+
+                                    //charges dr
+                                     Journalentry::create([
+                                  'dr'=>$loan->loan_fees()->sum('fee_value'), 
+                                 'mainaccount_id'=>$bankaccount->id,//$main_chargesaccount->id,
+                                  'payment_id'=>$payment->id,
+                                  'date'=>date('Y-m-d'),
+                                 'service_type'=>'charges']); 
+
+
+                                    //charges ,cr   
+                                       Journalentry::create([
+                                  'cr'=>$loan->loan_fees()->sum('fee_value'), 
+                                 'memberaccount_id'=>$member_chargesaccount->id,
+                                  'payment_id'=>$payment->id,
+                                  'date'=>date('Y-m-d'),
+                                 'service_type'=>'charges']); 
+     
+
+                                    //insurance dr member
+                                      Journalentry::create([
+                                  'dr'=>$loan->insurances->percentage_insurance, 
+                                 'memberaccount_id'=>$member_insuranceaccount->id,
+                                  'payment_id'=>$payment->id,
+                                  'date'=>date('Y-m-d'),
+                                 'service_type'=>'insurance']); 
+
+                                    //insurance cr member       
+
+                                       Journalentry::create([
+                                  'cr'=>$loan->insurances->percentage_insurance, 
+                                 'mainaccount_id'=>$bankaccount->id,
+                                  'payment_id'=>$payment->id,
+                                  'date'=>date('Y-m-d'),
+                                 'service_type'=>'insurance']); 
+
 
                           for($i=0; $i<$loan->duration; $i++){
 
@@ -632,7 +687,11 @@ class LoansController extends Controller
         /*$paid_loans=Loan::orderBy('loanInssue_date')
         ->where('loan_status','=','paid')->get();*/
          
-         $paid_vouchers=Voucher::orderBy('paid_date','DESC')->get();
+         $paid_vouchers=Voucher::orderBy('paid_date');
+
+          
+
+       
            return view('loans.paid_loans',compact('paid_vouchers','code'));
         }
 
