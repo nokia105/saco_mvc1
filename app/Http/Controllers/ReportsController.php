@@ -552,7 +552,7 @@ class ReportsController extends Controller
                              $query->whereMonth('loanInssue_date','=',$month)
                            ->whereYear('loanInssue_date','=',$year);
                             })->where(function ($query) {
-                                 $query->where('loan_status','=','paid')
+                                 $query->where('loan_status','=','repayment')
                                  ->orWhere('loan_status','finished');
                           })->get(); 
 
@@ -581,7 +581,7 @@ class ReportsController extends Controller
                              $query->whereBetween('loanInssue_date',[$startDate,$endDate]);
                                  
                             })->where(function ($query) {
-                                 $query->where('loan_status','=','paid')
+                                 $query->where('loan_status','=','repayment')
                                ->orWhere('loan_status','=','finished');
                           })->get();       
 
@@ -613,7 +613,7 @@ class ReportsController extends Controller
                              $query->whereRaw("month(loanInssue_date) between $startmonth and $endmonth")
                                       ->whereYear('loanInssue_date',$year);
                             })->where(function ($query) {
-                                 $query->where('loan_status','=','paid')
+                                 $query->where('loan_status','=','repayment')
                                ->orWhere('loan_status','=','finished');
                           })->get(); 
 
@@ -643,7 +643,7 @@ class ReportsController extends Controller
                                $loans=Loan::where(function ($query) use($year){
                              $query->whereYear('loanInssue_date',$year);
                             })->where(function ($query) {
-                                 $query->where('loan_status','=','paid')
+                                 $query->where('loan_status','=','repayment')
                                  ->orwhere('loan_status','finished');
                                        
                           })->get();

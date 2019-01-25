@@ -34,9 +34,15 @@
                <div class="form-group{{ $errors->has('year') ? ' has-error' : '' }}">
                       <select class="form-control select2 "  id="" name="year" required>
                         <option value="">-----Year------</option>
-                          @for ($i = 0; $i < 8; $i++)
-                        <option value="{{2018+$i}}">{{2018+$i}}</option>
-                          @endfor
+                           
+                            @php
+                                $y=2019;
+                                 do{ @endphp
+                        <option value="{{$y}}">{{$y}}</option>
+                                   @php $y++;
+                                  }while($y<=date('Y'));
+                           @endphp
+                       
                            
                       </select>
                    

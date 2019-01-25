@@ -144,5 +144,10 @@ class Member extends Authenticatable
       return $this->belongsToMany(Loan::class,'loan_guarantor','guarator_id','loan_id')->withTimestamps();
      }
 
+       public function monthpaymentlist(){
+
+         return $this->hasMany(Monthpaymentlist::class,'member_id');
+       }
+
 
 }

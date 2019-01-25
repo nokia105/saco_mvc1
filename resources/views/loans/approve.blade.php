@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal_ajax">
+*<div class="modal fade" id="modal_ajax">
         <div class="modal-dialog" style="width:500px; text-align: ;">
             <div class="modal-content" ">
                 

@@ -24,7 +24,7 @@
 
                          $payment=Payment::create([
                                      'loan_id'=>$loanschedule->loan->id,
-                                      'amount'=>total_to_pay,
+                                      'amount'=>$total_to_pay,
                                       'narration'=>$request->narration,
                                       'paid_by'=>Auth::guard('member')->user()->member_id,  //loan payment verificat
                                       'payment_type'=>$request->payment_method,
@@ -216,7 +216,7 @@
                                                                   'user_id'=>Auth::guard('member')->user()->member_id
                                                              ]); 
 
-                                                       $repayment->monthrepayment()->attach($loan_schedule->id);
+                                                      // $repayment->monthrepayment()->attach($loan_schedule->id);
                                                        $loan_schedule->status='paid';
                                                        $loan_schedule->save();
 

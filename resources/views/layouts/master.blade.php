@@ -558,25 +558,23 @@
       <script type="text/javascript" language="javascript" src="{{asset('js/dataTables.buttons.min.js')}}">
 
     </script>
-    <script src="{{asset('js/buttons.print.min.js')}}"></script>
+          <script src="{{asset('Editor/js/jszip.min.js')}}"></script>
+         <script src="{{asset('Editor/js/pdfmake.min.js')}}"></script>
+            <script src="{{asset('Editor/js/vfs_fonts.js')}}"></script>
+           <script src="{{asset('js/buttons.print.min.js')}}"></script>
+     <script src="{{asset('Editor/js/buttons.html5.min.js')}}"></script>
+
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.0/js/dataTables.select.min.js">
     </script>
 
    <script src="{{ asset('js/confirm/bootstrap.confirm.js') }}"></script>
+   <style type="text/css">
+            @page { size: auto;  margin-top:5mm;  margin-left:13mm; margin-right:13mm;}
+       
+          </style>
  
    
-    
-    <script type="text/javascript">
-      $(document).ready(function() {
-
-    $('#example1').DataTable();
-} );
-      
-      $('nav a').parents('li,ul').removeClass('active');
-      $('a[href="' + this.location.pathname + '"]').parents('li,ul').addClass('active');
-
-    </script>
-
+  
       <script>
     $(function(){
       window.prettyPrint && prettyPrint();
@@ -585,18 +583,20 @@
       });
       $('#dp2').datepicker();
       $('#dp3').datepicker();
+
       
       
       var startDate = new Date(2016,1,20);
-      var endDate = new Date(2016,1,25);
+      var endDate = new Date();
       $('#dp4').datepicker()
         .on('changeDate', function(ev){
+
           if (ev.date.valueOf() > endDate.valueOf()){
             $('#alert').show().find('strong').text('The start date can not be greater then the end date');
           } else {
             $('#alert').hide();
             startDate = new Date(ev.date);
-            $('#startDate').text($('#dp4').data('date'));
+            $('#startDate').val($('#dp4').data('date'));
           }
           $('#dp4').datepicker('hide');
         });
@@ -607,11 +607,40 @@
           } else {
             $('#alert').hide();
             endDate = new Date(ev.date);
-            $('#endDate').text($('#dp5').data('date'));
+            $('#endDate').val($('#dp5').data('date'));
           }
           $('#dp5').datepicker('hide');
         });
+
+        $('#example1').DataTable({
+      dom: 'Bfrtip',
+buttons: [
+       
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+             {extend: 'pdfHtml5',
+           }
+            
+
+             
+]
     });
+
+      
+    });
+
+        function printingdiv(div) {
+
+                          /*   const table=document.getElementsByTagName('table')[0];
+                                  table.id='none'; 
+                                  console.log(table.id); */ 
+                             var restorepage=document.body.innerHTML;
+                             var printContent=document.getElementById(div).innerHTML;
+                             document.body.innerHTML=printContent;
+                             window.print();
+                             document.body.innerHTML=restorepage;
+        }
   </script>
    
     

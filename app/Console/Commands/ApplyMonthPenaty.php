@@ -72,7 +72,7 @@ class ApplyMonthPenaty extends Command
                                                //penaty to the jornal
 
                                                  //dr main penaty account 
-
+/*
                                                         Journalentry::create(
                                                   [
                                
@@ -92,7 +92,7 @@ class ApplyMonthPenaty extends Command
                                               'date'=>date('Y-m-d'),
                                               'service_type'=>'penaty']
                                    
-                                                  );       
+                                                  );       */
 
                                          Monthpenaty::create(
                                               [
@@ -102,10 +102,7 @@ class ApplyMonthPenaty extends Command
                                            ]);
 
                                            
-
                                 }else{
-
-
 
           
                                          $penalty_amount=($penalty/100)*$month_pay_amount;

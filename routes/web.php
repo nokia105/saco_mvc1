@@ -142,9 +142,6 @@
    Route::get('interestmethod','MembersProfileController@interestmethod')->name('interestmethod');
    Route::get('getprofit_distribution','ProfitdistributionController@index')->name('getprofit_distribution');
 
- 
-
-   
 Auth::routes();
 
 Route::get('/profile/{id}/membersavings','SavingsController@membersavings')->name('membersavings');
@@ -309,11 +306,10 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
  Route::get('/member/{id}','MemberinfoController@dashboard');
  Route::get('/repayment_slip/{member_id}/{amountinput}/{getpaymenttype}','MembersProfileController@repayment_slip')->name('repayment_slip');
 
-
-
-
-          //member account 
-  Route::get('/member/{id}/savings','MemberinfoController@savings');
+                //member accounts
+Route::group(['middleware' => ['Usersecurity']], function () {
+   
+   Route::get('/member/{id}/savings','MemberinfoController@savings');
   Route::get('/member/{id}/allsavings','MemberinfoController@allsavings')->name('allsavings');
   Route::get('/member/{id}/shares','MemberinfoController@shares');
   Route::get('/member/{id}/allshares','MemberinfoController@allshares')->name('allshares');
@@ -334,6 +330,17 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
   Route::post('/member/{id}/picture_update','MemberinfoController@picture_update')->name('picture_update');
   Route::get('/member/{id}/password_modal','MemberinfoController@password_modal')->name('password_modal');
   Route::get('member/{id}/pass_change','MemberinfoController@pass_change')->name('pass_change');
+ 
+});
+             //unauthorized access 401
+                
+
+      Route::get('/Unauthrorized_access', function () {
+
+    return view('errors.unauthorized');
+
+})->name('unauthorized');
+  
 
 
         //finacial reports
@@ -361,6 +368,8 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
     Route::get('/member_payment','MembersController@paymentform')->name('member_payment');
     Route::post('/post_previous_loan/{id}','MembersProfileController@post_previous_loan')->name('post_previous_loan');
     Route::get('/allpayments','PaymentsController@allpayments')->name('allpayments');
+    Route::get('/editpaymentlist/{id}','PaymentsController@editpaymentlist')->name('editpaymentlist');
+    Route::post('posteditpaymentlist/{id}','PaymentsController@posteditpaymentlist')->name('posteditpaymentlist');
     Route::get('/printallmember_topay','PaymentsController@printallmember_topay')->name('printallmember_topay');
     
     Route::get('pay_allmembers','PaymentsController@pay_allmembers')->name('pay_allmembers');
@@ -376,14 +385,6 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
     Route::get('/capital_change','ReportsController@capital_change')->name('capital_change');
     Route::post('/find_capital_change','ReportsController@find_capital_change')->name('find_capital_change');
 
-  /*  Route::get('/dashboard/chair','DashboardController@dashboard_chair')->name('dashboard.chair');
-    Route::get('/dashboard/loanofficer','DashboardController@dashboard_loanofficer')->name('dashboard_loanofficer');
-    Route::get('/dashboard/cashier','DashboardController@dashboard_cashier')->name('dashboard_cashier');
-    Route::get('/dashboard/accountant','DashboardController@dashboard_accountant')->name('dashboard_accountant');*/
-
  
-
- 
-
 
   
