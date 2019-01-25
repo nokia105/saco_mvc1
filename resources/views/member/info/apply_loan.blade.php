@@ -47,14 +47,14 @@
           <div class="box col-md-12 box-info">
             <div class="box-header">
               <h3 class="box-title">New Loan</h3>
-              <a class="pull-right btn btn-info loan_possiblity">Loan Possiblity </a>
+              <a class="pull-right btn btn-info loan_possiblity">Check Loan Possiblity </a>
 
             </div>
             <!-- /.box-header -->
          <div class="box box-body box-info">
           <div class="row">
                 
-             <div class="notification" style="display:none; ">
+             <div class="notification fade" style="display:none; ">
                <button type="button"  class="pull-right close" aria-hidden="true">&times;</button>
                <div class="summary_savingshare">
                   <h4>Savings & Share Summary</h4>
@@ -151,30 +151,32 @@
             <div class="col-md-6">
               <div class="form-group{{ $errors->has('principle') ? ' has-error' : '' }}">
                   <label for="principle">Principle</label>
-                  <input type="text" class="form-control" id="principle" name="principle" placeholder="100000" value="{{ old('principle')}}">
+                  <input type="number" class="form-control" id="principle" name="principle" placeholder="100000" value="{{ old('principle')}}">
                    <small class="text-danger">{{ $errors->first('principle')}}</small>
                 </div>
+                <div class="form-group">
+                  <label for="" class="col-md-6">Loan Period</label>
+                
+                    <div class="col-sm-8{{ $errors->has('period') ? ' has-error' : '' }}">
+                        <input type="number"  class="form-control"  name="period" value="{{old('period')}}" id="period">
+                        <small class="text-danger">{{ $errors->first('period') }}</small>
+                    </div>
+              </div>
 
-              <div class="btn btn-info" id="calculate" data-toggle="modal" data-target="#modal-default" data-backdrop="false">calculate</div>
+             
          
             </div>
             <!-- /.col -->
             <div class="col-md-6">
-            <div class="form-group">
-                  <label for="" class="col-md-6">Loan Period</label>
-                
-                    <div class="col-sm-8{{ $errors->has('period') ? ' has-error' : '' }}">
-                        <input type="text" class="form-control"  name="period" value="{{old('period')}}" id="period">
-                        <small class="text-danger">{{ $errors->first('period') }}</small>
-                    </div>
-              </div>
+            
               
                     <div class="col-sm-12{{ $errors->has('startpayment') ? ' has-error' : '' }}">
                          <div class="form-group">
                   <label for="">First Payment on</label>
-                  <input type="text"  id="startpayment" class="form-control dp1 span2"  name="startpayment"  value="{{old('startpayment')}}" placeholder="yyyy-mm-dd" autocomplete="off">
+                  <input type="text"  id="startpayment" class="form-control datepicker span2 startpayment"  name="startpayment"  value="{{old('startpayment')}}" placeholder="yyyy-mm-dd" autocomplete="off">
                     <small class="text-danger">{{ $errors->first('startpayment') }}</small>
               </div>
+               <div class="btn btn-info" id="calculate" >calculate</div>
             </div>
             </div>
 
@@ -403,39 +405,7 @@
                color:red;
             } 
         </style>
-       <div class="modal fade" id="modal-default">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                 <div><h4>Loan  Requestor: <strong id="Name"></strong></h4></div>
-              </div>
-              <div class="modal-body">
 
-                  <div class="col-md-6">
-                <div> <h4>Monthly repayment  <strong id="mrepayment"></strong> Tsh</h4></div>
-                <div><h4>First repayment  <strong id="frepayment"></strong></h4></div>
-                <div><h4>Last repayment  <strong id="lrepayment"></strong></h4></div>
-                     
-                    </div> 
-                 <div class="col-md-6">
-                   <div class="duration"> <h4>Loan Duration <strong id="lduration"></strong> Month(s)</h4></div>
-               <div> <h4>principle is <strong id="lprinciple"></strong> Tsh</h4></div>
-               <div> <h4>Interest is <strong id="linterest"></strong> %</h4></div>
-                 </div>
-                 
-                <!-- <div><h4>Loan issued by  <strong id="lofficer"></strong></h4></div> -->
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">close</button>
-                <button id="button" onclick="printDiv('print')">Download PDF <i class="fa fa-file-pdf-o"></i></button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
 
         <div id="print" style="display:none;">
            <div class="container">
@@ -522,11 +492,12 @@
                 },1000);
 
               $('.close').click(function(){
+                 $('.notification').addClass('fade');
                    $('.notification').fadeOut();
               });
 
               $('.loan_possiblity').click(function(){
-                  
+                  $('.notification').removeClass('fade');
                   $('.notification').fadeIn();
 
               });
@@ -535,52 +506,25 @@
 // code to get all records from table via select box
 $('#calculate').click(function()
 { 
-
- 
-var pcategoryid = $(this).find(":selected").val();
+var principle=$('#principle').val();
+ //alert(principle);
+//var pcategoryid = $(this).find(":selected").val();
 
   
     var principle=$('#principle').val();
 
      var period=$('#period').val();
-      var interest=$('#interest').val();
-      var startpayment=$('#startpayment').val();
+      //var interest=$('#interest').val();
+      var startpayment=$('.startpayment').val();
       var Imethod=$('#Imethod').val();
-      var loanrequestor=$('#loanrequestor').val();
-      var loanOfficer=$('#loanOfficer').val();
+      /*var loanrequestor=$('#loanrequestor').val();
+      var loanOfficer=$('#loanOfficer').val();*/
+      url="{{ url('/') }}/calculator_popup/?principle="+principle+"&interest=&period="+period+"&startpayment="+startpayment;
+      //alert(startpayment);
+      showAjaxModalX2(url);
 
-       var dataString='principle='+principle+'&period='+period+'&interest='+interest+'&startpayment='+startpayment+'&Imethod='+Imethod+'&loanrequestor='+loanrequestor+'&loanOfficer='+loanOfficer;
-
-
-         
-         
-$.ajax
-({
-         
-url:'{{route('interestmethod')}}',
-type:"GET",
- dataType: 'json',
-data: dataString,
-cache: true,
-success: function(data)
-{
-
-var dwn_url='<a href="{{url('/')}}/pdf_download/'+data.principle+'/'+data.interest+'/'+data.loanperiod+'/'+data.firstpayment+'">Download PDF <i class="fa fa-file-pdf-o"></i></a>'
-           
-$("#lprinciple").html(data.principle);
-$("#Name").html(data.loanrequestor);
-$("#linterest").html(data.interest);
-$("#mrepayment").html(data.monthlyrepayment);
-$("#frepayment").html(data.firstpayment);
-$("#lrepayment").html(data.lastpayment);
-$("#lofficer").html(data.loanOfficer);
-$("#lduration").html(data.loanperiod);
-// $("#pdfview").html(dwn_url);
-
-}
 
 });
-})
 
 });
         
@@ -834,4 +778,5 @@ success: function(data)
 });                         
 
 </script>
+@include('modal.popup_lib')
  @endsection

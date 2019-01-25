@@ -23,7 +23,7 @@
                   <th>Period</th>
                  
                   <th>Payment Startdate</th>
-                  <th>End Date</th>
+                  <!-- <th>End Date</th> -->
                    <th>Status</th>
                 <!--   <th>Edit</th> -->
                  
@@ -44,8 +44,7 @@
                   <td>{{ number_format($loanlist->mounthlyrepayment_amount,2)}}</td>
                   <td>{{  $loanlist->duration }} Months</td>
                   <td >{{ \Carbon\carbon::parse($loanlist->repayment_date)->format('d/m/Y') }}</td>
-                  <td>{{$loanlist->loanschedule->duedate->last()->duedate}}
-                  </td>
+                  
                    @if($loanlist->loan_status=='paid')
                          <td><span class="label label-sm label-warning">{{strtoupper($loanlist->loan_status)}}</span></td>
                           @else

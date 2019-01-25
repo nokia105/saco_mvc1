@@ -326,7 +326,7 @@ class PaymentsController extends Controller
       public function payment_list(){
 
 
-          $payments=Payment::orderBy('date','desc')->get();
+          $payments=Payment::orderBy('date','desc')->limit(300)->get();
 
 
 

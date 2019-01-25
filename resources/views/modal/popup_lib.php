@@ -136,7 +136,7 @@ function showAjaxModalX2(url)
             <div class="modal-content" ">
                 
                 <div class="modal-header modal-header-info">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color:#FFF; z-index:1000;">X</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                     <h1>Loan Calculator</h1>
                 </div>
                 

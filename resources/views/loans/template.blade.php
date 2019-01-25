@@ -55,7 +55,7 @@
 <div class="col-md-10">
 
 
-<nav class="navbar navbar-dark bg-primary" style="padding-top: 0px;">
+<nav class="navbar navbar-dark bg-primary profile" style="padding-top: 0px;">
 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -70,23 +70,24 @@
    
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse profile-list" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         
-        <li class="white"><a href="{{route('member_profile',$id)}}" class="active"><b>Profile</b></a></li>
-         <li  class="white"><a href="{{route('memberShares',$id)}}"><b>Shares </b></a></li>
-         <li  class="white"><a href="{{route('membersavings',$id)}}"><b>Savings</b></a></li>
+        <li class="white"><a href="{{route('member_profile',$id)}}" class=""><b>Profile</b></a></li>
+         <li  class="white"><a href="{{route('memberShares',$id)}}" class=""><b>Shares </b></a></li>
+         <li  class="white"><a href="{{route('membersavings',$id)}}" class=""><b>Savings</b></a></li>
          @role('Cashier|Secretary','member')
             @if($member->status=='active')
-          <li  class="white"><a href="{{url ('profile/'.$id.'/newloan')}}"><b>New Loan</b></a></li>
+          <li  class="white"><a href="{{url ('profile/'.$id.'/newloan')}}" class=""><b>New Loan</b></a></li>
                   
            @endif
           @endrole
          
                   
-          <li  class="white"><a href="{{url ('profile/'.$id.'/loanlist')}}"><b>Loans</b></a></li>
-         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
-         <li  class="white"><a href="{{route('memberShares',$id)}}"><b>Shares </b></a></li> 
+          <li  class="white"><a href="{{url ('profile/'.$id.'/loanlist')}}" class=""><b>Loans</b></a></li>
+         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}" class=""><b>Pay</b></a></li>
+         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}" class=""><b>Payments</b></a></li>
+         <li  class="white"><a href="{{route('memberShares',$id)}}" class=""><b>Shares </b></a></li> 
          @role('Cashier','member')
          <!--  <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
           <li  class="white"> <a href="{{url('profile/'.$id.'/refund')}}"><b>Refund</b></a></li>
@@ -96,7 +97,7 @@
           <a href="#" class="dropdown-toggle white" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More  <span class="caret"></span></a>
           <ul class="dropdown-menu">
             @role('Cashier','member')
-          <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
+          
           <li  class="white"> <a href="{{url('profile/'.$id.'/refund')}}"><b>Refund</b></a></li>
            <li  class="white"><a href="{{url('profile/'.$id.'/previous_payment')}}"><b>Previous Payments</b></a></li>
           @endrole
@@ -131,13 +132,13 @@
         .nav-menu-profile{
           margin-top: 0px;
         }
-        .white a, .white{
+       .profile .white a, .profile .white{
           color:#fff;
         }
-        a:hover {
+        .profile a:hover {
           color:#fff;
         }
-        .active {
+        .profile .active {
     background-color: #00c0ef;
     color: white;
   }

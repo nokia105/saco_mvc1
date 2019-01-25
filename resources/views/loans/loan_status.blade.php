@@ -29,7 +29,7 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Submitted Loans</h3>
+              <h3 class="box-title"> Loans Status</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -45,9 +45,9 @@
                    <th>Time(month)</th>
                    <th>Status</th>
                    
-                    @role('Accountant','member')
+                   <!--  @role('Accountant|Cashier','member')
                    <th>Action</th>
-                   @endrole
+                   @endrole -->
                  
                 
                 </tr>
@@ -62,8 +62,8 @@
                 <td>{{number_format(($loan->mounthlyrepayment_interest)*$loan->duration,2)}}</td>
                 <td>{{$loan->duration}}</td>
                 <td>{{strtoupper($loan->loan_status)}}</td>
-                   @role('Accountant','member')
-                <td class="center">
+                   @role('Accountant|Cashier','member')
+               <!--  <td class="center">
                                 
     <div class="btn-group">
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -81,7 +81,7 @@
                                
          </ul>
          </div>
-</td>
+</td> -->
 @endrole
                 </tr>
                 @endforeach

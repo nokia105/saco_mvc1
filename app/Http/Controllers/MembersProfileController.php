@@ -114,10 +114,11 @@ class MembersProfileController extends Controller
 
 
             public function calculator_popup(Request $request){
-              $principle=request()->principle;
-                $interest=request()->interest;
+              $principle=(float)(request()->principle);
+                $interest=(float)(request()->interest);
+                if ($interest =='') $interest=0.83;
 
-                $period=request()->period; 
+                $period=(int)(request()->period); 
                 $firstpayment=request()->startpayment;
 
               return view('modal.calculator', compact('principle','interest','period','firstpayment') );
@@ -125,12 +126,12 @@ class MembersProfileController extends Controller
             public function calculator(Request $request){
 
               /*return view('modal.calculator');*/
-              $principle=$request->principle;
-              $rate=$request->rate;
+              $principle=(float)($request->principle);
+              $rate=(float)($request->rate);
               $startpayment=$request->start_date;
-              $period=$request->period;
+              $period=(float)($request->period);
               $Principle_plus_interest=$principle*(1+(($rate/100)*$period));
-              $interest=$Principle_plus_interest-$principle;
+              $interest=(float)$Principle_plus_interest-(float)$principle;
                $balance= $principle;
                 $date0=Carbon::parse(date('Y-m-d', strtotime((0).' month', strtotime($startpayment))))->format('Y-m-d');
                $html='
@@ -147,33 +148,35 @@ class MembersProfileController extends Controller
                     </tr>
                 </thead>
                 <body>';
-              for ($i=1; $i<=$period;$i++ ){
+              for ($i=0; $i< $period;$i++ ){
                 $d=$i+1;
                          $y1=date('Y',strtotime($startpayment));
                          $m1=date('m',strtotime($startpayment));
                          $d1=date('d',strtotime($startpayment));
-                         if ($d1 >28) {
-                          $date_rest=$y1.'-'.$m1.'-28';
+                         if ($d1 >28)
+                          {
+                            $date_rest=$y1.'-'.$m1.'-28';
                             $date0=Carbon::parse(date('Y-m-d', strtotime(($i).' month', strtotime($date_rest))))->format('Y-m-d'); 
                             $day=date('d',strtotime($date0));
                              $m=date('m',strtotime($date0));
                              $y=date('Y',strtotime($date0));
                              if (($y1==$y) &&($m1==$m)) $date=$startpayment;
                              else $date=date("Y-m-t", strtotime($date0));
-                             }
-                             else {
+                          }
+                             else 
+                             {
                              $date0=Carbon::parse(date('Y-m-d', strtotime(($i).' month', strtotime($startpayment))))->format('Y-m-d');
                              $day=date('d',strtotime($date0));
                              $m=date('m',strtotime($date0));
                              $y=date('Y',strtotime($date0));
                              if (($y1==$y) &&($m1==$m)) $date=$startpayment;
                              else $date=date("Y-m-t", strtotime($date0));
-                           }
+                            }
                            $balance=round(($balance-($principle/$period)),2);
                
               $html .='
               <tr>
-                        <td>'.$i.'</td>
+                        <td>'.($i+1).'</td>
                        <td>'.$date.'</td>
                         <td align="right">'.number_format(round($Principle_plus_interest/$period,2),2).'</td>
                         <td align="right">'.number_format(round($principle/$period,2),2).'</td>
@@ -297,13 +300,13 @@ class MembersProfileController extends Controller
                      /*if($differ_register_days>=90){*/
 
                                //testing purpose <=
-                         if($no_shares==$max_shares){
+                         if($no_shares <= $max_shares){
 
                    if($request->has('collate')){
                       
                   $totalcollateral_value=Collateral::find($collate_id)->sum('colateral_value');
 
-                   if(/*$principle<=(80/100*$totalcollateral_value+$totalsaving ) ||*/ $principle<=80/100*$totalcollateral_value ){
+                   if(/*$principle<=(80/100*$totalcollateral_value+$totalsaving ) ||*/ $principle<=(80/100*$totalcollateral_value )){
                             
                              $loan=Loan::create([
                             'loanInssue_date'=>date('Y-m-d'),
@@ -327,21 +330,22 @@ class MembersProfileController extends Controller
 
                                     $loan->collaterals()->attach($collate_id);
                                     $loan->guarantor()->attach( $guarator_id);
-                                    $loan->loan_fees()->attach($charges);
+                                    //fixed loan fees taken automatic no input.
+                                    $loan->loan_fees()->attach([1,3]);
 
                         
                                                if($request->submit){
-                                             return back()->with('status','Successfully Submitted');
+                                             return back()->with('status','Success!  Your have submitted the loan');
 
                                               }else{
 
-                                                return back()->with('status','Success! Saved to draft');
+                                                return back()->with('status','Success! Saved the loan to  DRAFT');
 
                                               }         
 
                    }
 
-                                            return back()->with('error','your loan must be 80%  or of your collaterals')->withInput();
+                                            return back()->with('error','Failed! The loan must be 80%  or of your collaterals')->withInput();
 
 
                    }else{
@@ -375,23 +379,25 @@ class MembersProfileController extends Controller
                          
              
               $loan->guarantor()->attach($guarator_id);
-              $loan->loan_fees()->attach($charges);
+              //$loan->loan_fees()->attach($charges);
+              //fixed loan fees taken automatic no input.
+              $loan->loan_fees()->attach([1,3]);
 
 
 
-                                     return back()->with('status','your loan is accepted');
+                                     return back()->with('status','Success! You have submitted your loan');
 
               }  
                   
 
-                                     return back()->with('error','You asked for a loan which is more than your savings')->withInput();     
+                                     return back()->with('error','Failed! You asked for a loan which is more than the savings')->withInput();     
 
                    }
 
                    
                  }else{
 
-                                     return back()->with('error','you must have 1000 shares in your account')->withInput();
+                                     return back()->with('error','Failed! Shares must be more or equal to 1000')->withInput();
 
                     }
 

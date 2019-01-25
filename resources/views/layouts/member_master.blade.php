@@ -26,8 +26,7 @@
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
   
   <link rel="stylesheet" href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
-
-  <link rel="stylesheet" type="text/css" href="{{asset('css/foundation-datepicker.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('css/datepicker.css')}}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="{{ asset('adminlte/bower_components/Ionicons/css/ionicons.min.css') }}">
   <!-- Theme style -->
@@ -205,7 +204,7 @@
 <script src="{{ asset('adminlte/bower_components/moment/min/moment.min.js') }}"></script>
 <script src="{{ asset('adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <!-- datepicker -->
-<script src="{{ asset('adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/bootstrap-datepicker.js')}}"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{{ asset('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
 <!-- Slimscroll -->
@@ -253,7 +252,48 @@
       $('.datepicker').datepicker();
     </script>
 
-   
+         <script>
+    $(function(){
+      window.prettyPrint && prettyPrint();
+ 
+      $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+         minDate: '+1D'
+      });
+     
+      
+    $( ".datepicker_curr_next" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
+ 
+      $('#dp2').datepicker();
+      $('#dp3').datepicker();
+      
+      
+      var startDate = new Date(2016,1,20);
+      var endDate = new Date(2016,1,25);
+      $('#dp4').datepicker()
+        .on('changeDate', function(ev){
+          if (ev.date.valueOf() > endDate.valueOf()){
+            $('#alert').show().find('strong').text('The start date can not be greater then the end date');
+          } else {
+            $('#alert').hide();
+            startDate = new Date(ev.date);
+            $('#startDate').text($('#dp4').data('date'));
+          }
+          $('#dp4').datepicker('hide');
+        });
+      $('#dp5').datepicker()
+        .on('changeDate', function(ev){
+          if (ev.date.valueOf() < startDate.valueOf()){
+            $('#alert').show().find('strong').text('The end date can not be less then the start date');
+          } else {
+            $('#alert').hide();
+            endDate = new Date(ev.date);
+            $('#endDate').text($('#dp5').data('date'));
+          }
+          $('#dp5').datepicker('hide');
+        });
+    });
+  </script>
     
     @yield('js')
 

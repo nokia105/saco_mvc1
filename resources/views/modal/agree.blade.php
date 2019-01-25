@@ -1,44 +1,26 @@
 
 
-    <div class="error" style="padding-top:50px; text-align:center;">
-
-
-            @if (session('error'))
-
-          
-                    <div class="alert alert-danger">
-                        <strong>Warning! </strong>{{ session('error') }}
-                    </div>
-
     
-                @endif
-            
-            @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-        </div>
 
     <form action ="{{url('/agree_submitted')}}" method="post">
        {{csrf_field()}}
         <input type="hidden" name="loan_id" value="{{$loan->id}}">
                               @if($loan->loan_status==='submitted')
-                           <div class="ceneter" style="text-align: center; padding-bottom:5px;">
-                                <h4><strong>Review Loan</strong></h4>
-                           </div>
+                          
+                                <h3><strong>Loan Review</strong></h3>
+                           
                            @endif
 
                             @if($loan->loan_status==='reviewed')        
-                                <div class="ceneter" style="text-align: center; padding-bottom:5px;">
-                                <h4><strong>Assess Loan</strong></h4>
-                           </div>
+      
+                                <h3><strong>Assess Loan</strong></h3>
+                           
                             @endif
 
                               @if($loan->loan_status==='assessed')        
-                                <div class="ceneter" style="text-align: center; padding-bottom:5px;">
-                                <h4><strong>Approve Loan</strong></h4>
-                           </div>
+                                
+                                <h3><strong>Approve Loan</strong></h3>
+                           
                            @endif
 
 
@@ -97,7 +79,7 @@
               @if($loan->loan_status==='submitted')
               <div class="form-row col-md-12">
                 <div class="form-group col-md-12">
-                <button class="btn btn-primary col-md-offset-3 col-md-3" style="margin-top: 20px;">Review <i class="fa fa-check-circle-o fa-white" style="color:green; font-size:15px;"></i></button>
+                <button class="btn btn-primary col-md-offset-3 col-md-6" style="margin-top: 20px;">Reviewed and Is OK <i class="fa fa-check-circle-o fa-white" style="color:green; font-size:15px;"></i></button>
               </div>
             </div>
             @endif
@@ -105,7 +87,7 @@
             @if($loan->loan_status==='reviewed')
               <div class="form-row col-md-12">
                 <div class="form-group col-md-12">
-                <button class="btn btn-primary col-md-offset-3 col-md-3" style="margin-top: 20px;">save <i class="fa fa-check-circle-o fa-white" style="color:green; font-size:15px;"></i></button>
+                <button class="btn btn-primary col-md-offset-3 col-md-6" style="margin-top: 20px;">It is Ok,Submit 2 Board <i class="fa fa-check-circle-o fa-white" style="color:; font-size:15px;"></i></button>
               </div>
             </div>
             @endif

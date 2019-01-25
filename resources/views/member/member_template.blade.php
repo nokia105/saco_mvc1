@@ -61,94 +61,37 @@
 
         </div>
         <!-- /.col -->
-          <div class="col-md-9">
-                
-          <div class="center col-md-12 btn btn-info" >
+   <div class="col-md-9">
+    <nav class="navbar navbar-dark bg-primary" style="padding-top: 0px;">
+      <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only white">Toggle navigation</span>
+        <span class="icon-bar white"></span>
+        <span class="icon-bar white"></span>
+        <span class="icon-bar white"></span>
+      </button>
+      <!-- <a class="navbar-brand white active" href="#">Brand</a> -->
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        
+        <li class="white"><a href="{{url ('member/'.$id.'/profile')}}"><b>Profile</b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/savings')}}"><b>Savings</b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/shares')}}"><b>Shares </b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/loans')}}"><b>Loans List</b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/apply_loan')}}"><b>Loan Request</b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/guarantor')}}"><b>Guarantor</b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/collaterals')}}" ><b>Collaterals</b></a></li>
+         <li  class="white"><a href="{{url ('member/'.$id.'/payments')}}" ><b>Payments</b></a></li>
+        
+      </ul>
 
-                          <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 55 </span>
+    </div><!-- /.navbar-collapse -->
 
-                          <br /> -->
-
-                           <li class="{{ Request::is('member/'.$id.'/profile') ? 'active' : '' }} btn btn-info btn-block">
-                             <a href="{{url ('member/'.$id.'/profile')}}"><b>Profile</b></a>
-                           </li>
-                          
-                        </span>
-                        <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 55 </span>
-
-                          <br /> -->
-
-                           <li class="{{ Request::is('member/'.$id.'/savings') ? 'active' : '' }} btn btn-info btn-block">
-                             <a href="{{url ('member/'.$id.'/savings')}}"><b>Savings</b></a>
-                           </li>
-                          
-                        </span>
-                        <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 55 </span>
-
-                          <br /> -->
-                          <li class="{{Request::is('member/'.$id.'/shares') ? 'active' : '' }} btn btn-info btn-block">
-                            
-                             <a href="{{url ('member/'.$id.'/shares')}}"><b>Shares </b></a>
-                          </li>
-                         
-                        </span>
-                        
-                         
-  
-                        
-                        <span class="btn  btn-sm btn-light no-hover">
-                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
-
-                          <br /> -->
-                            <li class="{{Request::is('member/'.$id.'/loans') ? 'active' : '' }} btn btn-info btn-block">
-                               <a href="{{url ('member/'.$id.'/loans')}}"><b>Loans List</b></a>
-                            </li>  
-                         
-                        </span>
-                         <span class="btn  btn-sm btn-light no-hover">
-                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
-                          <br /> -->
-                            <li class="{{Request::is('member/'.$id.'/apply_loan') ? 'active' : '' }} btn btn-info btn-block">
-                               <a href="{{url ('member/'.$id.'/apply_loan')}}"><b>Apply Loan</b></a>
-                            </li>  
-                         
-                        </span>
-
-                     
-                        <span class="btn  btn-sm btn-light no-hover">
-                          <!-- <span class="line-height-1 bigger-170 blue"> 1,411 </span>
-                          <br /> -->
-                            <li class="{{Request::is('member/'.$id.'/guarantor') ? 'active' : '' }} btn btn-info btn-block">
-                               <a href="{{url ('member/'.$id.'/guarantor')}}"><b>Guarantor</b></a>
-                            </li>  
-                         
-                        </span>
-
-
-                        <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 23 </span>
-                          <br /> -->
-                         <li class="{{Request::is('member/'.$id.'/collaterals') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url ('member/'.$id.'/collaterals')}}" ><b>Collaterals</b></a>
-                         </li>
-                        </span>
-
-                           <span class="btn  btn-sm  no-hover">
-                          <!-- <span class="line-height-1 bigger-170"> 23 </span>
-                          <br /> -->
-                         <li class="{{Request::is('member/'.$id.'/payments') ? 'active' : '' }} btn btn-info btn-block">
-                            <a href="{{url ('member/'.$id.'/payments')}}" ><b>Payments</b></a>
-                         </li>
-                        </span>
-
-                        
-                  </div>
-                 
-              
-                           @yield('memberinfo')
+</nav>
+     
+        @yield('memberinfo')
           </div>
                 
 
@@ -159,8 +102,53 @@
 
           <!--/.
         </div>
-        <!-- /.col -->
+        /.col -->
       </div>
+       <style type="text/css">
+         .member_navbar span {
+             padding:2px;
+
+         }
+        .nav-menu-profile{
+          margin-top: 0px;
+        }
+        .white a, .white{
+          color:#fff;
+        }
+        a:hover {
+          color:#fff;
+        }
+        .active {
+    background-color: #00c0ef;
+    color: white;
+  }
+    .navbar-dark .navbar-header .navbar-toggle .icon-bar{
+        color:black;
+        background-color: #fff;
+
+      }
+      .navbar-dark .navbar-header .navbar-toggle{
+        float:left;
+      }
+      .navbar-dark .dropdown .dropdown-menu {
+        background-color: #337ab7;
+
+      }
+       .navbar-dark  .dropdown-menu li>a {
+        color:#fff;
+       
+      }
+      </style>
+            <script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
 
 
           

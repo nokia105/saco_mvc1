@@ -64,6 +64,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style type="text/css">
     .sidebar-menu>li.header {color:#FFF !important;}
+    .ui-datepicker{ z-index:1151 !important; }
+    
   </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -577,7 +579,7 @@
       $(document).ready(function() {
 
                   $('.date').datepicker({
-                         ormat: 'mm/dd/yyyy'
+                         format: 'mm/dd/yyyy'
     
                       });
 
@@ -638,10 +640,35 @@
           }
           $('#dp5').datepicker('hide');
         });
+        $('.datepicker_modal').datepicker({
+     dateFormat: 'dd-mm-yy',
+     minDate: '+5d',
+     changeMonth: true,
+     changeYear: true
+ 
+ });
+
     });
   </script>
-   
+  <script type="text/javascript">
+$(document).ready(function(){
+  $('.profile-list ul li a').click(function(){
+    $('li a').removeClass("active");
+    $(this).addClass("active");
+});
+});
+  $(document).ready(function(){
     
+     //alert(url);
+    $('.profile-list a').click(function(){
+         var url      = $(this).attr("href");
+       
+        $(this).addClass("active");
+        
+    });
+  });
+   
+</script>    
     @yield('js')
    
 

@@ -1,25 +1,5 @@
 
-
-    <div class="error" style="padding-top:50px; text-align:center;">
-
-
-            @if (session('error'))
-
-          
-                    <div class="alert alert-danger">
-                        <strong>Warning! </strong>{{ session('error') }}
-                    </div>
-
-    
-                @endif
-            
-            @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-        </div>
-
+  <div class="col-md-12"><h3>Mark into Pedding</h3></div>
     <form action ="{{url('/pending_submitted')}}" method="post">
     	          {{csrf_field()}}
                 <input type="hidden" name="loan_id" value="{{$loan->id}}">
@@ -73,14 +53,14 @@
 </div>
 
 
- <div class="form-group"> <!-- Date input -->
+<!--  <div class="form-group"> 
         <label class="control-label" for="date">Date</label>
         <input  class="form-control dp1" id="date" name="pending_workingdate" placeholder="yyyy-mm-dd" type="text"  required="true" autocomplete="off">
-      </div>
+      </div> -->
 
     <div class="form-row col-md-12">
                 <div class="form-group col-md-12">
-                <button class="btn btn-primary col-md-offset-3 col-md-3" style="margin-top: 20px;">pending <i class="fa fa-clock-o" style="color:red; font-size:15px;"></i></button>
+                <button class="btn btn-primary col-md-offset-3 col-md-6" style="margin-top: 20px;">Mark it to pending <i class="fa fa-clock-o" style="color:; font-size:15px;"></i></button>
               </div>
             </div>
     </form>

@@ -205,7 +205,7 @@
                        
                     </div>
                     <div class="col-sm-1">
-                        <div class="btn newcolerateral">+</div>
+                        <div class="btn newcolerateral"><button class="btn btn-primary">+Add</button></div>
                     </div>
               </div><br/><br/>
             
@@ -280,7 +280,7 @@
                        
                     </div>
                     <div class="col-sm-1">
-                        <div class="btn newguarantor">+</div>
+                        <div class="btn newguarantor"><button class="btn btn-primary">+Add</button></div>
                     </div>
               </div><br/><br/>
             
@@ -323,66 +323,6 @@
                             </table>
             </div>
 
-             <div class="form-group">
-              <label for="charges" class="col-md-12">Charges</label>
-                    <div class="col-sm-4">
-                      <select id="charges" class="form-control select2" name="charges" style="width: 100%;">
-                        <option value="">--Select Fee--</option>
-                        @foreach($fees as  $fee)
-                          <option value="{{$fee->id}}">{{$fee->fee_name}} </option>
-                          @endforeach
-                      </select>
-                       
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="btn newcharge">+</button>
-                    </div>
-              </div><br/><br/>
-
-            <div class="col-md-12">
-              <table class="fee  table" width="100%">
-                               <thead class="thead-dark" style="background-color: #eee;">
-                                <tr>
-                                  <th width="24%">Fee </th>
-                                  <th width="24%">Amount</th>
-                                  <th align="right" width="4%"></th>
-                                </tr>
-                                </thead> 
-
-
-                              @php 
-                                     if(!empty(old('charges'))){
-                                  $charges=\App\Feescategory::whereIn('id',old('charges'))->get();
-                                   @endphp
-                                @foreach($charges as $charge)
-                                      
-                                 <tr>
-                                  <td width="24%">{{$charge->fee_name}}
-                                     <input type="hidden" value="{{$charge->id}}" name="charges[]" class="charge_check">
-                                  </td>
-
-                                   <td width="24%">{{$charge->fee_value}}
-                                   
-                                  </td>
-                                  
-                                  <td align="right" width="4%"><input type="button" class="remove" style="color:red;" value="X" /></td>
-                                </tr>
-                                 @endforeach 
-                                  @php
-                                   }
-                                   @endphp
-
-                            </table>
-
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-        </div>
-            <!-- /.box-body -->
-      </div>
-
-
        <div class="box col-md-12 box-primary">
         <!-- /.box-header -->
         <div class="box-header">
@@ -394,7 +334,7 @@
               
               <div class="form-group{{ $errors->has('narration') ? ' has-error' : '' }}">
         <label for="reason">Narration:</label>
-        <textarea class="form-control" rows="4"  name="narration"  value="{{old('narration')}}"  required="true"  autocomplete="off"></textarea>
+        <textarea class="form-control" rows="4"  name="narration"  value=""  required="true"  autocomplete="off">{{old('narration')}}</textarea>
         <small class="text-danger">{{ $errors->first('narration') }}</small>
       </div>
             </div>
@@ -595,9 +535,7 @@
               //interest method pop up
 
 
-          $(document).ready(function () {
-
-
+$(document).ready(function () {
 // code to get all records from table via select box
 $('#calculate').click(function()
 { 
@@ -618,38 +556,7 @@ var pcategoryid = $(this).find(":selected").val();
       //alert(startpayment);
       showAjaxModalX2(url);
 
-       /*var dataString='principle='+principle+'&period='+period+'&interest='+interest+'&startpayment='+startpayment+'&Imethod='+Imethod+'&loanrequestor='+loanrequestor+'&loanOfficer='+loanOfficer;*/
 
-
-
-         
-         
-/*$.ajax
-({
-         
-url:'{{route('interestmethod')}}',
-type:"GET",
- dataType: 'json',
-data: dataString,
-cache: true,
-success: function(data)
-{
-
-var dwn_url='<a href="{{url('/')}}/pdf_download/'+data.principle+'/'+data.interest+'/'+data.loanperiod+'/'+data.firstpayment+'">Download PDF <i class="fa fa-file-pdf-o"></i></a>'
-           
-$("#lprinciple").html(data.principle);
-$("#Name").html(data.loanrequestor);
-$("#linterest").html(data.interest);
-$("#mrepayment").html(data.monthlyrepayment);
-$("#frepayment").html(data.firstpayment);
-$("#lrepayment").html(data.lastpayment);
-$("#lofficer").html(data.loanOfficer);
-$("#lduration").html(data.loanperiod);
-// $("#pdfview").html(dwn_url);
-
-}
-
-});*/
 })
 
 });
