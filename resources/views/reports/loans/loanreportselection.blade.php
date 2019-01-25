@@ -90,13 +90,13 @@
     <tr>
       <td >
         <div class="input-group ">
-          <span class="input-group-addon" id="dp4" data-date-format="yyyy-mm-dd" data-date="2012-01-01"><i class="glyphicon glyphicon-calendar"></i></span>
+          <span class="input-group-addon" id="dp4" data-date-format="yyyy-mm-dd" ><i class="glyphicon glyphicon-calendar"></i></span>
         <input  class="form-control" type="text"  value="{{old('startDate')}}"  id="startDate" name="startDate" autocomplete="off">
       </div>  
       </td>
      
       <td><div class="input-group ">
-          <span class="input-group-addon" id="dp5" data-date-format="yyyy-mm-dd" data-date="2018-01-02"><i class="glyphicon glyphicon-calendar"></i></span>
+          <span class="input-group-addon" id="dp5" data-date-format="yyyy-mm-dd" ><i class="glyphicon glyphicon-calendar"></i></span>
         <input  class="form-control" type="text"  value="{{old('endDate')}}"  id="endDate" name="endDate" autocomplete="off">
       </div>
     </tr>

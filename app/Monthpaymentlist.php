@@ -2,11 +2,16 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 
-
-class Monthsavingshare extends Model
+class Monthpaymentlist extends Model
 {
     //
+
+       protected $guarded = [
+
+    ];
+
 
     public function member(){
 

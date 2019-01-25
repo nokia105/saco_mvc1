@@ -32,6 +32,11 @@
               <h3 class="box-title">Payment List</h3>
             </div>
             <!-- /.box-header -->
+
+                                             <div class="col-md-6 col-md-offset-3">
+          <a ><button class="btn btn-default col-xs-3 print" style="margin-right: 5px;"><i style="color:red" class="fa fa-print" aria-hidden="true"></i> Print</button></a>
+           <a  href="{{ url()->previous() }}"><button class="btn btn-info col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
+    </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -53,7 +58,7 @@
                 <td>{{number_format($payment->amount,2)}}</td>
                 <td>{{ucfirst($payment->narration)}}</td>
                 <td>{{strtoupper($payment->state)}}</td>
-                <td>{{\Carbon\carbon::parse($payment->date)->format('d/m/y')}}</td>
+                <td>{{\Carbon\carbon::parse($payment->date)->format('d/m/Y')}}</td>
 
                 </tr>
                 @endforeach

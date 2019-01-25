@@ -1,7 +1,7 @@
    @extends('layouts.master')
       @section('content')
       
-          @section('title', '| Post')
+          @section('title', '| Pay List')
        <div class="row">
        <div class="col-xs-12">
 
@@ -53,53 +53,45 @@
                 <thead>
                 <tr>
                   <th><input type="checkbox"  id="checkall" class="checkbox"  value="checkall"></th>
-                   <th>Member #</th>
-                  <th>Full Names</th>
+                   <th>#</th>
+                  <th>Name</th>
                   <th>Shares </th>
                   <th>Savings </th>
-                  <th>Interest</th>
-                  <th>Principle</th>
+                  <th>Current Loan</th>
+                  <th>Previous Loan</th>
                   <th>Total</th>
+                  <th>Action</th>
+                  <td>Status</td>
                 </tr>
                 </thead>
                 <tbody>
-                  @foreach($members as $member)
+                  @foreach($monthpaymentlists as $monthpaymentlist)
 
                  <tr>
-                  <td><input type="checkbox"  id="checklist" class="checkbox" name="check[]" value="{{$member->member_id}}"></td>
-                 <td>{{$member->registration_no}}</td> 
-                 <td>{{ucfirst($member->first_name)}} {{ucfirst($member->last_name)}} {{ucfirst($member->middle_name)}}<a href=""></a></td>
+                  <td><input type="checkbox"  id="checklist" class="checkbox" name="check[]" value="{{$monthpaymentlist->member_id}}"></td>
+                <td>{{$monthpaymentlist->member->registration_no}}</td>
+                <td>{{ucfirst($monthpaymentlist->member->first_name)}}  {{ucfirst($monthpaymentlist->member->last_name)}}</td>
+                <td>{{number_format($share=$monthpaymentlist->shares,2)}}</td>
+                <td>{{number_format($savings=$monthpaymentlist->savings,2)}}</td>
+                <td>{{number_format($c_loan=$monthpaymentlist->current_loan,2)}}</td>
+                <td>{{number_format($p_loan=$monthpaymentlist->previous_loan,2)}}</td>
+                <td>{{number_format(($share+$savings+$c_loan+$p_loan),2)}}</td>
+                 <td> <div class="btn-group">
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+            Action <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-default pull-right" role="menu">
+        <li><a  onclick="showAjaxModal('{{route('editpaymentlist',$monthpaymentlist->id)}}')" >
+        <i class="fa fa-edit" style="color:green; font-size:15px;"></i>Edit</a> </li>
+        
+                                 
+         </ul>
+         </div></td>
+                <td>{{strtoupper($monthpaymentlist->status)}}</td>
+                  </tr>
+                  @endforeach
 
-                    @php
-                    $noshares=$member->no_shares->where('state','in')->sum('No_shares')-$member->no_shares->where('state','out')->sum('No_shares');
-                    @endphp 
-                       @if($noshares >=1000)
-                <td>{{number_format($share=0.00,2)}}</td>
-                @else
-                <td>{{number_format($share=$member->monthshare,2)}}</td>
-                @endif
-                <td>{{number_format($saving=$member->monthsaving,2)}}</td>
-
-                 @if(!empty($loans)) 
-                  @php 
-                      $month=date('m',strtotime(date('Y-m-d'))); 
-                      $year=date('Y',strtotime(date('Y-m-d')));
-                  @endphp
-                      
-                      
-                <td>{{number_format($interest=$member->loanschedule->whereIn(\DB::raw('MONTH(duedate)'), [$month])->whereIn(\DB::raw('YEAR(duedate)'), [$year])->where('status','=','!paid')->sum('monthinterest'),2)}}</td>
-                <td>{{number_format($principle=$member->loanschedule->where('status','=','unpaid')->whereIn(\DB::raw('MONTH(duedate)'), $month)->whereIn(\DB::raw('YEAR(duedate)'), $year)->sum('monthprinciple'),2)}}</td>
-                <td>{{number_format($share+$saving+$interest+$principle,2)}}</td>
-                  @else
-                  <td>{{number_format($interest=0.00,2)}}</td>
-                  <td>{{number_format($principle=0.00,2)}}</td>
-                 <td>{{number_format($share+$saving+$interest+$principle,2)}}</td>
-                 @endif
-                </tr>
-
-                 @endforeach
                 </tbody>
-               
               </table>
             </div>
             <!-- /.box-body -->
@@ -130,10 +122,10 @@
   </div>
   <div style="float:right; margin-bottom:10px;">
      <br>
-   Date: {{date('d-m-Y')}}
+   Date: {{date('d/m/Y')}}
    </div>
 
-   <div style="text-align:center; margin-top:30px; margin-bottom: 10px;">
+   <div style="padding-left:300px; margin-top:30px; margin-bottom: 10px;">
    <label><strong>MONTHLY PAYLIST</strong></label>
   </div>
 
@@ -148,10 +140,11 @@
                  <th>Member #</th>
                   <th>Full Names</th>
                   <th>Shares </th>
-                  <th>Savings </th>
-                  <th>Interest</th>
-                  <th>Principle</th>
+                  <th>Savings</th>
+                  <th>Current Loan </th>
+                  <th>Previous Loan</th>
                   <th>Total</th>
+                  <th>Status</th>
     </tr>
   </thead>
   <tbody id="printcontent">
@@ -174,7 +167,7 @@
    @section('css')
 
           <style type="text/css">
-            
+            @page { size: auto;  margin:5mm; } 
       .mainprinting { 
     
     margin: 0 auto;
@@ -219,7 +212,7 @@
                      allVals.push($(this).val());
                       });
                          
-
+                       
                            if (allVals.length ===0) {
 
                          alert('not checked');
@@ -274,13 +267,13 @@
 
                 $('#pay').click(function(e){
                        
-
-
                     var allVals = [];
 
                     $('input[type="checkbox"]:checked').each(function () {
                      allVals.push($(this).val());
                       });
+
+                      alert(allVals);
                          
                            if (allVals.length ===0) {
                          alert('not checked');
@@ -314,6 +307,7 @@
 
 
         </script>
+          @include('modal.popup_lib')
         @endsection
          
    

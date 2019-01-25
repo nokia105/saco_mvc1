@@ -53,14 +53,14 @@
              </table>
             <!-- /.box-header -->
                                             <div class="col-md-6 col-md-offset-5">
-                                          <h4 class="box-title">Refunded Shares</h4>
+                                          <h4 class="box-title">Total Shares</h4>
                                      </div>
                                         <div class="col-md-6 col-md-offset-3">
-          <a ><button class="btn btn-default col-xs-3 print" style="margin-right: 5px;"><i style="color:red" class="fa fa-print" aria-hidden="true"></i> Print</button></a>
+    
            <a  href="{{ url()->previous() }}"><button class="btn btn-info col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
     </div>
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="total_shares" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                  <th>Members</th>
@@ -93,4 +93,43 @@
         <!-- /.col -->
       </div>
 
+      @endsection
+
+                @section('js')
+            <script type="text/javascript">
+      $(document).ready(function() {
+          
+            
+    $('#total_shares').DataTable({
+      dom: 'Bfrtip',
+buttons: [
+       
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+             {extend: 'pdfHtml5',
+              title:' Total shares from {{$startName}} to {{$endName}} of {{$year}} ',
+           },
+            {extend:'print',
+            // messageTop: 'Loans in Date',
+            customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10px' )
+                        .prepend(
+                            '<img src="{{asset('images/logo/saccos.jpg')}}" style="position:absolute; top:10%; left:50%; opacity:0.2;"  />'
+                        );
+ 
+                },
+            title:' Total shares from {{$startName}} to {{$endName}} of {{$year}}',
+           
+            
+              }
+
+             
+]
+    });
+} );
+      
+
+    </script>
       @endsection

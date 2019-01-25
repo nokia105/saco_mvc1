@@ -33,7 +33,7 @@
                                      </div>
 
                                 <div class="col-md-6 col-md-offset-3">
-          <a ><button class="btn btn-default col-xs-3 print" style="margin-right: 5px;"><i style="color:red" class="fa fa-print" aria-hidden="true"></i> Print</button></a>
+   
            <a  href="{{ url()->previous() }}"><button class="btn btn-info col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
     </div>
             <!-- /.box-header -->
@@ -81,4 +81,42 @@
         <!-- /.col -->
       </div>
 
+      @endsection
+       @section('js')
+            <script type="text/javascript">
+      $(document).ready(function() {
+          
+            
+    $('#example1').DataTable({
+      dom: 'Bfrtip',
+buttons: [
+       
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+             {extend: 'pdfHtml5',
+              title:' TASAF SACCOS \n \n Issued Loans from {{$startName}} to {{$endName}} of {{$year}} ',
+           },
+            {extend:'print',
+            // messageTop: 'Loans in Date',
+            customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10px' )
+                        .prepend(
+                            '<img src="{{asset('images/logo/saccos.jpg')}}" style="position:absolute; top:10%; left:50%; opacity:0.2;"  />'
+                        );
+ 
+                },
+            title:'<div style="text-align:center;  font-size:16px; padding-top:10%">TASAF SACCOS <br/><br/>  Issued Loans from {{$startName}} to {{$endName}} of {{$year}} <br/><br/></div>',
+           
+            
+              }
+
+             
+]
+    });
+} );
+      
+
+    </script>
       @endsection

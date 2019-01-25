@@ -52,6 +52,7 @@
 
         </div>
         <!-- /.col -->
+
 <div class="col-md-10">
 
 
@@ -85,8 +86,8 @@
          
                   
           <li  class="white"><a href="{{url ('profile/'.$id.'/loanlist')}}" class=""><b>Loans</b></a></li>
-         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}" class=""><b>Pay</b></a></li>
-         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}" class=""><b>Payments</b></a></li>
+         <li  class="white"><a href="{{url('profile/'.$id.'/pay')}}"><b>Pay</b></a></li>
+         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
          <li  class="white"><a href="{{route('memberShares',$id)}}" class=""><b>Shares </b></a></li> 
          @role('Cashier','member')
          <!--  <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
@@ -109,8 +110,6 @@
     </div><!-- /.navbar-collapse -->
 
 </nav>
-
-          
                  @yield('memberworkspace')
 
           </div>

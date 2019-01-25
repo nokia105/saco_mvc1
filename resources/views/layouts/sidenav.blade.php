@@ -276,7 +276,7 @@
 
 
         <li class="">
-          <a href="{{route('payments_list')}}">
+          <a href="{{route('duration_payment')}}">
             <i class="fa fa-briefcase"></i> <span>Payment List</span>
             <span class="pull-right-container">
               <i class="fa  pull-right"></i>
