@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SACCOS | Admin Dashboard</title>
+      <title>@yield('title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link href="{{ asset('fonts/Rokkitt.css') }}" rel="stylesheet">
@@ -39,7 +39,7 @@
   <!-- jvectormap -->
   <link rel="stylesheet" href="{{ asset('adminlte/bower_components/jvectormap/jquery-jvectormap.css') }}">
   <!-- Date Picker -->
-
+       <link rel="stylesheet" type="text/css" href="{{asset('css/select2.min.css')}}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{ asset('adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
   <!-- bootstrap wysihtml5 - text editor -->
@@ -234,17 +234,27 @@
     </script>
     <script type="text/javascript" language="javascript" src="{{asset('Editor/examples/resources/editor-demo.js')}}">
     </script>
+      <script type="text/javascript" language="javascript" src="{{asset('js/dataTables.buttons.min.js')}}">
+
+    </script>
+          <script src="{{asset('Editor/js/jszip.min.js')}}"></script>
+         <script src="{{asset('Editor/js/pdfmake.min.js')}}"></script>
+            <script src="{{asset('Editor/js/vfs_fonts.js')}}"></script>
+           <script src="{{asset('js/buttons.print.min.js')}}"></script>
+     <script src="{{asset('Editor/js/buttons.html5.min.js')}}"></script>
+
       <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.2.0/js/dataTables.buttons.min.js">
     </script>
+    <script type="text/javascript" language="javascript" src="{{asset('js/select2.min.js')}}"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.0/js/dataTables.select.min.js">
     </script>
 
 
-     <script src="{{ asset('js/custom_script.js') }}"></script> 
+<!--      <script src="{{ asset('js/custom_script.js') }}"></script> 
     <script src="{{ asset('js/savings_script.js') }}"></script>
     <script src="{{ asset('js/shares_script.js') }}"></script>
     <script src="{{ asset('js/newloan_script.js') }}"></script>
-    <script src="{{ asset('js/loancategory_script.js') }}"></script>
+    <script src="{{ asset('js/loancategory_script.js') }}"></script> -->
     <script type="text/javascript">
       $(document).ready(function() {
     $('#example1').DataTable();

@@ -53,19 +53,35 @@ class MembersProfileController extends Controller
 
       public function newloan($id){
 
-    
-            $username=Auth::guard('member')->user();
+            
+          
 
-            $member=Member::find($id);
-         
-            $collaterals=Member::find($id)->collateral;      
-              
+            $totalsumloan=0;
+                       $sumpaidamount=0;
+              $member=Member::find($id);
+              $savings=$member->savingamount->where('state','in')->sum('amount')-$member->savingamount->where('state','out')->sum('amount');
+               $lastloans=$member->loans->where('loan_status','repayment');
+                foreach($lastloans as $lastloan){
+                    $totalsumloan+=$lastloan->principle;
+
+                    $sumpaidamount+=$lastloan->loanrepayment->sum('principlepayed');  
+                }
+                 
+                    $remaidloan=$totalsumloan-$sumpaidamount;
+                              if($remaidloan>1000){
+                $loanallowed=3*$savings-$remaidloan;
+             }else{
+             $loanallowed=3*$savings;  
+       }
+
+           $username=Auth::guard('member')->user();
+            $collaterals=$member->collateral;      
             $loancategories=LoanCategory::select('id','category_name')->get();
 
             $guarantors=Member::all()->where('member_id','!=',$id);
             $fees=Feescategory::all()->where('fee_name','!=','Registration fee');
             $interestmethods=Interestmethod::all();
-            return view('loans.newloan',compact('loancategories','username','member','collaterals','guarantors','fees','interestmethods'));
+            return view('loans.newloan',compact('loancategories','username','member','collaterals','guarantors','fees','interestmethods','loanallowed','lastloans','code'));
           }
 
 
@@ -275,13 +291,15 @@ class MembersProfileController extends Controller
 
              //$mInterest=($interest/100)*$principle;
 
-                    $no_shares=Member::find($member_id)->no_shares->sum('No_shares');
+                $member=Member::find($member_id);
+
+                 $no_shares=$member->no_shares->where('state','in')->sum('No_shares')-$member->no_shares->where('state','out')->sum('No_shares');
                 
                     $max_shares=Share::select('max_shares')->first()->max_shares; 
 
-                    $totalsaving=Member::find($member_id)->savingamount->sum('amount');
+                   $totalsaving=$member->savingamount->where('state','in')->sum('amount')- $member->savingamount->where('state','out')->sum('amount');
 
-                    $differ_register_days=Member::find($member_id)->joining_date->diffInDays(Carbon::now());
+                    $differ_register_days=$member->joining_date->diffInDays(Carbon::now());
                      
                     $insurance=Insurance::first()->percentage_insurance; //since we had only one insurance
                        
@@ -294,7 +312,7 @@ class MembersProfileController extends Controller
                      /*if($differ_register_days>=90){*/
 
                                //testing purpose <=
-                         if($no_shares <= $max_shares){
+                         if($no_shares >= $max_shares){
 
                    if($request->has('collate')){
                       
@@ -426,7 +444,7 @@ class MembersProfileController extends Controller
        public function ongoing_loans($id){
             $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
-      $loanlists=Member::find($id)->loans->where('loan_status','=','paid'); 
+      $loanlists=Member::find($id)->loans->where('loan_status','=','repayment'); 
 
         return view('loans.loanlist.ongoing_loans' , compact('loanlists','id','code')); 
      }
@@ -1027,7 +1045,8 @@ public function updateloan(Request $request)
 
 
 
-                          return view('loans.receipt.repayment',compact('payment','getpaymenttype','member')); 
+                          return view('loans.receipt.repayment',compact('amount','getpaymenttype','member')); 
+
                 } else{
 
 
@@ -1088,7 +1107,7 @@ public function updateloan(Request $request)
                                              'service_type'=>'saving']); 
 
 
-                            return view('loans.receipt.repayment',compact('payment','getpaymenttype','member'));
+                            return view('loans.receipt.repayment',compact('amount','getpaymenttype','member'));
 
 
 
@@ -1142,7 +1161,7 @@ public function updateloan(Request $request)
                                    
 
 
-                                         return view('loans.receipt.repayment',compact('payment','getpaymenttype','member'));
+                                         return view('loans.receipt.repayment',compact('amount','getpaymenttype','member'));
 
 
 

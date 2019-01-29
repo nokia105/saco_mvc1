@@ -118,10 +118,7 @@
         a:hover {
           color:#fff;
         }
-        .active {
-    background-color: #00c0ef;
-    color: white;
-  }
+  
     .navbar-dark .navbar-header .navbar-toggle .icon-bar{
         color:black;
         background-color: #fff;

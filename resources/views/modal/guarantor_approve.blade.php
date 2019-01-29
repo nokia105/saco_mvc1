@@ -1,23 +1,6 @@
-<div class="error" style="padding-top:50px; text-align:center;">
-
-
-            @if (session('error'))
-
-          
-                    <div class="alert alert-danger">
-                        <strong>Warning! </strong>{{ session('error') }}
-                    </div>
-
-    
-                @endif
-            
-            @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-        </div>
-
+                       <div class="col-md-12">
+                           <h4>Guarantor Approval<h4><br/>
+                       </div>
     <form action ="{{route('save_guarantor_status',$loan->id)}}" method="post">
     	          {{csrf_field()}}
     	

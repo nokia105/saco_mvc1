@@ -38,7 +38,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example4" class="table table-bordered table-striped">
+              <table id="loanschedule" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Month</th>
@@ -53,8 +53,8 @@
                 </tr>
                 </thead>
                   <div class="col-md-6 col-md-offset-5">
-          <a ><button class="btn btn-default col-xs-3" style="margin-right: 5px;"><i style="color:red" class="fa fa-print" aria-hidden="true"></i> Print</button></a>
-           <a  href="{{ url()->previous()}}"><button class="btn btn-info col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
+         
+           <a  href="{{ url()->previous()}}"><button class="btn btn-dark col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
     </div>
                 <tbody>
         
@@ -297,15 +297,27 @@
 
             $(document).ready(function(){
 
-    $('#example4').DataTable({
+    $('#loanschedule').DataTable({
+                   dom: 'Bfrtip',
+buttons: [   'print',
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+             {extend: 'pdfHtml5',
+           }             
+    ],
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : false,
       'info'        : true,
       'autoWidth'   : false
+
+
     });      
             });
+            
+
 
       </script>
 

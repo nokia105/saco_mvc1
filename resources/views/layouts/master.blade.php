@@ -12,6 +12,7 @@
   <link href="{{ asset('fonts/Rokkitt.css') }}" rel="stylesheet">
        <link rel="stylesheet" type="text/css" href="{{asset('css/jquery.dataTables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/buttons.dataTables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/select2.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/select.dataTables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('Editor/css/editor.dataTables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('Editor/examples/resources/syntax/shCore.css')}}">
@@ -560,6 +561,9 @@
     </script>
     <script type="text/javascript" language="javascript" src="{{asset('Editor/examples/resources/editor-demo.js')}}">
     </script>
+     <script type="text/javascript" language="javascript" src="{{asset('js/select2.min.js')}}">
+
+    </script>
       <script type="text/javascript" language="javascript" src="{{asset('js/dataTables.buttons.min.js')}}">
 
     </script>
@@ -583,6 +587,7 @@
    
   
       <script>
+
     $(function(){
       window.prettyPrint && prettyPrint();
 

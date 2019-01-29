@@ -54,7 +54,7 @@
          <div class="box box-body box-info">
           <div class="row">
                 
-             <div class="notification fade" style="display:none; ">
+             <div class="notification" style="display:none; ">
                <button type="button"  class="pull-right close" aria-hidden="true">&times;</button>
                <div class="summary_savingshare">
                   <h4>Savings & Share Summary</h4>
@@ -168,7 +168,6 @@
             </div>
             <!-- /.col -->
             <div class="col-md-6">
-            
               
                     <div class="col-sm-12{{ $errors->has('startpayment') ? ' has-error' : '' }}">
                          <div class="form-group">
@@ -274,7 +273,7 @@
           <div class="row">
                <div class="form-group">
                     <div class="col-sm-4">
-                      <select id="guarantor" class="form-control select2 "  name="g[]" style="width: 100%;">
+                      <select id="guarantor" class="selectguarantor form-control"    name="g[]" style="width: 100%;">
                         <option value="">--Select guarantors--</option>
                           @foreach($guarantors as  $guarantor)
                           <option value="{{$guarantor->member_id}}">{{$guarantor->first_name}} {{$guarantor->middle_name}} {{$guarantor->last_name}}</option>
@@ -283,7 +282,7 @@
                        
                     </div>
                     <div class="col-sm-1">
-                        <div class="btn newguarantor">+</div>
+                        <div class="btn newguarantor"><button class="btn btn-primary">+Add</button></div>
                     </div>
               </div><br/><br/>
             
@@ -335,7 +334,7 @@
               
               <div class="form-group{{ $errors->has('narration') ? ' has-error' : '' }}">
         <label for="reason">Narration:</label>
-        <textarea class="form-control" rows="4"  name="narration"  value="{{old('narration')}}"  required="true"  autocomplete="off"></textarea>
+        <textarea class="form-control" rows="4"  name="narration"  required="true"  autocomplete="off">{{old('narration')}}</textarea>
         <small class="text-danger">{{ $errors->first('narration') }}</small>
       </div>
             </div>
@@ -484,6 +483,10 @@
 
       @section('js')
       <script type="text/javascript">
+
+                  $(document).ready(function() {
+    $('.selectguarantor').select2();
+});
 
           $(document).ready(function () {
 
@@ -721,20 +724,19 @@ else  alert('Repeated collateral');
 
     $(".newguarantor").click(function () {
 
-           
-                
+             
           var guarantorid=$("#guarantor").val();
                  
                   var dataString='g='+ guarantorid;
 
-                
-             //     alert(dataString);
+                       
+              //  alert(dataString);
  if(guarantorid !=''){
 
 
  var check='';
   var inputs=$(".guarantor_check");
-
+    
   if (inputs.length > 0){
   for(var i = 0; i < inputs.length; i++){
   if ($(inputs[i]).val()===guarantorid) check=1;
@@ -752,7 +754,7 @@ type:"GET",
 cache: true,
 success: function(data)
 {
-    //alert(data);
+   // alert(data);
       var row = $(".table45").find('tr:last');
         $('<tr><td>'+data.member_no+'</td><td>'+data.fullname+'</td><input type="hidden" value="'+data.id+'" name="guarantor[]" class="guarantor_check"></td><td width="20%"><input type="button" class="remove" style="color:red;" value="X" /></td></tr>').insertAfter(row);
         $("#guarantor").val('');

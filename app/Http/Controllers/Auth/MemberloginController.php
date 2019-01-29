@@ -6,22 +6,22 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+
 class MemberloginController extends Controller
 {
     //
 
 
-       public function __construct(){
+   /*    public function __construct(){
 
      	$this->middleware('guest:member');
-     }
+     }*/
 
 
       public function showLoginForm()
 
       {
-
-
       	 return view('member.login');
       }
 
@@ -49,21 +49,13 @@ class MemberloginController extends Controller
         	 ])){
                  $user=Auth::guard('member')->user();
 
-                          if($user->hasRole('Admin')){
-        return redirect()->intended('roles');
-    }elseif($user->hasRole('Chair')){
-        return redirect()->intended('/');
-    }elseif($user->hasRole('Accountant')){
-        return redirect()->intended('/');
-    }elseif($user->hasRole('Loan Officer')){
-           return redirect()->intended('/');
-         }elseif($user->hasRole('Cashier')){
-             
-            return redirect()->intended('/'); 
-         }else{
-             $id=Auth::guard('member')->user()->member_id;
-             return redirect()->intended('/member/'.$id.'/profile' );
-         }
+       if($user->hasAnyRole(Role::all())){
+
+             return redirect()->intended('/');
+          }else{
+               $id=Auth::guard('member')->user()->member_id;
+            return redirect()->intended('/member/'.$id.'/profile');
+          }
         	 }else{
 
         	 	 return redirect()->back()->withInput($request->only('email','remember'));

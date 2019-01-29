@@ -122,15 +122,15 @@ class MemberinfoController extends Controller
        }
 
        public function store_appliedloan(Request $request){
-
-
-
+                  $startpayment=\Carbon\Carbon::parse($request->startpayment)->format('Y-m-d');
+              
+              
            $member_id=$request->memberid;
             $pcategory_id=$request->pcategory;
             $principle=$request->principle;
             $loanperiod=$request->period;
 
-            $startpayment=$request->startpayment;
+           
              //colateral from js field  
             $collate_id=$request->collate;
             $guarator_id=$request->guarantor;
@@ -179,7 +179,7 @@ class MemberinfoController extends Controller
 
                           $guarantors=Member::find($guarator_id);
 
-                         if($no_shares==$max_shares){
+                         if($no_shares>=$max_shares){
 
                    if($request->has('collate')){
                       
@@ -271,7 +271,7 @@ class MemberinfoController extends Controller
                                        
                  \Mail::to($member)->send(new Guarantors($member,$loan)); 
                                       }
-                                     return back()->with('status','your loan is accepted');
+                                     return back()->with('status','Success! You have submitted your loan. Waiting for guarantor approval');
 
               }  
                   
@@ -280,7 +280,6 @@ class MemberinfoController extends Controller
 
                    }
 
-                   
                  }else{
 
                                      return back()->with('error','you must have 1000 shares in your account')->withInput();
@@ -321,7 +320,7 @@ class MemberinfoController extends Controller
                                  }
                               }
                    
-                   return back()->with('status','Successfully ')->withInput();
+                   return back()->with('status','Successfully guarated ')->withInput();
                  }
 
              public function guarantor_reject($id){
@@ -334,10 +333,10 @@ class MemberinfoController extends Controller
 
     public function loans($id){
       
-        $memberloans=Member::find($id)->loanlist->where('loan_status','=','paid');
+        $loanlists=Loan::where('member_id',$id)->orderBy('loanInssue_date','desc')->get();
        $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;
 
-    	return view('member.info.loans',compact('memberloans','code','id'));	
+    	return view('member.info.loans',compact('loanlists','code','id'));	
 
     }
 
@@ -362,6 +361,8 @@ class MemberinfoController extends Controller
                $insurance=Insurance::first();
 
                $loanfees=Loan::find($lid)->loan_fees;
+
+               
          
 
          $code=Memberaccount::where('name','=','Loan Account')->first()->account_no;

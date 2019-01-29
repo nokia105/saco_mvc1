@@ -2,28 +2,32 @@
     
       @section('receiptcontent')
 
-         <div style="margin-bottom:5px;">
-   </div> 
+
 
          <div  id="div" class="col-md-8" style="background-color:#fff; margin-top:px;">
      <div class="info" style="margin-top:20px";>
     
-     <div style="margin-bottom:20px;">
+     <div style="margin-bottom:20px; text-align:center; ">
     <strong>TASAF SACOSS</strong>
 </div>
 
-     <div class="img">
-     <img src="{{asset('/images/logo/saccos.jpg')}}" style="">
+     <div class="img" style="margin-bottom:15px;"><center>
+     <img src="{{asset('/images/logo/saccos.jpg')}}">
+   </center>
      </div>
   </div>
+     <div style="margin-bottom:30px;">
+        <center>
+    <strong>PAYMENT SLIP</strong>
+  </center>
+  </div> 
+
   <div style="float:right; margin-bottom:5px;">
      <br>
-   Date: <strong>{{date('Y-m-d')}}</strong><br>
+   Date: <strong>{{date('d/m/Y')}}</strong><br>
    </div>
 
-      <div style="text-align:center; margin-bottom:30px;">
-    <strong>PAYMENT SLIP</strong>
-  </div> 
+    
       
   <div id="table">
   <table class="table table-striped table-bordered">
@@ -49,7 +53,7 @@
                 
                 <td style="text-align:center";>
                    @if($getpaymenttype=='saving')
-                          {{number_format($payment->amount,2)}}
+                          {{number_format($amount,2)}}
                           @else
                          ----
                           @endif
@@ -67,7 +71,7 @@
                 <td style="text-align:center";>
                   @if($getpaymenttype=='share')
                         
-                          {{number_format($payment->amount,2)}}
+                          {{number_format($amount,2)}}
                           @else
                            ----
                           @endif
@@ -97,7 +101,7 @@
                 <td style="text-align: center;">
                  @if($getpaymenttype=='reg_fee')
                         
-                          {{number_format($payment->amount,2)}}
+                          {{number_format($amount,2)}}
                           @else
                           ----
                              @endif   
@@ -114,7 +118,7 @@
                 <td style="text-align:center";>
                    @if($getpaymenttype=='loan')
                      
-                          {{number_format($payment->amount,2)}}
+                          {{number_format($amount,2)}}
                           @else
                           ----
                           @endif
@@ -130,7 +134,7 @@
                   TOTAL:
                 </td>
                 <td style="text-align:center">
-                 {{number_format($payment->amount,2)}} 
+                 {{number_format($amount,2)}} 
                 </td>
                 
              
@@ -141,15 +145,16 @@
 
         <div class="signature">
            <label class="pull-left">Cahier: {{\Auth::guard('member')->user()->first_name}} {{\Auth::guard('member')->user()->last_name}} </label>
-          <label style="padding-left:20px;">Cashier signature.................</label>
-          
+          <label style="padding-left:20px;">Cashier signature.............</label>
+          <label style="padding-left:20px;">Payee signature...............</label>
            <label class="pull-right">Payee: {{ucfirst($member->first_name)}} {{ucfirst($member->middle_name)}} {{ucfirst($member->last_name)}}</label>
         </div>
       </div>
        
     </div>
   </div>
-    
+  
+        
     @endsection
     
 

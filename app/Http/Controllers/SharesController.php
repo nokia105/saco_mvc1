@@ -8,6 +8,7 @@ include(app_path()."\datatable\Editor\php\DataTables.php" );
 include(app_path()."\datatable\Editor\php\config.php" );
 include(app_path()."\datatable\Editor\php\Bootstrap.php" );
 
+
 /*
 include(app_path()."\datatable\Editor\php\Editor\Editor.php" );
 include(app_path()."\datatable\Editor\php\Editor\Field.php" );
@@ -85,7 +86,7 @@ $nn=Editor::inst($this->db(),'shares','share_id')
 
       public function member_allshare($id){
 
-         $allmembershares=Member::findorfail($id)->no_shares->state('state','in');
+         $allmembershares=Member::findorfail($id)->no_shares;
 
             return view('shares.member_allshare',compact('allmembershares'));
       }

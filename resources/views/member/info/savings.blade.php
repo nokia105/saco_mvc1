@@ -26,9 +26,11 @@
                 <tr>
               
                   <td><a href="{{route('allsavings',$member->member_id)}}">{{number_format(($member->savingamount->where('state','in')->sum('amount')-$member->savingamount->where('state','out')->sum('amount')),2)}}</a></td>
-
+                     @if(count($member->savingamount))
                    <td>{{\Carbon\carbon::parse($member->savingamount->last()->saving_date)->format('d/m/Y')}}</td>
-            
+                      @else
+                      <td>0000-00-00</td>
+                       @endif
                 </tr>
               
                 </tbody>

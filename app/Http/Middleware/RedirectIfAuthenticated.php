@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use \Spatie\Permission\Models\Role;
 
 class RedirectIfAuthenticated
 {
@@ -23,23 +24,17 @@ class RedirectIfAuthenticated
                  
              $user=Auth::guard('member')->user();
 
-                          if($user->hasRole('Admin')){
-        return redirect()->intended('roles');
-    }elseif($user->hasRole('Chair')){
-        return redirect()->intended('/');
-    }elseif($user->hasRole('Accountant')){
-        return redirect()->intended('/');
-    }elseif($user->hasRole('Loan Officer')){
-           return redirect()->intended('/');
-         }elseif($user->hasRole('Cashier')){
-             
-            return redirect()->intended('/'); 
-         }else{
-             $id=Auth::guard('member')->user()->member_id;
-             return redirect()->intended('/member/'.$id.'/profile');
-         }
+          if($user->hasAnyRole(Role::all())){
+
+             return redirect()->intended('/');
+          }else{
+               $id=Auth::guard('member')->user()->member_id;
+            return redirect()->intended('/member/'.$id.'/profile');
+          }
 
           }
+
+
           break;
         default:
           if (Auth::guard($guard)->check()) {

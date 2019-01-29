@@ -25,12 +25,38 @@
        @section('css')
 
          <style type="text/css">
+
+      
          	 .printheading{
 
          	 	 width:67%;
          	 	 background-color:#fff; 
          	 	 height:70px;
          	 }
+
+          
+             table {
+    border-collapse: inherit;
+    border-spacing: 0;
+            } 
+
+            .table .bordered>tbody>tr>td{
+               border:1px solid black;
+            }
+
+            .table-bordered{
+              border:1px solid black;
+            }
+           
+
+
+/*         .table tbody tr > td {
+     background-color: #dff0d8 !important;
+}
+
+   .table tbody tr{
+    background-color: #dff0d8 !important;
+   } */
 
          	  .print{
                 
@@ -44,7 +70,7 @@
                	 padding-left:79%;
                  padding-top:25px;
                }
-
+              @page { size: auto;  margin-top:4mm; margin-bottom:4mm; margin-left:13mm;}
 
          </style>
 

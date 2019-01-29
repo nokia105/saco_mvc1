@@ -1,5 +1,4 @@
 
- 
       @extends('loans.template')
       @section('memberworkspace')
 

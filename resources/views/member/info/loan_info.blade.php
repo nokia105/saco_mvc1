@@ -12,9 +12,6 @@
        </style>
        @endsection
 
-
-
-
       <div class="row">
        <div class="push_left col-xs-12">
 
@@ -35,39 +32,70 @@
               <h3 class="box-title">Loan Schedule</h3>
                 <br />
                   <br />
-               <h3 class="box-title">Loan NO: #{{$code+$lid+$id}}</h3>
+               <h3 class="box-title">Loan #: {{$code+$loan->id+$loan->member->member_id}}</h3>
 
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example4" class="table table-bordered table-striped">
+              <table id="loan" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Month</th>
                    <th>Total Amount(Tsh)</th>
                   <th>Month Principle(Tsh)</th>
                   <th>Month Interest(Tsh)</th>
-                  <th>Amount Payed(Tsh)</th>
-                  
+                  <th>Amount Paid(Tsh)</th>
+                  <th>Amount unpaid</th>
                   <th>Due Date</th>
                   <th>Status</th>
                 
                 </tr>
                 </thead>
+                  <div class="col-md-6 col-md-offset-5">
+           <a  href="{{ url()->previous()}}"><button class="btn btn-dark col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
+    </div>
                 <tbody>
+        
                 @foreach($loan->loanschedule as $loan_schedule )
                 <tr>
                  <td>@php $month= date('m',strtotime($loan_schedule->duedate));
                     @endphp
                    {{ date("F", mktime(0, 0, 0, $month, 1)) }}
          </td>
-                  <td>{{number_format(($loan_schedule->monthprinciple)+($loan_schedule->monthinterest),2) }} </td>
-                   <td>{{number_format( $loan_schedule->monthprinciple,2)}} </td>
+                  <td>{{ number_format(($loan_schedule->monthprinciple)+($loan_schedule->monthinterest),2)}} </td>
+                   <td>{{ number_format($loan_schedule->monthprinciple,2)}} </td>
                   <td>{{number_format($loan_schedule->monthinterest,2) }} </td>
-                  <td>{{number_format($loan_schedule->monthrepayment->sum('amountpayed'),2)}}</td>
-                  
-                  <td>{{\Carbon\carbon::parse($loan_schedule->duedate)->format('d/m/y')}}</td>
-                   <td>{{strtoupper($loan_schedule->status)}}</td>
+
+                  <td>{{$loan_schedule->monthrepayment->sum('amountpayed')}}</td>
+
+                    @if(!$loan_schedule->status=='')
+                        @if($loan_schedule->status=='incomplete')
+                         <td>{{number_format((($loan_schedule->monthprinciple)+($loan_schedule->monthinterest))-$loan_schedule->monthrepayment->sum('amountpayed'),2)}}</td>
+                          @else
+                           <td>-</td>
+                          @endif 
+                      @else
+                          @if(date('Y-m-d')<=$loan_schedule->duedate)
+                              <td >0.00</td>
+                            @else
+                               <td >{{number_format(($loan_schedule->monthprinciple)+($loan_schedule->monthinterest),2)}}</td>
+                               @endif
+                        @endif
+                  <td>{{\Carbon\carbon::parse($loan_schedule->duedate)->format('d/m/Y')}}</td>
+
+                     @if(!$loan_schedule->status=='')
+                        @if($loan_schedule->status=='incomplete')
+                         <td><span class="label label-sm label-warning">{{strtoupper($loan_schedule->status)}}</span></td>
+                          @else
+                           <td><span class="label label-sm label-success">{{strtoupper($loan_schedule->status)}}</span></td>
+                          @endif 
+                      @else
+                          @if(date('Y-m-d')<=$loan_schedule->duedate)
+                             <td><span class="label label-sm label-default"></td>
+                            @else
+                               <td><span class="label label-sm label-danger">UNPAID</span></td>
+                               @endif
+                        @endif
                   
                 </tr>
                 @endforeach
@@ -89,7 +117,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-striped">
+              <table id="collateral_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                 
@@ -102,7 +130,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                   @if(count($loan->collaterals))
+                   @if(!is_null($loan->collaterals))
                    @foreach( $loancollaterals as $collateral)
                  <tr>
                       
@@ -133,7 +161,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="insuarance" class="table table-bordered table-striped">
+              <table id="guarantor_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                 
@@ -148,9 +176,9 @@
                    @foreach($loanguarantors as $loanguarantor)
                  <tr> 
                  
-                  <td>{{ucfirst($loanguarantor->first_name)}}</td>
-                   <td>{{ucfirst($loanguarantor->middle_name)}}</td>
-                    <td>{{ucfirst($loanguarantor->last_name)}}</td>
+                  <td>{{$loanguarantor->first_name}}</td>
+                   <td>{{$loanguarantor->middle_name}}</td>
+                    <td>{{$loanguarantor->last_name}}</td>
                               
                 </tr>
                  @endforeach 
@@ -174,7 +202,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-striped">
+              <table id="insurance_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                 
@@ -190,9 +218,9 @@
                 <tbody>
                  <tr> 
                 
-                  <td>{{number_format($loan->principle,2)}}</td>
+                  <td>{{$loan->principle}}</td>
                   <td> {{$insurance->name}}</td>
-                  <td> {{$insurance->percentage_insurance}} %</td>
+                  <td> {{number_format($insurance->percentage_insurance,2)}}</td>
                               
                   <td>{{number_format($loan->principle*($insurance->percentage_insurance/100),2)}}</td>
                                    
@@ -217,7 +245,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-striped">
+              <table id="charges_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                 
@@ -232,7 +260,7 @@
                    @foreach($loanfees as $loanfee)
                  <tr> 
                    
-                  <td>{{ucfirst($loanfee->fee_name)}}</td>
+                  <td>{{$loanfee->fee_name}}</td>
                   <td> {{number_format($loanfee->fee_value,2)}}</td>
                  
                 
@@ -265,27 +293,29 @@
         
       <script type="text/javascript">
         
+$(document).ready(function(){
 
-            $(document).ready(function(){
-
-   $(function () {
-
-    $('#example4').DataTable({
-
-        ]
-
+    $('#loan').DataTable({
+                   dom: 'Bfrtip',
+buttons: [   'print',
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+             {extend: 'pdfHtml5',
+           }             
+    ],
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : false,
       'info'        : true,
       'autoWidth'   : false
-    })
-  });
-            
 
 
+    });      
             });
+            
+            
 
       </script>
 

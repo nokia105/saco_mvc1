@@ -1,7 +1,6 @@
 @extends('member.member_template')
 @section('memberinfo')
 
- 
 
   <div class="row">
        <div class="col-xs-12">

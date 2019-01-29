@@ -18,7 +18,11 @@
    return view('member.member');
 
 });*/
-  Route::get('/savings', function () {
+
+  Route::group(['middleware' => ['role:Admin|Chair|Cashier|Accountant|Loan Officer']], function () {
+    //
+
+      Route::get('/savings', function () {
 
 
    return view('savings.savings');
@@ -109,12 +113,6 @@
     return view('fee.fee');
 
 });
-
-     Route::get('profile/{id}/collateral', function () {
-
-    return view('collateral.index');
-
-});
  
   Route::get('/shares', function () {
 
@@ -127,20 +125,7 @@
    return view('reports.home');
 })->name('reports');
 
-  /* Route::get('/profile/{id}/membersavings', function () {
-
-   return view('savings.membersavings');
-});*/
-
-
-   //membershare
-  /* Route::get('', function () {
-
-   return view('shares.membershares');
-});*/
-   Route::get('calculator','MembersProfileController@calculator')->name('calculator');
-   //Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
-   Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
+ 
    Route::get('interestmethod','MembersProfileController@interestmethod')->name('interestmethod');
    Route::get('getprofit_distribution','ProfitdistributionController@index')->name('getprofit_distribution');
 
@@ -151,6 +136,7 @@ Route::get('/profile/{id}/member_allsavings','SavingsController@member_allsaving
 
 
 Route::get('/profile/{id}/membershares','SharesController@membershare')->name('memberShares');
+
 Route::get('/profile/{id}/member_allshares','SharesController@member_allshare')->name('member_allshare');
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -179,7 +165,6 @@ Route::get('/profile/{id}/loanlist/ongoing_loans','MembersProfileController@ongo
 Route::get('/interest','MembersProfileController@interest')->name('interest');
 Route::get('/membercollateral','MembersProfileController@membercollateral')->name('membercollateral');
 Route::get('/loancharges','MembersProfileController@loancharges')->name('loancharges');
-Route::get('/guarantors','MembersProfileController@guarantors')->name('guarantors');
 Route::post('/memberloan','MembersProfileController@createloan');
 Route::post('/updateloan','MembersProfileController@updateloan');
 
@@ -290,65 +275,7 @@ Route::post('profile/{id}/post_refund','MembersProfileController@post_refund')->
  Route::get('shares_reports','ReportsController@shares_reports')->name('shares_reports');
  Route::post('shares_reports_time','ReportsController@shares_reports_time')->name('shares_reports_time');
 
-
-  
-  Route::get('member/login','Auth\MemberloginController@showLoginForm')->name('member.login');
-
-  Route::post('member/login','Auth\MemberloginController@login');
- // Route::post('member/logout','Auth\MemberloginController@logout')->name('member.logout');
-  Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
-
-  Route::resource('Admin_member','AdminmemberController');
- //Route::get('/admin','Admincontroller@index');
- Route::resource('permissions','permissionController');
- Route::resource('roles','RoleController');
-
-
-   //print
- Route::get('/paidloans_slip/{id}','LoansController@paidloans_slip')->name('paidloans_slip');
- Route::get('/member/{id}','MemberinfoController@dashboard');
- Route::get('/repayment_slip/{member_id}/{amountinput}/{getpaymenttype}','MembersProfileController@repayment_slip')->name('repayment_slip');
-
-                //member accounts
-Route::group(['middleware' => ['Usersecurity']], function () {
-   
-   Route::get('/member/{id}/savings','MemberinfoController@savings');
-  Route::get('/member/{id}/allsavings','MemberinfoController@allsavings')->name('allsavings');
-  Route::get('/member/{id}/shares','MemberinfoController@shares');
-  Route::get('/member/{id}/allshares','MemberinfoController@allshares')->name('allshares');
-  Route::get('/member/{id}/collaterals','MemberinfoController@collaterals');
-  Route::get('/member/{id}/payments','MemberinfoController@payments');
-  Route::get('/member/{id}/loans','MemberinfoController@loans');
-  Route::get('/member/{id}/loan_info/{lid}','MemberinfoController@loan_info');
-  Route::get('/member/{id}/apply_loan','MemberinfoController@apply_loan')->name('apply_loan');
-  Route::post('/member/store_appliedloan','MemberinfoController@store_appliedloan')->name('store_appliedloan');
-  Route::get('/member/{id}/guarantor','MemberinfoController@guarantor')->name('member_guarantor');
-  Route::get('/member/gurantor_approve/{id}','MemberinfoController@guarantor_approve')->name('guarantor_approve');
-  Route::get('/member/gurantor_reject/{id}','MemberinfoController@guarantor_reject')->name('guarantor_reject');
-  Route::post('member/save_guarantor_status/{id}','MemberinfoController@save_guarantor_status')->name('save_guarantor_status');
-
-  Route::get('/member/{id}/profile','MemberinfoController@profile')->name('profile');
-  Route::get('/member/{id}','MembersController@member_profile')->name('member_profile');
-
-  Route::post('/member/{id}/picture_update','MemberinfoController@picture_update')->name('picture_update');
-  Route::get('/member/{id}/password_modal','MemberinfoController@password_modal')->name('password_modal');
-  Route::get('member/{id}/pass_change','MemberinfoController@pass_change')->name('pass_change');
- 
-});
-             //unauthorized access 401
-                
-
-      Route::get('/Unauthrorized_access', function () {
-
-    return view('errors.unauthorized');
-
-})->name('unauthorized');
-  
-
-
-        //finacial reports
-
-    Route::get('/income_statments','ReportsController@income_statments')->name('');
+ Route::get('/income_statments','ReportsController@income_statments')->name('');
     Route::get('/balance_sheets','ReportsController@balance_sheets')->name('balance_sheets');
   Route::post('/duration_incomestatment','ReportsController@duration_incomestatment')->name('duration_incomestatment');
     Route::post('/findbalance_sheets','ReportsController@findbalance_sheets')->name('findbalance_sheets');
@@ -387,6 +314,83 @@ Route::group(['middleware' => ['Usersecurity']], function () {
     Route::post('/find_cash_flow','ReportsController@find_cash_flow')->name('find_cash_flow');
     Route::get('/capital_change','ReportsController@capital_change')->name('capital_change');
     Route::post('/find_capital_change','ReportsController@find_capital_change')->name('find_capital_change');
+
+});
+
+
+ 
+  
+  Route::get('member/login','Auth\MemberloginController@showLoginForm')->name('member.login');
+
+  Route::post('member/login','Auth\MemberloginController@login');
+ // Route::post('member/logout','Auth\MemberloginController@logout')->name('member.logout');
+  Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+
+  Route::resource('Admin_member','AdminmemberController');
+ //Route::get('/admin','Admincontroller@index');
+ Route::resource('permissions','permissionController');
+ Route::resource('roles','RoleController');
+
+   //print
+ Route::get('/paidloans_slip/{id}','LoansController@paidloans_slip')->name('paidloans_slip');
+ Route::get('/member/{id}','MemberinfoController@dashboard');
+ Route::get('/repayment_slip/{member_id}/{amountinput}/{getpaymenttype}','MembersProfileController@repayment_slip')->name('repayment_slip');
+
+                //member accounts
+Route::group(['middleware' => ['Usersecurity']], function () {
+   
+   Route::get('/member/{id}/savings','MemberinfoController@savings');
+  Route::get('/member/{id}/allsavings','MemberinfoController@allsavings')->name('allsavings');
+  Route::get('/member/{id}/shares','MemberinfoController@shares');
+  Route::get('/member/{id}/allshares','MemberinfoController@allshares')->name('allshares');
+  Route::get('/member/{id}/collaterals','MemberinfoController@collaterals');
+  Route::get('/member/{id}/payments','MemberinfoController@payments');
+  Route::get('/member/{id}/loans','MemberinfoController@loans');
+  Route::get('/member/{id}/loan_info/{lid}','MemberinfoController@loan_info');
+  Route::get('/member/{id}/apply_loan','MemberinfoController@apply_loan')->name('apply_loan');
+  Route::get('/member/{id}/guarantor','MemberinfoController@guarantor')->name('member_guarantor');
+  
+
+  Route::get('/member/{id}/profile','MemberinfoController@profile')->name('profile');
+ 
+
+  Route::post('/member/{id}/picture_update','MemberinfoController@picture_update')->name('picture_update');
+  Route::get('/member/{id}/password_modal','MemberinfoController@password_modal')->name('password_modal');
+  Route::get('member/{id}/pass_change','MemberinfoController@pass_change')->name('pass_change');
+ 
+});
+
+
+
+        Route::get('profile/{id}/collateral', function () {
+        return view('collateral.index');
+});
+   Route::get('/member/{id}','MembersController@member_profile')->name('member_profile');
+   Route::post('/member/store_appliedloan','MemberinfoController@store_appliedloan')->name('store_appliedloan');
+    Route::get('/member/gurantor_approve/{id}','MemberinfoController@guarantor_approve')->name('guarantor_approve');
+  Route::get('/member/gurantor_reject/{id}','MemberinfoController@guarantor_reject')->name('guarantor_reject');
+  Route::post('member/save_guarantor_status/{id}','MemberinfoController@save_guarantor_status')->name('save_guarantor_status');
+             //unauthorized access 401
+                
+
+      Route::get('/Unauthrorized_access', function () {
+
+    return view('errors.unauthorized');
+
+})->name('unauthorized');
+
+
+        //culculator
+
+         Route::get('calculator','MembersProfileController@calculator')->name('calculator');
+   //Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
+   Route::get('calculator_popup','MembersProfileController@calculator_popup')->name('calculator_popup');
+  
+                  //guarantors
+Route::get('/guarantors','MembersProfileController@guarantors')->name('guarantors');
+        //finacial reports
+
+    
 
  
 

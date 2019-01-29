@@ -7,17 +7,17 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Ongoing Loans</h3>
+              <h3 class="box-title">Repayment Loans</h3>
             </div>
             <!-- /.box-header -->
-                          <div class="col-md-6 col-md-offset-3">
+                          <div class="col-md-6 col-md-offset-4">
          <a href="{{route('finished_loans',$id)}}" ><button class="btn btn-success col-xs-3 hide-for-print" style="margin-right: 5px;">FINISHED</button></a>
-          <a  href="{{route('ongoing_loans',$id)}}"><button class="btn btn-warning col-xs-3" style="margin-right: 5px;">PAID</button></a>
-          <a ><button class="btn btn-default col-xs-3 print" style="margin-right: 5px;"><i style="color:red" class="fa fa-print" aria-hidden="true"></i> Print</button></a>
-           <a  href="{{ url()->previous() }}"><button class="btn btn-info col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
+          <a  href="{{route('ongoing_loans',$id)}}"><button class="btn btn-warning col-xs-3" style="margin-right: 5px;">REPAYMENT</button></a>
+          <a  href="{{route('ongoing_loans',$id)}}"><button class="btn btn-info col-xs-3" style="margin-right: 5px;">OTHER LOANS</button></a>
+           <a  href="{{ url()->previous() }}"><button class="btn btn-dark col-xs-2 pull-right"><i style="color:red; font-size:15px" class="fa fa-angle-double-left" aria-hidden="true"></i> Back</button></a>
     </div>
             <div class="box-body" id="print_body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="repayment_loans" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Loan Code</th>
@@ -83,6 +83,20 @@
                              document.body.innerHTML=restorepage;
             })
          });
+
+          $('#repayment_loans').DataTable({
+      dom: 'Bfrtip',
+buttons: [   'print',
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+             {extend: 'pdfHtml5',
+           }             
+    ],
+
+       order: [[ 6, 'desc' ], [ 0, 'asc' ]]
+ 
+    });
        </script>
 
       @endsection

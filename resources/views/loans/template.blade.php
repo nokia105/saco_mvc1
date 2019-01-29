@@ -8,6 +8,14 @@
            color:#ffff;
 
           }
+
+             .panel-heading ul li a{
+            color:#ffff;
+          }
+
+           .panel-heading ul li{
+            margin:1%;
+           }
         </style>
 
         <input type="hidden" value="{{$id=Request::segment(2)}}" name=""> 
@@ -87,8 +95,7 @@
                   
           <li  class="white"><a href="{{url ('profile/'.$id.'/loanlist')}}" class=""><b>Loans</b></a></li>
          <li  class="white"><a href="{{url('profile/'.$id.'/pay')}}"><b>Pay</b></a></li>
-         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
-         <li  class="white"><a href="{{route('memberShares',$id)}}" class=""><b>Shares </b></a></li> 
+         <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li> 
          @role('Cashier','member')
          <!--  <li  class="white"><a href="{{url('profile/'.$id.'/payment')}}"><b>Payments</b></a></li>
           <li  class="white"> <a href="{{url('profile/'.$id.'/refund')}}"><b>Refund</b></a></li>
@@ -115,11 +122,6 @@
           </div>
           <!-- /.nav-tabs-custom -->
 
-
-
-          <!--/.
-        </div>
-        <!-- /.col -->
       </div>
       <!-- /.row -->
 

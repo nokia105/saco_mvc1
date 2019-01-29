@@ -16,7 +16,7 @@ class UsersecurityMiddleware
      */
     public function handle($request, Closure $next)
     {
-
+             
            if($request->id==Auth::guard('member')->user()->member_id){
 
                  return $next($request);    

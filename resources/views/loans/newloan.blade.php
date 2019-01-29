@@ -30,13 +30,60 @@
           <div class="box col-md-12 box-info">
             <div class="box-header">
              
-              <h3 class="box-title">New Loan</h3><a  onclick="showAjaxModalX2('{{route('calculator_popup')}}')"><span class="btn btn-success pull-right">Loan Calculator</span></a>
+              <h3 class="box-title">New Loan</h3>
+           <a style="margin-left:35%;" class=" btn btn-info loan_possiblity">Check Loan Possiblity </a>
+               
+              <a  onclick="showAjaxModalX2('{{route('calculator_popup')}}')"><span class="btn btn-success pull-right">Loan Calculator</span></a>
             </div>
             <!-- /.box-header -->
          <div class="box box-body box-info">
           <div class="row">
             <div class="col-md-6">
+               <div class="notification" style="display:none; ">
+               <button type="button"  class="pull-right close" aria-hidden="true">&times;</button>
+               <div class="summary_savingshare">
+                  <h4>Savings & Share Summary</h4>
+                  <h5>Current Shares : <label> {{number_format($member->no_shares->where('state','in')->sum('amount')-$member->no_shares->where('state','out')->sum('amount'),2)}}</label></h5>
+                   <h5>Current Savings : <label> {{number_format($member->savingamount->where('state','in')->sum('amount')-$member->savingamount->where('state','out')->sum('amount'),2)}}</label></h5>
+                         <h4><strong>{{$lastloans->count()}} </strong> Current Outstanding Loans</h4>
+                         <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Loan Code</th>
+        <th>Inssued Date</th>
+        <th>Principle</th>
+        <th>Outstanding</th>
+        <th>Remaining Month(s)</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+         @php $i=1; @endphp
+        @foreach($lastloans as $lastloan)
+      <tr>
+        <td>{{$i}}</td>
+       <td>{{$code+$lastloan->id+$lastloan->member->member_id}}</td>
+       <td>{{ \Carbon\carbon::parse($lastloan->loanInssue_date)->format('d/m/Y')}}</td>
+       <td>{{number_format($lastloan->principle,2)}}</td>
+       <td>{{number_format(($lastloan->principle)-($lastloan->loanrepayment->sum('principlepayed')),2)}}</td>
+       <td>{{$lastloan->loanschedule->where('status','unpaid')->count()}}</td>
+       <td>{{strtoupper($lastloan->loan_status)}}</td>
+      </tr>
+       @php $i++; @endphp
+      @endforeach
+    </tbody>
+  </table>
+                     <h4>Maximum Possible Loan</h4>
+                     <h5>Maximum loan we can offer : <label>{{number_format($loanallowed,2)}}</label></h5>
+                      
+               </div>
+                     
+                        
+             </div>
+
               <div class="box-header">
+
               <h3 class="box-title">Basic Details</h3>
             </div>
               <div class="form-group{{ $errors->has('pcategory') ? ' has-error' : '' }}">
@@ -271,7 +318,7 @@
           <div class="row">
                <div class="form-group">
                     <div class="col-sm-4">
-                      <select id="guarantor" class="form-control select2 "  name="g[]" style="width: 100%;">
+                      <select id="guarantor" class="selectguarantor form-control "  name="g[]" style="width: 100%;">
                         <option value="">--Select guarantors--</option>
                           @foreach($guarantors as  $guarantor)
                           <option value="{{$guarantor->member_id}}">{{$guarantor->first_name}} {{$guarantor->middle_name}} {{$guarantor->last_name}}</option>
@@ -531,7 +578,9 @@
       @section('js')
       <script type="text/javascript">
             
-
+              $(document).ready(function() {
+    $('.selectguarantor').select2();
+});
               //interest method pop up
 
 
@@ -822,6 +871,24 @@ success: function(data)
 end of charge row */
 });                         
 
+
+    $(document).ready(function(){
+      
+            $('.notification').css({ 'display':'block','backgroundColor': '#72e5d7','right': '-2%' ,'z-index':'1','position':'absolute','borderRadius':'10px'}).animate({
+                    'left' : '0%'    
+                },1000);
+
+              $('.close').click(function(){
+                 $('.notification').addClass('fade');
+                   $('.notification').fadeOut();
+              });
+
+              $('.loan_possiblity').click(function(){
+                  $('.notification').removeClass('fade');
+                  $('.notification').fadeIn();
+
+              });
+    });
       </script>
 @include('modal.popup_lib')
        @endsection
