@@ -2,7 +2,7 @@
 
     
 
-    <form action ="{{url('/agree_submitted')}}" method="post">
+    <form action ="{{url('/agree_submitted')}}" method="post" />
        {{csrf_field()}}
         <input type="hidden" name="loan_id" value="{{$loan->id}}">
                               @if($loan->loan_status==='submitted')
